@@ -3,103 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRENZY | Custom 3D Cakes</title>
+    <title>FRENZY | Custom Cakes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        frenzy: {
-                            light: '#ffcce0',
-                            DEFAULT: '#ff8fab',
-                            dark: '#fb6f92',
-                            text: '#590d22'
-                        }
+                        frenzy: { light: '#ffcce0', DEFAULT: '#ff8fab', dark: '#fb6f92', text: '#590d22' }
                     },
-                    fontFamily: {
-                        sans: ['Quicksand', 'sans-serif'],
-                    }
+                    fontFamily: { sans: ['Quicksand', 'sans-serif'] }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            background-color: #fff0f5;
-            background-image: radial-gradient(#ffb7b2 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        }
-
-        /* --- TRUE 3D CSS ENGINE --- */
-        .scene {
-            width: 100%;
-            height: 400px;
-            perspective: 1000px; /* Gives the 3D depth */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: visible;
-            cursor: grab;
-        }
-        .scene:active {
-            cursor: grabbing;
-        }
-        .cake-assembly {
-            position: relative;
-            transform-style: preserve-3d;
-            /* Default viewing angle */
-            transform: rotateX(-20deg) rotateY(0deg); 
-            transition: transform 0.1s ease-out;
-        }
-        .cake-tier-3d {
-            position: absolute;
-            transform-style: preserve-3d;
-            left: 50%;
-            top: 50%;
-        }
-        .cake-slice {
-            position: absolute;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform-style: preserve-3d;
-            /* The side walls of the slice */
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-        }
-        /* The top plate of the cake to give it a solid lid */
-        .cake-top-lid {
-            position: absolute;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            background: inherit;
-            filter: brightness(1.15); /* Slightly lighter on top */
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
-        }
-        /* Optional cake board */
-        .cake-board {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: #f8f9fa;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) translateZ(-5px);
-            box-shadow: 0 0 20px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.1);
-            border: 2px solid #e9ecef;
-        }
-    </style>
 </head>
 <body class="font-sans text-gray-700 overflow-x-hidden">
 
@@ -110,7 +32,6 @@
                     <img class="h-14 w-auto object-contain drop-shadow-md hover:scale-105 transition" src="photo.png" alt="FRENZY Logo">
                     <span class="font-bold text-2xl text-frenzy-dark tracking-wide hidden sm:block">FRENZY</span>
                 </div>
-                
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Cakes</a>
                     <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Builder</a>
@@ -121,66 +42,11 @@
         </div>
     </nav>
 
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-frenzy-text mb-6 leading-tight">
-                Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span>
-            </h1>
-            <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-                From custom 3D designs to immersive cake decorating events. Welcome to Frenzy.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="#builder" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition transform hover:scale-105">Build Custom Cake</a>
-            </div>
-        </div>
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden text-center">
+        <h1 class="text-5xl md:text-7xl font-bold text-frenzy-text mb-6">Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span></h1>
+        <p class="mt-4 text-xl text-gray-600 mb-10">From custom 3D designs to immersive cake decorating events.</p>
+        <a href="#builder" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition">Build Custom Cake</a>
     </header>
-
-    <section id="shop" class="py-20 bg-white/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center text-frenzy-text mb-12">Signature Creations</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
-                    <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Velvet Dream</h3>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">P 550.00</span>
-                            <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Pastel Party</h3>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">P 650.00</span>
-                            <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800">Frenzy Cupcake Box</h3>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">P 350.00</span>
-                            <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section id="builder" class="py-20">
         <div class="max-w-6xl mx-auto px-4">
@@ -193,7 +59,7 @@
                     <div class="space-y-6">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Cake Style</label>
-                            <select id="cakeStyle" onchange="updateBuilder()" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
+                            <select id="cakeStyle" class="w-full p-3 rounded-xl ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
                                 <option value="naked">Naked Cake (Visible Layers)</option>
                                 <option value="buttercream">Buttercream Cake</option>
                                 <option value="fondant">Cake with Fondant</option>
@@ -203,251 +69,45 @@
 
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Size / Tiers</label>
-                            <select id="cakeSize" onchange="updateBuilder()" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
+                            <select id="cakeSize" class="w-full p-3 rounded-xl ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
                                 </select>
                         </div>
 
                         <div id="colorPickerContainer" class="hidden">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Icing Color</label>
-                            <div class="flex gap-3">
-                                <button onclick="setCakeColor('#ffcce0')" class="w-10 h-10 rounded-full bg-[#ffcce0] ring-2 ring-gray-300 focus:ring-frenzy-dark hover:scale-110 transition shadow-inner"></button>
-                                <button onclick="setCakeColor('#e9edc9')" class="w-10 h-10 rounded-full bg-[#e9edc9] ring-2 ring-gray-300 focus:ring-frenzy-dark hover:scale-110 transition shadow-inner"></button>
-                                <button onclick="setCakeColor('#a2d2ff')" class="w-10 h-10 rounded-full bg-[#a2d2ff] ring-2 ring-gray-300 focus:ring-frenzy-dark hover:scale-110 transition shadow-inner"></button>
-                                <button onclick="setCakeColor('#ffffff')" class="w-10 h-10 rounded-full bg-[#ffffff] ring-2 ring-gray-300 focus:ring-frenzy-dark hover:scale-110 transition shadow-inner"></button>
-                                <button onclick="setCakeColor('#2b2d42')" class="w-10 h-10 rounded-full bg-[#2b2d42] ring-2 ring-gray-300 focus:ring-frenzy-dark hover:scale-110 transition shadow-inner"></button>
+                            <div class="flex gap-3" id="colorButtons">
+                                <button data-color="#ffcce0" class="color-btn w-10 h-10 rounded-full bg-[#ffcce0] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
+                                <button data-color="#e9edc9" class="color-btn w-10 h-10 rounded-full bg-[#e9edc9] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
+                                <button data-color="#a2d2ff" class="color-btn w-10 h-10 rounded-full bg-[#a2d2ff] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
+                                <button data-color="#ffffff" class="color-btn w-10 h-10 rounded-full bg-[#ffffff] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
+                                <button data-color="#2b2d42" class="color-btn w-10 h-10 rounded-full bg-[#2b2d42] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
                             </div>
                         </div>
 
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <div class="flex justify-between items-center mb-4">
-                                <span class="text-gray-500 font-bold uppercase tracking-wide">Total Estimated Price</span>
+                                <span class="text-gray-500 font-bold uppercase tracking-wide">Estimated Price</span>
                                 <span id="priceDisplay" class="text-3xl font-bold text-frenzy-dark">P 300</span>
                             </div>
-                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">
-                                Request Custom Order
-                            </button>
+                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition">Request Custom Order</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="w-full md:w-1/2 bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] p-8 flex flex-col items-center justify-center relative overflow-hidden">
-                    
                     <div class="absolute top-4 right-4 bg-white/50 px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark animate-pulse z-20">
                         <i class="fas fa-hand-pointer mr-1"></i> Drag to spin
                     </div>
-
                     <div class="scene" id="sceneContainer">
                         <div class="cake-assembly" id="cakeAssembly">
                             <div class="cake-board"></div>
                             </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="bg-white pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 grayscale hover:grayscale-0 transition">
-            <h3 class="text-2xl font-bold text-frenzy-text">FRENZY</h3>
-            <p class="text-gray-400 text-sm mt-6">© 2024 Frenzy Cakes. Designed with sugar.</p>
-        </div>
-    </section>
-
-    <script>
-        // Pricing & Sizing Data (Z = height in 3D pixels, W = diameter in 3D pixels)
-        const cakeData = {
-            naked: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 300, w: 120, z: 80 },
-                    { label: "6 Inches", val: "6", price: 400, w: 150, z: 100 },
-                    { label: "8 Inches", val: "8", price: 500, w: 190, z: 110 },
-                    { label: "10 Inches", val: "10", price: 600, w: 230, z: 120 },
-                    { label: "12 Inches", val: "12", price: 700, w: 270, z: 130 }
-                ]
-            },
-            buttercream: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 450, w: 120, z: 80 },
-                    { label: "6 Inches", val: "6", price: 650, w: 150, z: 100 },
-                    { label: "8 Inches", val: "8", price: 750, w: 190, z: 110 },
-                    { label: "10 Inches", val: "10", price: 850, w: 230, z: 120 }
-                ]
-            },
-            fondant: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 550, w: 120, z: 80 },
-                    { label: "6 Inches", val: "6", price: 700, w: 150, z: 100 },
-                    { label: "8 Inches", val: "8", price: 800, w: 190, z: 110 },
-                    { label: "10 Inches", val: "10", price: 900, w: 230, z: 120 },
-                    { label: "12 Inches", val: "12", price: 1000, w: 270, z: 130 }
-                ]
-            },
-            twolayer: {
-                sizes: [
-                    { label: "4 inch & 6 inch", val: "4-6", price: 900, tiers: [{w:100, z:60}, {w:150, z:90}] },
-                    { label: "6 inch & 8 inch", val: "6-8", price: 1300, tiers: [{w:150, z:90}, {w:190, z:100}] },
-                    { label: "8 inch & 10 inch", val: "8-10", price: 1600, tiers: [{w:190, z:100}, {w:230, z:110}] },
-                    { label: "10 inch & 12 inch", val: "10-12", price: 2000, tiers: [{w:230, z:110}, {w:270, z:120}] }
-                ]
-            }
-        };
-
-        let currentColor = '#ffcce0'; 
-        const spongeColor = '#dcae78';
-        const fillingColor = '#fff3e0';
-
-        function setCakeColor(color) {
-            currentColor = color;
-            updateBuilder();
-        }
-
-        function updateBuilder() {
-            const style = document.getElementById('cakeStyle').value;
-            const sizeSelect = document.getElementById('cakeSize');
-            
-            // Populate Dropdown
-            if (sizeSelect.dataset.currentStyle !== style) {
-                sizeSelect.innerHTML = '';
-                cakeData[style].sizes.forEach((s, index) => {
-                    const opt = document.createElement('option');
-                    opt.value = index; 
-                    opt.textContent = s.label;
-                    sizeSelect.appendChild(opt);
-                });
-                sizeSelect.dataset.currentStyle = style;
-            }
-
-            const selectedIndex = sizeSelect.value || 0;
-            const config = cakeData[style].sizes[selectedIndex];
-            
-            document.getElementById('priceDisplay').innerText = `P ${config.price}`;
-
-            const colorPicker = document.getElementById('colorPickerContainer');
-            if(style === 'naked') colorPicker.classList.add('hidden');
-            else colorPicker.classList.remove('hidden');
-
-            // --- RENDER 3D CAKE ---
-            const assembly = document.getElementById('cakeAssembly');
-            // Keep the board, remove the old cake tiers
-            Array.from(assembly.children).forEach(child => {
-                if(!child.classList.contains('cake-board')) child.remove();
-            });
-            
-            let startingZ = 0; // Starts from the cake board
-
-            if(style === 'twolayer') {
-                // Bottom Tier (Index 1)
-                build3DTier(assembly, config.tiers[1].w, config.tiers[1].z, startingZ, 'smooth');
-                startingZ += config.tiers[1].z;
-                // Top Tier (Index 0)
-                build3DTier(assembly, config.tiers[0].w, config.tiers[0].z, startingZ, 'smooth');
-            } else {
-                // Single Tier
-                build3DTier(assembly, config.w, config.z, startingZ, style);
-            }
-        }
-
-        // The Engine that builds the 3D cylinder out of CSS slices
-        function build3DTier(container, width, height, startZ, style) {
-            const tierWrapper = document.createElement('div');
-            tierWrapper.className = 'cake-tier-3d';
-            
-            // We stack a div every 2 pixels to create a solid 3D cylinder
-            const slicesCount = Math.floor(height / 2); 
-            
-            for (let i = 0; i <= slicesCount; i++) {
-                const slice = document.createElement('div');
-                slice.className = 'cake-slice';
-                slice.style.width = `${width}px`;
-                slice.style.height = `${width}px`;
-                
-                // Position in 3D space, rotated so it lies flat, then translated up
-                const currentZ = startZ + (i * 2);
-                slice.style.transform = `translate(-50%, -50%) rotateX(90deg) translateZ(${currentZ}px)`;
-
-                // Color Logic
-                if (style === 'naked') {
-                    // Alternate colors to simulate cake layers and filling
-                    if (i % 10 < 2) {
-                        slice.style.backgroundColor = fillingColor; // Frosting layer
-                    } else {
-                        slice.style.backgroundColor = spongeColor; // Sponge layer
-                    }
-                } else {
-                    slice.style.backgroundColor = currentColor;
-                }
-
-                tierWrapper.appendChild(slice);
-            }
-
-            // Top Lid for a perfectly smooth top surface
-            const lid = document.createElement('div');
-            lid.className = 'cake-top-lid';
-            lid.style.width = `${width}px`;
-            lid.style.height = `${width}px`;
-            const topZ = startZ + (slicesCount * 2);
-            lid.style.transform = `translate(-50%, -50%) rotateX(90deg) translateZ(${topZ}px)`;
-            lid.style.backgroundColor = (style === 'naked') ? spongeColor : currentColor;
-            tierWrapper.appendChild(lid);
-
-            container.appendChild(tierWrapper);
-        }
-
-        // --- DRAG TO ROTATE LOGIC ---
-        let isDragging = false;
-        let previousMousePosition = { x: 0, y: 0 };
-        let rotation = { x: -20, y: 0 }; // Default angle
-
-        const scene = document.getElementById('sceneContainer');
-        const assembly = document.getElementById('cakeAssembly');
-
-        scene.addEventListener('mousedown', startDrag);
-        scene.addEventListener('mousemove', drag);
-        window.addEventListener('mouseup', endDrag);
-        
-        // Touch support for mobile
-        scene.addEventListener('touchstart', (e) => startDrag(e.touches[0]));
-        scene.addEventListener('touchmove', (e) => drag(e.touches[0]));
-        window.addEventListener('touchend', endDrag);
-
-        function startDrag(e) {
-            isDragging = true;
-            previousMousePosition = { x: e.clientX || e.pageX, y: e.clientY || e.pageY };
-            assembly.style.transition = 'none'; // Remove delay while dragging
-        }
-
-        function drag(e) {
-            if (!isDragging) return;
-            
-            const currentX = e.clientX || e.pageX;
-            const currentY = e.clientY || e.pageY;
-            
-            const deltaX = currentX - previousMousePosition.x;
-            const deltaY = currentY - previousMousePosition.y;
-
-            rotation.y += deltaX * 0.5;
-            rotation.x -= deltaY * 0.5;
-
-            // Constrain X rotation so they don't flip the cake upside down
-            rotation.x = Math.max(-60, Math.min(10, rotation.x));
-
-            assembly.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
-            
-            previousMousePosition = { x: currentX, y: currentY };
-        }
-
-        function endDrag() {
-            isDragging = false;
-            assembly.style.transition = 'transform 0.1s ease-out';
-        }
-
-        // Initialize Builder
-        window.onload = () => {
-            document.getElementById('cakeSize').dataset.currentStyle = "";
-            updateBuilder();
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
