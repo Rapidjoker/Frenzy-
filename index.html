@@ -35,7 +35,7 @@
             background-size: 20px 20px;
         }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for better mobile readability */
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
@@ -44,7 +44,7 @@
         #three-container {
             width: 100%;
             height: 100%;
-            min-height: 350px; /* Shorter on mobile so users can scroll past it */
+            min-height: 350px;
             cursor: grab;
         }
         #three-container:active { cursor: grabbing; }
@@ -155,7 +155,7 @@
                 
                 <div class="w-full lg:w-1/2 p-6 md:p-8 bg-white/60 backdrop-blur-md z-10 overflow-y-auto max-h-[85vh] lg:max-h-[800px]">
                     <h2 class="text-2xl md:text-3xl font-bold text-frenzy-text mb-2">3D Cake Studio</h2>
-                    <p class="text-sm md:text-base text-gray-600 mb-6">Design your cake below, and view it in 3D below (or beside) the form.</p>
+                    <p class="text-sm md:text-base text-gray-600 mb-6">Select your options and watch them render in real-time!</p>
 
                     <div class="space-y-5">
                         <div>
@@ -190,7 +190,7 @@
                         </div>
 
                         <div class="border-t pt-4">
-                            <label class="block text-sm font-bold text-frenzy-text mb-1">Premium Toppings</label>
+                            <label class="block text-sm font-bold text-frenzy-text mb-1">Premium 3D Toppings</label>
                             <p class="text-xs text-frenzy-dark font-bold mb-3 bg-frenzy-light inline-block px-2 py-1 rounded">Select up to 3 for FREE</p>
                             
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-4 rounded-xl ring-1 ring-gray-200" id="toppingsContainer">
@@ -200,8 +200,7 @@
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Sprinkles"> Sprinkles</label>
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Edible Glitter"> Edible Glitter</label>
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Fondant Bow"> Fondant Bow</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Artificial Flowers"> Artificial Flowers</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Real Flowers"> Real Flowers</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Artificial Flowers"> Flowers (3D Style)</label>
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check w-4 h-4 text-frenzy rounded focus:ring-frenzy" value="Cake Topper"> Custom Cake Topper</label>
                             </div>
                             <p id="toppingWarning" class="text-xs text-red-500 font-bold mt-2 hidden"><i class="fas fa-exclamation-circle"></i> Maximum of 3 toppings reached!</p>
@@ -257,7 +256,6 @@
     </section>
 
     <script>
-        // --- 0. MOBILE MENU TOGGLE ---
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             if (menu.classList.contains('max-h-0')) {
@@ -274,28 +272,6 @@
         const sizeSelect = document.getElementById('cakeSize');
         const priceDisplay = document.getElementById('priceDisplay');
 
-        sizeSelect.addEventListener('change', () => {
-            priceDisplay.innerText = `P ${priceData[sizeSelect.value]}`;
-            updateCakeSize();
-        });
-
-        // Topping Limits
-        const checkboxes = document.querySelectorAll('.topping-check');
-        const warning = document.getElementById('toppingWarning');
-
-        checkboxes.forEach(box => {
-            box.addEventListener('change', () => {
-                let checkedCount = document.querySelectorAll('.topping-check:checked').length;
-                if (checkedCount >= 3) {
-                    warning.classList.remove('hidden');
-                    checkboxes.forEach(cb => { if (!cb.checked) cb.disabled = true; });
-                } else {
-                    warning.classList.add('hidden');
-                    checkboxes.forEach(cb => cb.disabled = false);
-                }
-            });
-        });
-
         // --- 2. THREE.JS 3D ENGINE ---
         const container = document.getElementById('three-container');
         const scene = new THREE.Scene();
@@ -305,15 +281,14 @@
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.shadowMap.enabled = true;
-        // Make renderer responsive to device screens
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.enableZoom = false; // Prevents getting stuck zooming on mobile
-        controls.enablePan = false;  // Keeps the cake centered
+        controls.enableZoom = false; 
+        controls.enablePan = false;  
         controls.minDistance = 10;
         controls.maxDistance = 50;
         controls.maxPolarAngle = Math.PI / 2 + 0.1; 
@@ -326,11 +301,11 @@
         dirLight.castShadow = true;
         scene.add(dirLight);
 
-        // Cake Materials
+        // Core Cake Mesh
         let baseColor = '#ffcce0';
         const sideMaterial = new THREE.MeshStandardMaterial({ color: baseColor, roughness: 0.7 });
         let topMaterial = new THREE.MeshStandardMaterial({ color: baseColor, roughness: 0.7 });
-
+        
         let cakeGeometry = new THREE.CylinderGeometry(5, 5, 6, 64);
         let cakeMesh = new THREE.Mesh(cakeGeometry, [sideMaterial, topMaterial, sideMaterial]);
         cakeMesh.castShadow = true;
@@ -345,22 +320,159 @@
         boardMesh.position.y = -0.15;
         scene.add(boardMesh);
 
-        // --- 3. DYNAMIC UPDATES ---
+        // NEW: Toppings Group to hold dynamically generated 3D items
+        const toppingsGroup = new THREE.Group();
+        scene.add(toppingsGroup);
+
+        // --- 3. PROCEDURAL 3D TOPPING GENERATORS ---
+        function clearToppings() {
+            while(toppingsGroup.children.length > 0){ 
+                toppingsGroup.remove(toppingsGroup.children[0]); 
+            }
+        }
+
+        function generateSprinkles(radius, isGlitter) {
+            const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff];
+            const amount = isGlitter ? 400 : 150;
+            for(let i=0; i<amount; i++) {
+                const color = isGlitter ? 0xffffff : colors[Math.floor(Math.random() * colors.length)];
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: color, 
+                    metalness: isGlitter ? 1 : 0, 
+                    roughness: isGlitter ? 0.2 : 0.8 
+                });
+                const geo = isGlitter ? new THREE.PlaneGeometry(0.1, 0.1) : new THREE.CylinderGeometry(0.05, 0.05, 0.3, 6);
+                const mesh = new THREE.Mesh(geo, mat);
+                
+                // Randomly place on top surface
+                const r = Math.random() * (radius - 0.2);
+                const theta = Math.random() * Math.PI * 2;
+                mesh.position.set(r * Math.cos(theta), 6.05, r * Math.sin(theta));
+                mesh.rotation.set(Math.PI/2, Math.random()*Math.PI, 0); 
+                toppingsGroup.add(mesh);
+            }
+        }
+
+        function generateFoil(radius, hexColor) {
+            const mat = new THREE.MeshStandardMaterial({ color: hexColor, metalness: 1, roughness: 0.3, side: THREE.DoubleSide });
+            for(let i=0; i<40; i++) {
+                const geo = new THREE.PlaneGeometry(0.8 + Math.random(), 0.8 + Math.random());
+                const mesh = new THREE.Mesh(geo, mat);
+                const theta = Math.random() * Math.PI * 2;
+                const yPos = Math.random() * 5 + 0.5; // Scrape against side
+                
+                mesh.position.set((radius + 0.02) * Math.cos(theta), yPos, (radius + 0.02) * Math.sin(theta));
+                mesh.lookAt(0, yPos, 0); // Curve with cylinder
+                mesh.rotation.x += Math.random() * 0.5; // Crumple look
+                mesh.rotation.y += Math.random() * 0.5;
+                toppingsGroup.add(mesh);
+            }
+        }
+
+        function generateBow(radius) {
+            const mat = new THREE.MeshStandardMaterial({ color: 0xdd2255, roughness: 0.5 });
+            const bowGroup = new THREE.Group();
+            
+            const loopGeo = new THREE.TorusGeometry(0.6, 0.2, 8, 16);
+            const loop1 = new THREE.Mesh(loopGeo, mat); loop1.position.x = -0.6; loop1.scale.z = 0.5;
+            const loop2 = new THREE.Mesh(loopGeo, mat); loop2.position.x = 0.6; loop2.scale.z = 0.5;
+            
+            const centerGeo = new THREE.SphereGeometry(0.4);
+            const center = new THREE.Mesh(centerGeo, mat);
+            
+            bowGroup.add(loop1, loop2, center);
+            bowGroup.position.set(0, 3, radius + 0.1); // Place on front center side
+            toppingsGroup.add(bowGroup);
+        }
+
+        function generateFlowers(radius) {
+            for(let j=0; j<3; j++) {
+                const fGroup = new THREE.Group();
+                const center = new THREE.Mesh(new THREE.SphereGeometry(0.2), new THREE.MeshStandardMaterial({color: 0xffcc00}));
+                fGroup.add(center);
+                const petalMat = new THREE.MeshStandardMaterial({color: 0xffffff});
+                for(let i=0; i<5; i++) {
+                    const petal = new THREE.Mesh(new THREE.SphereGeometry(0.25), petalMat);
+                    petal.scale.z = 0.2;
+                    petal.position.x = Math.cos((i/5)*Math.PI*2)*0.3;
+                    petal.position.y = Math.sin((i/5)*Math.PI*2)*0.3;
+                    fGroup.add(petal);
+                }
+                const angle = j * (Math.PI/1.5); // Space evenly
+                fGroup.position.set((radius-0.5)*Math.cos(angle), 6.1, (radius-0.5)*Math.sin(angle));
+                fGroup.rotation.x = -Math.PI/2; // Lay flat on cake
+                toppingsGroup.add(fGroup);
+            }
+        }
+
+        function generateTopper() {
+            const mat = new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.8, roughness: 0.2 });
+            const ring = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.1, 8, 32), mat);
+            ring.position.y = 8.5;
+            
+            const stickMat = new THREE.MeshStandardMaterial({ color: 0xd2a679 });
+            const stickGeo = new THREE.CylinderGeometry(0.05, 0.05, 2.5);
+            const stick1 = new THREE.Mesh(stickGeo, stickMat); stick1.position.set(-1, 7, 0);
+            const stick2 = new THREE.Mesh(stickGeo, stickMat); stick2.position.set(1, 7, 0);
+            
+            toppingsGroup.add(ring, stick1, stick2);
+        }
+
+        // --- 4. DYNAMIC UI EVENT LISTENERS ---
+        
+        function updateAll3D() {
+            // Calculate actual 3D radius based on UI dropdown
+            const size = parseInt(sizeSelect.value);
+            const radius = size * 0.7; 
+
+            // Clear old mesh geometry and recreate for size change
+            const newGeo = new THREE.CylinderGeometry(radius, radius, 6, 64);
+            cakeMesh.geometry.dispose(); 
+            cakeMesh.geometry = newGeo;
+            boardMesh.scale.set((radius+2)/7, 1, (radius+2)/7);
+
+            // Trigger Toppings Rebuild
+            clearToppings();
+            document.querySelectorAll('.topping-check:checked').forEach(cb => {
+                if(cb.value === "Gold Foil") generateFoil(radius, 0xffd700);
+                if(cb.value === "Silver Foil") generateFoil(radius, 0xc0c0c0);
+                if(cb.value === "Rose Gold Foil") generateFoil(radius, 0xb76e79);
+                if(cb.value === "Sprinkles") generateSprinkles(radius, false);
+                if(cb.value === "Edible Glitter") generateSprinkles(radius, true);
+                if(cb.value === "Fondant Bow") generateBow(radius);
+                if(cb.value === "Artificial Flowers" || cb.value === "Real Flowers") generateFlowers(radius);
+                if(cb.value === "Cake Topper") generateTopper();
+            });
+        }
+
+        // Listen for Size Change
+        sizeSelect.addEventListener('change', updateAll3D);
+
+        // Listen for Toppings Selection
+        const checkboxes = document.querySelectorAll('.topping-check');
+        const warning = document.getElementById('toppingWarning');
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                let checkedCount = document.querySelectorAll('.topping-check:checked').length;
+                if (checkedCount >= 3) {
+                    warning.classList.remove('hidden');
+                    checkboxes.forEach(cb => { if (!cb.checked) cb.disabled = true; });
+                } else {
+                    warning.classList.add('hidden');
+                    checkboxes.forEach(cb => cb.disabled = false);
+                }
+                updateAll3D(); // Rebuild 3D toppings on click
+            });
+        });
+
+        // Coloring, Photos, and Text Wrapping Logic
         document.getElementById('cakeColorPicker').addEventListener('input', (e) => {
             baseColor = e.target.value;
             sideMaterial.color.set(baseColor);
             if (!uploadedImageTexture) topMaterial.color.set(baseColor);
             updateCakeTop();
         });
-
-        function updateCakeSize() {
-            const size = parseInt(sizeSelect.value);
-            const radius = size * 0.7; 
-            const newGeo = new THREE.CylinderGeometry(radius, radius, 6, 64);
-            cakeMesh.geometry.dispose(); 
-            cakeMesh.geometry = newGeo;
-            boardMesh.scale.set((radius+2)/7, 1, (radius+2)/7);
-        }
 
         let uploadedImageTexture = null;
         const imageUpload = document.getElementById('imageUpload');
@@ -431,7 +543,6 @@
             topMaterial.needsUpdate = true;
         }
 
-        // Handle Resizing (Critical for Mobile Rotation)
         window.addEventListener('resize', () => {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
@@ -443,6 +554,9 @@
             controls.update(); 
             renderer.render(scene, camera);
         }
+        
+        // Initial setup run
+        updateAll3D();
         animate();
     </script>
 </body>
