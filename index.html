@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,7 +24,6 @@
           },
           animation: {
             'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           },
           keyframes: {
             float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } }
@@ -45,112 +44,113 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ── OPENING LOADER ANIMATION ── */
-    #loader {
-        position: fixed; inset: 0; z-index: 9999;
-        background: #fff0f6;
-        display: flex; align-items: center; justify-content: center;
-        transition: opacity 0.8s ease-out, visibility 0.8s;
-    }
-    .loader-logo { opacity: 0; transform: scale(0.5); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .loaded #loader { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loaded .loader-logo { opacity: 1; transform: scale(1); }
-
-    /* ── DYNAMIC SCROLL BACKGROUND ── */
+    /* ── DYNAMIC BACKGROUND ORBS (Vibrant for Glass Effect) ── */
     .bg-orb { 
-        position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.4; pointer-events: none; z-index: 0; 
-        transition: transform 0.2s linear; /* Smooth movement */
-        mix-blend-mode: multiply;
+        position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.6; pointer-events: none; z-index: 0; 
+        transition: transform 0.1s linear; mix-blend-mode: multiply;
     }
-    .bg-orb-1 { width:50vw; height:50vw; background:#ffcce0; top:-10%; left:-10%; }
-    .bg-orb-2 { width:40vw; height:40vw; background:#f4c542; bottom:10%; right:-10%; }
-    .bg-orb-3 { width:30vw; height:30vw; background:#fb6f92; top:40%; left:40%; }
+    .bg-orb-1 { width:60vw; height:60vw; background:#ffcce0; top:-10%; left:-20%; animation: float 10s infinite; }
+    .bg-orb-2 { width:50vw; height:50vw; background:#fde047; bottom:0%; right:-10%; animation: float 12s infinite reverse; }
+    .bg-orb-3 { width:40vw; height:40vw; background:#fb6f92; top:40%; left:40%; opacity: 0.4; }
 
-    /* ── SCROLL REVEALS ── */
-    .reveal { opacity: 0; transform: translateY(50px) scale(0.95); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
-    .delay-100 { transition-delay: 100ms; }
-    .delay-200 { transition-delay: 200ms; }
-    .delay-300 { transition-delay: 300ms; }
-
-    /* ── GLASS UI ── */
+    /* ── GLASS UI (THE CORE STYLE) ── */
     .glass { 
-        background: rgba(255,255,255,0.6); 
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.8); 
-        border-radius: 30px; 
-        box-shadow: 0 10px 40px rgba(89,13,34,0.05); 
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        background: rgba(255, 255, 255, 0.25); /* Low opacity for see-through */
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); /* The Blur */
+        border: 1px solid rgba(255, 255, 255, 0.6); /* The Shiny Edge */
+        border-radius: 24px; 
+        box-shadow: 0 8px 32px 0 rgba(89, 13, 34, 0.1); /* The Depth */
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    .glass:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(89,13,34,0.1); }
-    
-    /* ── NAVBAR ── */
-    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: all 0.4s ease; padding: 20px 24px; }
+    .glass:hover {
+        background: rgba(255, 255, 255, 0.35);
+        box-shadow: 0 15px 40px 0 rgba(89, 13, 34, 0.15);
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.9);
+    }
+    .glass-solid {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 24px;
+        box-shadow: 0 8px 32px 0 rgba(89, 13, 34, 0.05);
+    }
+
+    /* ── NAVBAR GLASS ── */
+    #navbar { 
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 24px; 
+        transition: all 0.4s ease;
+    }
     #navbar.scrolled { 
         padding: 12px 24px; 
-        background: rgba(255,255,255,0.85); 
-        backdrop-filter: blur(20px); 
-        box-shadow: 0 4px 30px rgba(0,0,0,0.05); 
+        background: rgba(255, 255, 255, 0.6); /* Frosted Glass Header */
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); 
     }
     
     .nav-link { position: relative; font-weight: 700; color: #590d22; text-decoration: none; }
     .nav-link::after { content:''; position:absolute; bottom:-4px; left:50%; width:0; height:3px; background: #fb6f92; transition: all 0.3s ease; border-radius: 2px; transform: translateX(-50%); }
     .nav-link:hover::after { width: 100%; }
 
-    /* ── BUTTONS (TACTILE) ── */
+    /* ── ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+
+    /* ── BUTTONS ── */
     .btn-primary { 
         background: linear-gradient(135deg, #fb6f92, #ff8fab); 
         color: #fff; font-weight:800; border: none; border-radius: 50px; 
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
-        box-shadow: 0 10px 20px rgba(251,111,146,0.3); 
-        position: relative; overflow: hidden;
+        transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(251,111,146,0.3); 
     }
-    .btn-primary:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(251,111,146,0.2); }
-    .btn-primary::after {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(rgba(255,255,255,0.2), transparent);
-        opacity: 0; transition: opacity 0.3s;
-    }
-    .btn-primary:hover::after { opacity: 1; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(251,111,146,0.5); }
+    .btn-primary:active { transform: scale(0.96); }
 
-    /* ── LOGO TRICK ── */
     .logo-blend { mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.05); }
 
+    /* ── INPUTS GLASS ── */
+    .form-input { 
+        width: 100%; 
+        background: rgba(255, 255, 255, 0.5); 
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        padding: 12px; border-radius: 12px; font-weight: 600; color: #590d22; outline: none; transition: 0.3s; 
+    }
+    .form-input:focus { background: #fff; border-color: #fb6f92; box-shadow: 0 0 0 4px rgba(251,111,146,0.15); }
+
     /* ── 2D CAKE ENGINE ── */
-    #cake-canvas-wrap { width: 100%; height: 420px; border-radius: 30px; background: radial-gradient(circle at 50% 60%, #fff 20%, #ffedf4 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.02); }
-    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 30px 30px rgba(89,13,34,0.2)); margin-top: 30px; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .cake-tier { position: relative; border-radius: 50% / 20px; box-shadow: inset -20px 0 40px rgba(0,0,0,0.1), inset 10px 0 20px rgba(255,255,255,0.6); margin-bottom: -22px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; justify-content: center; }
+    #studio-page { transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); transform: translateY(100%); opacity: 0; }
+    #studio-page.open { transform: translateY(0); opacity: 1; }
+    
+    #cake-canvas-wrap { width: 100%; height: 420px; border-radius: 30px; background: radial-gradient(circle at 50% 60%, #fff 20%, transparent 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; border: 1px solid rgba(255,255,255,0.5); }
+    
+    /* (Cake Styles are same as previous for stability) */
+    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 30px 30px rgba(89,13,34,0.2)); margin-top: 30px; }
+    .cake-tier { position: relative; border-radius: 50% / 20px; box-shadow: inset -20px 0 40px rgba(0,0,0,0.1), inset 10px 0 20px rgba(255,255,255,0.6); margin-bottom: -22px; transition: all 0.5s; display: flex; justify-content: center; }
     .cake-top-face { position: absolute; top: 0; left: 0; right: 0; height: 40px; border-radius: 50%; background: inherit; filter: brightness(1.15); z-index: 2; overflow: hidden; box-shadow: inset 0 -5px 15px rgba(0,0,0,0.05), inset 0 5px 15px rgba(255,255,255,0.5); }
     .cake-piping { position: absolute; bottom: -7px; left: -2%; right: -2%; height: 20px; background-size: 22px 20px; background-repeat: repeat-x; z-index: 3; filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1)); }
     .cake-stand-plate { width: 130%; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; z-index: 1; left: -15%; }
     .cake-stand-base { width: 40%; height: 40px; margin: 0 auto; background: linear-gradient(to right, #d4af37, #fceeb5, #d4af37); border-radius: 0 0 10px 10px; position: relative; z-index: 0; margin-top: -15px; }
-    
     .cake-text-wrapper { position: absolute; width: 100%; top: 30%; z-index: 5; transform: rotateX(50deg); text-align: center; }
     .cake-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
-    
     .photo-print-layer { position: absolute; inset: 18%; border-radius: 50%; background-size: cover; background-position: center; z-index: 4; opacity: 0.85; mix-blend-mode: multiply; }
-    
-    /* Textures */
     .texture-naked { background: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,245,230,0.7) 20px, rgba(255,245,230,0.7) 28px); }
     .foil-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-image: radial-gradient(circle, #f4c542 2px, transparent 3px); background-size: 30px 30px; opacity: 0.8; }
     .sprinkle-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-size: 20px 20px; opacity: 0.9; }
-    .flower-icon { position: absolute; font-size: 2rem; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); z-index: 10; animation: float 4s ease-in-out infinite; }
+    .flower-icon { position: absolute; font-size: 2rem; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); z-index: 10; }
 
-    /* Inputs */
     .option-btn { border: 2px solid rgba(255,143,171,0.3); background: rgba(255,255,255,0.5); color: #590d22; font-weight:700; padding: 10px 14px; border-radius: 12px; transition: all 0.2s; font-size: 0.85rem; }
     .option-btn.active { background: #fb6f92; color: #fff; border-color: #fb6f92; box-shadow: 0 5px 15px rgba(251,111,146,0.4); transform: scale(1.05); }
-    
-    .form-input { width: 100%; background: #fff; border: 2px solid #ffcce0; padding: 12px; border-radius: 12px; font-weight: 600; color: #590d22; outline: none; transition: 0.3s; }
-    .form-input:focus { border-color: #fb6f92; box-shadow: 0 0 0 4px rgba(251,111,146,0.1); }
-
-    /* Studio Modal */
-    #studio-page { transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); transform: translateY(100%); opacity: 0; }
-    #studio-page.open { transform: translateY(0); opacity: 1; }
+    input[type="color"] { -webkit-appearance: none; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; padding: 0; background: none; }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: 3px solid #ffcce0; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 
-<div id="loader">
+<div id="loader" class="fixed inset-0 z-[9999] bg-[#fff0f6] flex items-center justify-center transition-opacity duration-700">
     <div class="loader-logo text-center">
         <img src="photo.png" class="w-32 mx-auto logo-blend mb-4 animate-bounce">
         <h1 class="font-playfair font-black text-3xl text-maroon-800 tracking-widest">FRENZY</h1>
@@ -194,7 +194,7 @@
         
         <div class="flex flex-col sm:flex-row justify-center gap-4 reveal active delay-200">
             <a href="#shop" class="btn-primary px-8 py-4 text-lg shadow-xl hover:shadow-2xl"><i class="fas fa-cake mr-2"></i> Browse Collections</a>
-            <button onclick="openStudio()" class="glass px-8 py-4 text-lg font-bold text-maroon-800 hover:bg-white"><i class="fas fa-flask mr-2"></i> Open Beta Studio</button>
+            <button onclick="openStudio()" class="glass-solid px-8 py-4 text-lg font-bold text-maroon-800 hover:bg-white active:scale-95 transition"><i class="fas fa-flask mr-2"></i> Open Beta Studio</button>
         </div>
     </div>
   </header>
@@ -203,58 +203,57 @@
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16 reveal">
         <h2 class="font-playfair text-5xl font-black text-maroon-800 mb-2">Signature Collections</h2>
-        <p class="text-blush-500 font-bold uppercase tracking-widest">Our Most Loved Creations</p>
       </div>
       
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="glass overflow-hidden group reveal delay-100">
-          <div class="h-64 overflow-hidden relative">
+        <div class="glass overflow-hidden group reveal delay-100 flex flex-col">
+          <div class="h-64 relative overflow-hidden">
             <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            <span class="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-maroon-800 shadow-sm">Bestseller</span>
+            <span class="absolute top-3 right-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-maroon-800">Bestseller</span>
           </div>
-          <div class="p-6">
+          <div class="p-6 flex flex-col flex-grow">
             <h4 class="font-playfair font-bold text-xl text-maroon-800">Pink Ombré Dream</h4>
-            <div class="flex justify-between items-center mt-4">
+            <div class="flex justify-between items-center mt-auto pt-4">
               <span class="font-bold text-xl">P 650</span>
               <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
             </div>
           </div>
         </div>
 
-        <div class="glass overflow-hidden group reveal delay-200">
-          <div class="h-64 overflow-hidden relative">
+        <div class="glass overflow-hidden group reveal delay-200 flex flex-col">
+          <div class="h-64 relative overflow-hidden">
             <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
           </div>
-          <div class="p-6">
+          <div class="p-6 flex flex-col flex-grow">
             <h4 class="font-playfair font-bold text-xl text-maroon-800">Pastel Party</h4>
-            <div class="flex justify-between items-center mt-4">
+            <div class="flex justify-between items-center mt-auto pt-4">
               <span class="font-bold text-xl">P 550</span>
               <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
             </div>
           </div>
         </div>
 
-        <div class="glass overflow-hidden group reveal delay-300">
-          <div class="h-64 overflow-hidden relative">
+        <div class="glass overflow-hidden group reveal delay-300 flex flex-col">
+          <div class="h-64 relative overflow-hidden">
             <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            <span class="absolute top-4 right-4 bg-maroon-800 text-gold-400 px-3 py-1 rounded-full text-xs font-bold shadow-sm">Premium</span>
+            <span class="absolute top-3 right-3 bg-maroon-800 text-gold-400 px-3 py-1 rounded-full text-xs font-bold">Premium</span>
           </div>
-          <div class="p-6">
+          <div class="p-6 flex flex-col flex-grow">
             <h4 class="font-playfair font-bold text-xl text-maroon-800">Floral Wedding</h4>
-            <div class="flex justify-between items-center mt-4">
+            <div class="flex justify-between items-center mt-auto pt-4">
               <span class="font-bold text-xl">P 2500</span>
               <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
             </div>
           </div>
         </div>
 
-        <div class="glass overflow-hidden group reveal delay-100">
-          <div class="h-64 overflow-hidden relative">
+        <div class="glass overflow-hidden group reveal delay-100 flex flex-col">
+          <div class="h-64 relative overflow-hidden">
             <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
           </div>
-          <div class="p-6">
-            <h4 class="font-playfair font-bold text-xl text-maroon-800">Cupcake Box</h4>
-            <div class="flex justify-between items-center mt-4">
+          <div class="p-6 flex flex-col flex-grow">
+            <h4 class="font-playfair font-bold text-xl text-maroon-800">Frenzy Cupcakes</h4>
+            <div class="flex justify-between items-center mt-auto pt-4">
               <span class="font-bold text-xl">P 350</span>
               <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
             </div>
@@ -270,7 +269,7 @@
         <h2 class="font-playfair text-5xl font-black text-maroon-800">Menu & Pricing</h2>
       </div>
       <div class="grid lg:grid-cols-2 gap-8">
-        <div class="glass p-8 reveal delay-100 hover:rotate-1 transition duration-500">
+        <div class="glass p-8 reveal delay-100">
           <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6">Base Styles</h3>
           <div class="space-y-4 text-gray-700">
             <div class="flex justify-between font-bold"><span>Naked Sponge (5" - 12")</span> <span>P300 - P700</span></div>
@@ -280,7 +279,7 @@
             <div class="flex justify-between font-bold"><span>Bento Mini</span> <span>P150</span></div>
           </div>
         </div>
-        <div class="glass p-8 reveal delay-200 hover:-rotate-1 transition duration-500">
+        <div class="glass p-8 reveal delay-200">
           <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6">Flavors & Add-ons</h3>
           <p class="mb-4 font-medium">Vanilla, Chocolate, Red Velvet, Carrot, Caramel, Black Forest</p>
           <div class="space-y-3 text-sm font-bold text-maroon-800">
@@ -303,7 +302,7 @@
         <div class="glass flex flex-col md:flex-row overflow-hidden group hover:scale-[1.02] transition duration-500">
           <div class="md:w-1/3 bg-gradient-to-br from-blush-200 to-white flex items-center justify-center text-6xl py-8">🎨</div>
           <div class="p-8 md:w-2/3">
-            <h3 class="font-playfair text-2xl font-bold mb-2">Cake Decorating Masterclass</h3>
+            <h3 class="font-playfair text-2xl font-bold mb-2">Masterclass</h3>
             <p class="text-sm text-gray-600 mb-4">Learn piping & gold leaf techniques. Tools included.</p>
             <div class="flex justify-between items-center">
               <span class="font-bold text-xl">P 850</span>
@@ -327,11 +326,10 @@
     </div>
   </section>
 
-  <section id="order" class="py-24 px-4 bg-white/40">
+  <section id="order" class="py-24 px-4">
     <div class="max-w-4xl mx-auto glass p-8 md:p-12 reveal">
       <div class="text-center mb-8">
         <h2 class="font-playfair text-4xl font-bold text-maroon-800">Custom Order</h2>
-        <p class="text-gray-600">Tell us what you need. We'll verify pricing and confirm.</p>
       </div>
       <form class="space-y-6" onsubmit="event.preventDefault(); alert('Request Sent!');">
         <div class="grid md:grid-cols-2 gap-6">
@@ -339,12 +337,12 @@
           <input type="tel" placeholder="Phone Number" class="form-input" required>
         </div>
         <div class="grid md:grid-cols-2 gap-6">
-            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition active:scale-95" onclick="document.getElementById('inspo').click()">
+            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('inspo').click()">
                 <i class="fas fa-camera text-2xl text-maroon-800 mb-2"></i>
                 <p class="text-xs font-bold">Upload Inspo</p>
                 <input type="file" id="inspo" hidden>
             </div>
-            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition active:scale-95" onclick="document.getElementById('edible').click()">
+            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('edible').click()">
                 <i class="fas fa-user text-2xl text-maroon-800 mb-2"></i>
                 <p class="text-xs font-bold">Upload Edible Photo</p>
                 <input type="file" id="edible" hidden>
@@ -381,7 +379,6 @@
             <p class="font-playfair text-4xl font-black text-maroon-800" id="price-display">P 300</p>
         </div>
     </div>
-
     <div class="space-y-6 pb-20">
         <div class="glass p-6">
             <h4 class="font-bold text-maroon-800 mb-3">Shape</h4>
@@ -423,43 +420,34 @@
 </div>
 
 <script>
-  // ─── STARTUP ANIMATION ───
   window.onload = () => {
       document.querySelector('.loader-logo').style.transform = 'scale(1)';
       document.querySelector('.loader-logo').style.opacity = '1';
-      setTimeout(() => {
-          document.body.classList.add('loaded');
-      }, 1500);
+      setTimeout(() => { document.body.classList.add('loaded'); document.getElementById('loader').style.opacity = '0'; }, 1500);
+      setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 2300);
   };
 
-  // ─── PARALLAX & COLOR SHIFT ENGINE ───
   window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const orb1 = document.getElementById('orb1');
       const orb2 = document.getElementById('orb2');
       const navbar = document.getElementById('navbar');
 
-      // Move orbs
       orb1.style.transform = `translateY(${scrollY * 0.2}px)`;
       orb2.style.transform = `translateY(-${scrollY * 0.1}px)`;
 
-      // Navbar Morph
       if (scrollY > 50) navbar.classList.add('scrolled');
       else navbar.classList.remove('scrolled');
 
-      // Scroll Reveal
       document.querySelectorAll('.reveal').forEach(el => {
           if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
       });
   });
 
-  // ─── STUDIO LOGIC ───
   const studio = document.getElementById('studio-page');
   function openStudio() { studio.classList.remove('hidden'); setTimeout(() => studio.classList.add('open'), 10); document.body.style.overflow='hidden'; }
   function closeStudio() { studio.classList.remove('open'); setTimeout(() => { studio.classList.add('hidden'); document.body.style.overflow=''; }, 500); }
 
-  // ─── CAKE RENDERER ───
-  // (Simplified for performance, full logic maintained)
   const PRICING = { naked: {'5"':300,'8"':500}, buttercream: {'5"':450,'8"':750}, fondant: {'5"':550,'8"':800}, twolayer: {'4"+6"':900}, wedding: {'3-Tier':2500}, bento: {'4"':150} };
   const state = { style: 'naked', size: '5"', color: '#ffcce0', foilPrice: 0, text: '', ediblePhoto: null };
 
@@ -481,21 +469,18 @@
           if(isTop && state.text) top.innerHTML = `<div class="cake-text-wrapper"><span class="cake-text" style="color:${state.style==='naked'?'#590d22':'#fff'}">${state.text}</span></div>`;
           if(isTop && state.ediblePhoto) { const p = document.createElement('div'); p.className='photo-print-layer'; p.style.backgroundImage=`url(${state.ediblePhoto})`; top.appendChild(p); }
           
-          // Piping
           if(state.style!=='naked') {
               const pipe = document.createElement('div'); pipe.className='cake-piping';
               pipe.style.backgroundImage=`radial-gradient(circle at 10px 9px, ${state.color} 9px, transparent 10px)`;
               div.appendChild(pipe);
           }
           
-          // Foil
           if(state.foil !== 'none') {
               const f = document.createElement('div'); f.className='foil-layer';
               if(state.foil === 'top' || state.foil === 'both') top.appendChild(f.cloneNode());
               if(state.foil === 'sides' || state.foil === 'both') div.appendChild(f);
           }
 
-          // Flowers
           if(isTop && state.flowers && state.flowers !== 'none') {
              const icon = state.flowers === 'real' ? '🌹' : '🌸';
              const flower = document.createElement('div'); flower.className='flower-icon'; flower.innerText = icon;
