@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -56,7 +56,7 @@
     #navbar.scrolled { padding: 12px 24px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
     .nav-link { font-weight: 700; color: #590d22; text-decoration: none; }
 
-    .btn-primary { background: linear-gradient(135deg, #fb6f92, #ff8fab); color: #fff; font-weight:800; border-radius: 50px; transition: 0.3s; box-shadow: 0 10px 20px rgba(251,111,146,0.3); }
+    .btn-primary { background: linear-gradient(135deg, #fb6f92, #ff8fab); color: #fff; font-weight:800; border-radius: 50px; transition: 0.3s; box-shadow: 0 10px 20px rgba(251,111,146,0.3); cursor: pointer; }
     .btn-primary:active { transform: scale(0.95); }
     
     .logo-blend { mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.05); }
@@ -121,7 +121,7 @@
         </h1>
         <p class="text-xl text-gray-600 font-bold tracking-widest uppercase mb-10 reveal active delay-100">Gaborone's Premier Cake Studio</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4 reveal active delay-200">
-            <a href="#order" class="btn-primary px-8 py-4 text-lg shadow-xl hover:shadow-2xl"><i class="fas fa-calculator mr-2"></i> Get Price Quote</a>
+            <a href="#order" class="btn-primary px-8 py-4 text-lg shadow-xl hover:shadow-2xl"><i class="fas fa-calculator mr-2"></i> Get Smart Quote</a>
             <button onclick="openStudio()" class="glass px-8 py-4 text-lg font-bold text-maroon-800 hover:bg-white active:scale-95 transition"><i class="fas fa-flask mr-2"></i> Open Beta Studio</button>
         </div>
     </div>
@@ -185,7 +185,7 @@
                         <span class="font-bold text-lg text-maroon-800">P 400</span>
                     </div>
                 </div>
-                <button class="w-full mt-6 btn-primary py-3">Order Treats</button>
+                <a href="mailto:reneedithebe@gmail.com?subject=Treats Order&body=I would like to order Cinnamon Rolls..." class="w-full mt-6 btn-primary py-3 block text-center">Order Treats via Email</a>
             </div>
 
             <div class="glass p-8 reveal delay-200">
@@ -211,7 +211,7 @@
                         <span class="font-bold text-lg text-maroon-800">P 320</span>
                     </div>
                 </div>
-                <button class="w-full mt-6 btn-primary py-3">Order Treats</button>
+                <a href="mailto:reneedithebe@gmail.com?subject=Treats Order&body=I would like to order Cupcakes/Bento..." class="w-full mt-6 btn-primary py-3 block text-center">Order Treats via Email</a>
             </div>
         </div>
     </div>
@@ -221,14 +221,19 @@
     <div class="max-w-4xl mx-auto glass p-8 md:p-12 reveal">
       <div class="text-center mb-8">
         <h2 class="font-playfair text-4xl font-bold text-maroon-800">Get a Smart Quote</h2>
-        <p class="text-gray-600">Upload your inspo photo. Our system analyzes details to give you an accurate price.</p>
+        <p class="text-gray-600">Upload your inspo photo. Select your options to see the exact price.</p>
       </div>
       
-      <form class="space-y-6" onsubmit="event.preventDefault();">
+      <form class="space-y-6" id="quote-form">
+        <div class="grid md:grid-cols-2 gap-6">
+            <input type="text" id="cust-name" placeholder="Your Name" class="form-input" required>
+            <input type="tel" id="cust-phone" placeholder="Phone Number" class="form-input" required>
+        </div>
+
         <div class="relative overflow-hidden p-8 border-2 border-dashed border-frenzy-dark rounded-2xl text-center cursor-pointer hover:bg-white active:scale-95 transition-all group" onclick="document.getElementById('ai-upload').click()">
             <div id="scan-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 hidden flex-col items-center justify-center">
                 <div class="scan-line top-0 w-full absolute"></div>
-                <p class="text-maroon-800 font-bold animate-pulse">Scanning Structure & Layers...</p>
+                <p class="text-maroon-800 font-bold animate-pulse">Analyzing Design Complexity...</p>
             </div>
             
             <i class="fas fa-camera-retro text-4xl text-maroon-800 mb-2 group-hover:scale-110 transition"></i>
@@ -240,15 +245,16 @@
         <div id="calculator-panel" class="hidden space-y-6 bg-white/50 p-6 rounded-2xl border border-blush-200">
             <div class="flex items-center gap-2 text-green-700 bg-green-50 p-3 rounded-lg">
                 <i class="fas fa-check-circle"></i>
-                <span class="text-sm font-bold">Image Analyzed! Please confirm specific details:</span>
+                <span class="text-sm font-bold">Image Analyzed! Please select your specifications:</span>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-bold mb-1">Cake Type</label>
+                    <label class="block text-sm font-bold mb-1">Cake Coating</label>
                     <select id="calc-type" class="form-input" onchange="calculateQuote()">
                         <option value="naked">Naked Cake</option>
                         <option value="buttercream">Buttercream</option>
+                        <option value="swiss">Swiss Meringue</option>
                         <option value="fondant">Fondant</option>
                         <option value="2tier">2-Layer Tier</option>
                         <option value="3tier">3-Layer Tier</option>
@@ -263,12 +269,22 @@
             </div>
 
             <div>
-                <label class="block text-sm font-bold mb-2">Premium Fillings (+P50 each)</label>
+                <label class="block text-sm font-bold mb-1">Cake Flavor</label>
+                <select id="calc-flavor" class="form-input">
+                    <option>Vanilla</option><option>Chocolate</option><option>Red Velvet</option>
+                    <option>Carrot</option><option>Caramel</option><option>Rainbow Velvet</option>
+                    <option>Lemon</option><option>Black Forest</option><option>Lemon Poppy Seed</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Fillings (+P50 each)</label>
                 <div class="flex flex-wrap gap-3">
-                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="50" onchange="calculateQuote()"> Blueberry</label>
-                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="50" onchange="calculateQuote()"> Strawberry</label>
-                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="50" onchange="calculateQuote()"> Caramel</label>
-                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="50" onchange="calculateQuote()"> Cream Cheese</label>
+                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="Blueberry" onchange="calculateQuote()"> Blueberry</label>
+                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="Strawberry" onchange="calculateQuote()"> Strawberry</label>
+                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="Caramel" onchange="calculateQuote()"> Caramel</label>
+                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="Cream Cheese" onchange="calculateQuote()"> Cream Cheese</label>
+                    <label class="flex items-center gap-2 cursor-pointer bg-white px-3 py-2 rounded-lg border border-blush-200"><input type="checkbox" class="filling-check" value="Chocolate" onchange="calculateQuote()"> Chocolate</label>
                 </div>
             </div>
 
@@ -288,10 +304,15 @@
                 </div>
             </div>
 
+            <div>
+                <label class="block text-sm font-bold mb-1">Additional Instructions</label>
+                <textarea id="calc-notes" class="form-input" rows="3" placeholder="Any text inscriptions, colors, or specific details..."></textarea>
+            </div>
+
             <div class="text-center pt-6 border-t border-maroon-800/10">
-                <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Estimated Price</p>
-                <p class="font-playfair text-5xl font-black text-maroon-800 mt-2" id="final-quote">P 0.00</p>
-                <button class="btn-primary w-full py-4 text-lg shadow-xl mt-4">Proceed with Order</button>
+                <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">Total Estimated Price</p>
+                <p class="font-playfair text-5xl font-black text-maroon-800 mt-2" id="final-quote">P 0</p>
+                <button type="button" onclick="sendEmail()" class="btn-primary w-full py-4 text-lg shadow-xl mt-4">Proceed with Order (Email)</button>
             </div>
         </div>
 
@@ -310,7 +331,7 @@
           <div class="p-8 md:w-2/3">
             <h3 class="font-playfair text-2xl font-bold mb-2">Masterclass</h3>
             <p class="text-sm text-gray-600 mb-4">Learn piping & gold leaf.</p>
-            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 850</span><button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button></div>
+            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 850</span><a href="mailto:reneedithebe@gmail.com?subject=Masterclass Ticket" class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</a></div>
           </div>
         </div>
         <div class="glass flex flex-col md:flex-row overflow-hidden group hover:scale-[1.02] transition duration-500 border-2 border-transparent hover:border-gold-400">
@@ -319,7 +340,7 @@
             <span class="bg-gold-400 text-maroon-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Popular</span>
             <h3 class="font-playfair text-2xl font-bold mb-2 mt-1">BYOC Picnic</h3>
             <p class="text-sm text-gray-600 mb-4">Bring Your Own Cake! Music & drinks.</p>
-            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 150</span><button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button></div>
+            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 150</span><a href="mailto:reneedithebe@gmail.com?subject=BYOC Ticket" class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</a></div>
           </div>
         </div>
       </div>
@@ -340,7 +361,7 @@
   <div class="max-w-6xl mx-auto px-4 py-8 grid lg:grid-cols-2 gap-8">
     <div class="sticky top-24">
         <div id="cake-canvas-wrap"><div id="cake-2d-container" class="cake-container"></div></div>
-        <div class="text-center mt-6"><p class="text-xs font-bold text-gray-400 uppercase">Estimate</p><p class="font-playfair text-4xl font-black text-maroon-800" id="studio-price">P 300</p></div>
+        <div class="text-center mt-6"><p class="font-playfair text-4xl font-black text-maroon-800" id="studio-price">Preview Only</p></div>
     </div>
     <div class="space-y-6 pb-20">
         <div class="glass p-6"><h4 class="font-bold text-maroon-800 mb-3">Shape</h4><div class="grid grid-cols-3 gap-2" id="style-btns"><button class="option-btn active" data-style="naked">Naked</button><button class="option-btn" data-style="buttercream">Butter</button><button class="option-btn" data-style="fondant">Fondant</button><button class="option-btn" data-style="twolayer">2-Tier</button><button class="option-btn" data-style="wedding">3-Tier</button><button class="option-btn" data-style="bento">Bento</button></div></div>
@@ -355,11 +376,11 @@
   window.onload = () => { document.querySelector('.loader-logo').style.transform = 'scale(1)'; document.querySelector('.loader-logo').style.opacity = '1'; setTimeout(() => { document.body.classList.add('loaded'); document.getElementById('loader').style.opacity = '0'; }, 1500); setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 2300); };
   window.addEventListener('scroll', () => { const s = window.scrollY; document.getElementById('orb1').style.transform = `translateY(${s * 0.2}px)`; document.getElementById('orb2').style.transform = `translateY(-${s * 0.1}px)`; if (s > 50) document.getElementById('navbar').classList.add('scrolled'); else document.getElementById('navbar').classList.remove('scrolled'); document.querySelectorAll('.reveal').forEach(el => { if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); }); });
   
-  // ─── SMART QUOTE ENGINE (New Prices) ───
-  // Data derived from uploaded notes
+  // ─── SMART QUOTE ENGINE ───
   const QUOTE_DATA = {
       naked: { '5 inch': 300, '6 inch': 400, '8 inch': 500, '10 inch': 600, '12 inch': 700 },
       buttercream: { '5 inch': 450, '6 inch': 650, '8 inch': 750, '10 inch': 850 },
+      swiss: { '5 inch': 450, '6 inch': 650, '8 inch': 750, '10 inch': 850 }, // Swiss Meringue mapped to Buttercream pricing
       fondant: { '5 inch': 550, '6 inch': 700, '8 inch': 800, '10 inch': 900, '12 inch': 1000 },
       '2tier': { '4"+6"': 900, '6"+8"': 1500, '8"+10"': 1600, '10"+12"': 2000 },
       '3tier': { '4"+6"+8"': 1800, '6"+8"+10"': 2500, '4"+8"+12"': 2700, '8"+10"+12"': 3200, '8"+12"+14"': 3200 },
@@ -375,9 +396,7 @@
       if(QUOTE_DATA[type]) {
           Object.keys(QUOTE_DATA[type]).forEach(size => {
               const opt = document.createElement('option');
-              opt.value = size;
-              opt.innerText = size;
-              sizeSelect.appendChild(opt);
+              opt.value = size; opt.innerText = size; sizeSelect.appendChild(opt);
           });
       }
       calculateQuote();
@@ -387,55 +406,80 @@
       const type = typeSelect.value;
       const size = sizeSelect.value;
       let total = QUOTE_DATA[type][size] || 0;
-
-      // Fillings (P50 each)
       document.querySelectorAll('.filling-check:checked').forEach(() => total += 50);
-      
-      // Edible Print
       total += parseInt(document.getElementById('calc-print').value);
-      
-      // Topper (P50)
       if(document.getElementById('calc-topper').checked) total += 50;
-
       document.getElementById('final-quote').innerText = `P ${total}`;
   }
 
-  // Init Scanner Logic
+  function sendEmail() {
+      const name = document.getElementById('cust-name').value;
+      const phone = document.getElementById('cust-phone').value;
+      if(!name || !phone) { alert("Please enter your Name and Phone Number."); return; }
+
+      const coating = document.getElementById('calc-type').options[document.getElementById('calc-type').selectedIndex].text;
+      const size = document.getElementById('calc-size').value;
+      const flavor = document.getElementById('calc-flavor').value;
+      const price = document.getElementById('final-quote').innerText;
+      const notes = document.getElementById('calc-notes').value;
+      
+      let fillings = [];
+      document.querySelectorAll('.filling-check:checked').forEach(el => fillings.push(el.value));
+      
+      alert("Your email app is opening. PLEASE ATTACH YOUR UPLOADED PHOTO TO THE EMAIL before sending!");
+
+      const body = `
+New Order from FRENZY Website
+-----------------------------
+Customer: ${name}
+Phone: ${phone}
+
+CAKE SPECIFICATIONS:
+Coating: ${coating}
+Size: ${size}
+Flavor: ${flavor}
+Fillings: ${fillings.join(', ') || 'None'}
+Total Estimated Price: ${price}
+
+NOTES:
+${notes}
+
+-----------------------------
+(Customer: Please attach your Inspo Photo to this email!)
+      `;
+
+      window.location.href = `mailto:reneedithebe@gmail.com?subject=New Order Request - ${name}&body=${encodeURIComponent(body)}`;
+  }
+
   document.getElementById('ai-upload').addEventListener('change', (e) => {
       if(e.target.files.length > 0) {
           document.getElementById('scan-overlay').classList.remove('hidden');
           document.getElementById('scan-overlay').classList.add('flex');
           document.querySelector('.scan-line').style.display = 'block';
-          
           setTimeout(() => {
               document.getElementById('scan-overlay').classList.add('hidden');
               document.getElementById('calculator-panel').classList.remove('hidden');
-              updateSizeOptions(); // Load initial sizes
+              updateSizeOptions();
           }, 2000);
       }
   });
 
   typeSelect.addEventListener('change', updateSizeOptions);
 
-  // ─── 2D STUDIO LOGIC (Visualizer) ───
+  // ─── 2D STUDIO (VISUALIZER ONLY) ───
   const studio = document.getElementById('studio-page');
   function openStudio() { studio.classList.remove('hidden'); setTimeout(() => studio.classList.add('open'), 10); document.body.style.overflow='hidden'; }
   function closeStudio() { studio.classList.remove('open'); setTimeout(() => { studio.classList.add('hidden'); document.body.style.overflow=''; }, 500); }
-
-  // Simplified visualizer pricing for beta tool
   const STUDIO_PRICING = { naked: {'5"':300}, buttercream: {'5"':450}, fondant: {'5"':550}, twolayer: {'4+6':900}, wedding: {'3-Tier':1800}, bento: {'4"':150} };
   const state = { style: 'naked', size: '5"', color: '#ffcce0', foilPrice: 0, text: '', ediblePhoto: null };
-
   function render() {
       const cont = document.getElementById('cake-2d-container'); cont.innerHTML = '';
       let tiers = [{w:42,h:100,z:2}];
       if(state.style === 'twolayer') tiers = [{w:30,h:70,z:3},{w:42,h:90,z:2}];
       if(state.style === 'wedding') tiers = [{w:25,h:60,z:4},{w:35,h:80,z:3},{w:45,h:100,z:2}];
       if(state.style === 'bento') tiers = [{w:40,h:50,z:2}];
-
       tiers.forEach((t, i) => {
-          const isTop = i===0;
-          const div = document.createElement('div'); div.className='cake-tier';
+          const isTop = i===0; const div = document.createElement('div'); div.className='cake-tier';
           div.style.width = t.w*3 + 'px'; div.style.height = t.h + 'px'; div.style.zIndex = t.z;
           div.style.background = state.style==='naked' ? '#e8c48a' : state.color;
           if(state.style==='naked') div.classList.add('texture-naked');
@@ -443,14 +487,10 @@
           if(isTop && state.text) top.innerHTML = `<div class="cake-text-wrapper"><span class="cake-text" style="color:${state.style==='naked'?'#590d22':'#fff'}">${state.text}</span></div>`;
           if(isTop && state.ediblePhoto) { const p = document.createElement('div'); p.className='photo-print-layer'; p.style.backgroundImage=`url(${state.ediblePhoto})`; top.appendChild(p); }
           if(state.style!=='naked') { const pipe = document.createElement('div'); pipe.className='cake-piping'; pipe.style.backgroundImage=`radial-gradient(circle at 10px 9px, ${state.color} 9px, transparent 10px)`; div.appendChild(pipe); }
-          if(state.foil !== 'none') { const f = document.createElement('div'); f.className='foil-layer'; if(state.foil === 'top' || state.foil === 'both') top.appendChild(f.cloneNode()); if(state.foil === 'sides' || state.foil === 'both') div.appendChild(f); }
-          if(isTop && state.flowers && state.flowers !== 'none') { const icon = state.flowers === 'real' ? '🌹' : '🌸'; const flower = document.createElement('div'); flower.className='flower-icon'; flower.innerText = icon; flower.style.top = '-10px'; top.appendChild(flower); }
           div.appendChild(top); cont.appendChild(div);
       });
       const stand = document.createElement('div'); stand.innerHTML = `<div class="cake-stand-plate"></div><div class="cake-stand-base"></div>`; stand.style.width = tiers[tiers.length-1].w*3 + 'px'; stand.style.position='relative'; stand.style.zIndex='1'; cont.appendChild(stand);
-      document.getElementById('studio-price').innerText = `P ${STUDIO_PRICING[state.style] ? Object.values(STUDIO_PRICING[state.style])[0] : 300}`;
   }
-
   function initBtns() {
       const wrap = document.getElementById('size-btns'); wrap.innerHTML = '';
       Object.keys(STUDIO_PRICING[state.style]).forEach(s => {
@@ -458,11 +498,10 @@
           b.onclick = () => { state.size = s; render(); }; wrap.appendChild(b);
       }); render();
   }
-
   document.getElementById('style-btns').onclick = (e) => { if(e.target.tagName==='BUTTON'){ document.querySelectorAll('#style-btns button').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); state.style = e.target.dataset.style; initBtns(); }};
   document.getElementById('color-picker').oninput = (e) => { state.color = e.target.value; render(); };
   document.getElementById('cake-text').oninput = (e) => { state.text = e.target.value; render(); };
-  document.getElementById('foil-select').onchange = (e) => { state.foil = e.target.value; render(); };
+  document.getElementById('foil-select').onchange = (e) => { state.foil = e.target.value; state.foilPrice = e.target.options[e.target.selectedIndex].dataset.price; render(); };
   document.getElementById('flower-select').onchange = (e) => { state.flowers = e.target.value; render(); };
   document.getElementById('sprinkles-select').onchange = (e) => { state.sprinkles = e.target.value; render(); };
   document.getElementById('studio-edible').onchange = (e) => { const r = new FileReader(); r.onload=ev=>{state.ediblePhoto=ev.target.result; render();}; r.readAsDataURL(e.target.files[0]); };
