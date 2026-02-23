@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRENZY | Custom Cakes</title>
+    <title>FRENZY | True 3D Custom Cakes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        frenzy: { light: '#ffcce0', DEFAULT: '#ff8fab', dark: '#fb6f92', text: '#590d22' }
-                    },
-                    fontFamily: { sans: ['Quicksand', 'sans-serif'] }
-                }
+                extend: { colors: { frenzy: { light: '#ffcce0', DEFAULT: '#ff8fab', dark: '#fb6f92', text: '#590d22' } }, fontFamily: { sans: ['Quicksand', 'sans-serif'] } }
             }
         }
     </script>
@@ -28,81 +24,81 @@
     <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass-panel">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img class="h-14 w-auto object-contain drop-shadow-md hover:scale-105 transition" src="photo.png" alt="FRENZY Logo">
-                    <span class="font-bold text-2xl text-frenzy-dark tracking-wide hidden sm:block">FRENZY</span>
-                </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Cakes</a>
-                    <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Builder</a>
-                    <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Events</a>
-                    <a href="#contact" class="px-5 py-2 rounded-full bg-frenzy-dark text-white font-bold hover:bg-frenzy-text transition shadow-lg transform hover:-translate-y-1">Contact Us</a>
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <span class="font-bold text-2xl text-frenzy-dark tracking-wide">FRENZY</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden text-center">
-        <h1 class="text-5xl md:text-7xl font-bold text-frenzy-text mb-6">Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span></h1>
-        <p class="mt-4 text-xl text-gray-600 mb-10">From custom 3D designs to immersive cake decorating events.</p>
-        <a href="#builder" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition">Build Custom Cake</a>
-    </header>
-
-    <section id="builder" class="py-20">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/60">
+    <section id="builder" class="pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-white/60">
                 
-                <div class="w-full md:w-1/2 p-8 md:p-12 bg-white/60 backdrop-blur-md z-10">
+                <div class="w-full lg:w-1/2 p-8 bg-white/60 backdrop-blur-md z-10 overflow-y-auto max-h-[800px]">
                     <h2 class="text-3xl font-bold text-frenzy-text mb-2">Build Your Cake</h2>
-                    <p class="text-gray-600 mb-8">Click and drag the cake to spin it!</p>
+                    <p class="text-gray-600 mb-6">Drag the 3D cake to spin it, scroll to zoom.</p>
 
                     <div class="space-y-6">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Cake Style</label>
-                            <select id="cakeStyle" class="w-full p-3 rounded-xl ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
-                                <option value="naked">Naked Cake (Visible Layers)</option>
-                                <option value="buttercream">Buttercream Cake</option>
-                                <option value="fondant">Cake with Fondant</option>
-                                <option value="twolayer">2-Layer Cake</option>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Cake Size</label>
+                            <select id="cakeSize" class="w-full p-3 rounded-xl ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy outline-none">
+                                <option value="5">5 Inches - P 450</option>
+                                <option value="6">6 Inches - P 650</option>
+                                <option value="8">8 Inches - P 750</option>
+                                <option value="10">10 Inches - P 850</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Size / Tiers</label>
-                            <select id="cakeSize" class="w-full p-3 rounded-xl ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
-                                </select>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Custom Icing Color</label>
+                            <div class="flex items-center gap-4">
+                                <input type="color" id="cakeColorPicker" value="#ffcce0" class="w-14 h-14 rounded cursor-pointer border-none p-0">
+                                <span class="text-sm text-gray-500">Pick any exact shade!</span>
+                            </div>
                         </div>
 
-                        <div id="colorPickerContainer" class="hidden">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Icing Color</label>
-                            <div class="flex gap-3" id="colorButtons">
-                                <button data-color="#ffcce0" class="color-btn w-10 h-10 rounded-full bg-[#ffcce0] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
-                                <button data-color="#e9edc9" class="color-btn w-10 h-10 rounded-full bg-[#e9edc9] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
-                                <button data-color="#a2d2ff" class="color-btn w-10 h-10 rounded-full bg-[#a2d2ff] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
-                                <button data-color="#ffffff" class="color-btn w-10 h-10 rounded-full bg-[#ffffff] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
-                                <button data-color="#2b2d42" class="color-btn w-10 h-10 rounded-full bg-[#2b2d42] ring-2 ring-gray-300 hover:scale-110 shadow-inner"></button>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Edible Photo Overlay (Optional)</label>
+                            <input type="file" id="imageUpload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-frenzy-light file:text-frenzy-dark hover:file:bg-frenzy hover:file:text-white transition cursor-pointer">
+                            <button id="removeImageBtn" class="hidden mt-2 text-xs text-red-500 font-bold hover:underline">Remove Photo</button>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Writing on the Cake</label>
+                            <input type="text" id="cakeText" placeholder="Happy Birthday Jess!" class="w-full p-3 rounded-xl ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy outline-none">
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <label class="block text-sm font-bold text-frenzy-text mb-1">Premium Toppings</label>
+                            <p class="text-xs text-frenzy-dark font-bold mb-3">Select up to 3 for FREE</p>
+                            
+                            <div class="grid grid-cols-2 gap-3" id="toppingsContainer">
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Gold Foil (Scattered)"> Gold Foil (Scattered)</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Silver Foil (Edges)"> Silver Foil (Edges)</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Rose Gold Foil"> Rose Gold Foil</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Sprinkles"> Sprinkles</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Edible Glitter"> Edible Glitter</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Fondant Bow"> Fondant Bow</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Artificial Flowers"> Artificial Flowers</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Real Flowers"> Real Flowers</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="topping-check" value="Cake Topper"> Custom Cake Topper</label>
                             </div>
+                            <p id="toppingWarning" class="text-xs text-red-500 font-bold mt-2 hidden">Maximum of 3 toppings reached!</p>
                         </div>
 
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <div class="flex justify-between items-center mb-4">
-                                <span class="text-gray-500 font-bold uppercase tracking-wide">Estimated Price</span>
-                                <span id="priceDisplay" class="text-3xl font-bold text-frenzy-dark">P 300</span>
+                                <span class="text-gray-500 font-bold uppercase">Estimated Price</span>
+                                <span id="priceDisplay" class="text-3xl font-bold text-frenzy-dark">P 450</span>
                             </div>
-                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition">Request Custom Order</button>
+                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition">Proceed with Custom Order</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full md:w-1/2 bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] p-8 flex flex-col items-center justify-center relative overflow-hidden">
-                    <div class="absolute top-4 right-4 bg-white/50 px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark animate-pulse z-20">
-                        <i class="fas fa-hand-pointer mr-1"></i> Drag to spin
-                    </div>
-                    <div class="scene" id="sceneContainer">
-                        <div class="cake-assembly" id="cakeAssembly">
-                            <div class="cake-board"></div>
-                            </div>
-                    </div>
+                <div class="w-full lg:w-1/2 h-[600px] lg:h-auto bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] relative cursor-move">
+                    <div id="three-container" class="w-full h-full absolute inset-0"></div>
                 </div>
             </div>
         </div>
