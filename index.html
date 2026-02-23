@@ -42,6 +42,41 @@
         .scroll-hidden::-webkit-scrollbar {
             display: none;
         }
+
+        /* 3D Cake CSS Visualizer */
+        .cake-scene {
+            display: flex;
+            flex-direction: column-reverse; /* Stacks layers bottom to top */
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            padding-bottom: 20px;
+        }
+        .cake-tier {
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: inset -20px 0 40px rgba(0,0,0,0.15), 0 15px 15px rgba(0,0,0,0.1);
+        }
+        /* The top surface of the cake tier */
+        .cake-tier::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 40px;
+            transform: translateY(-50%);
+            background: inherit;
+            filter: brightness(1.15);
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        /* Textures */
+        .texture-naked {
+            background: repeating-linear-gradient(0deg, #d2a679, #d2a679 20px, #eee0cb 20px, #eee0cb 30px);
+            border-radius: 50% / 20px;
+        }
+        .texture-smooth {
+            border-radius: 50% / 20px;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-700 overflow-x-hidden">
@@ -56,15 +91,9 @@
                 
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Cakes</a>
-                    <a href="#custom" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Custom Order</a>
+                    <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Builder</a>
                     <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Events</a>
                     <a href="#contact" class="px-5 py-2 rounded-full bg-frenzy-dark text-white font-bold hover:bg-frenzy-text transition shadow-lg transform hover:-translate-y-1">Contact Us</a>
-                </div>
-
-                <div class="md:hidden flex items-center">
-                    <button class="text-frenzy-dark focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
                 </div>
             </div>
         </div>
@@ -76,11 +105,10 @@
                 Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span>
             </h1>
             <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-                From custom designs to immersive cake decorating events. Welcome to Frenzy.
+                From custom 3D designs to immersive cake decorating events. Welcome to Frenzy.
             </p>
             <div class="flex justify-center gap-4">
-                <a href="#shop" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition transform hover:scale-105">Order Cake</a>
-                <a href="#events" class="px-8 py-4 bg-white text-frenzy-dark border-2 border-frenzy-dark rounded-full font-bold shadow-md hover:bg-frenzy-light transition transform hover:scale-105">Buy Tickets</a>
+                <a href="#builder" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition transform hover:scale-105">Build Custom Cake</a>
             </div>
         </div>
     </header>
@@ -89,30 +117,22 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center text-frenzy-text mb-12">Signature Creations</h2>
             
-            <div class="flex justify-center gap-4 mb-10 flex-wrap">
-                <button class="px-4 py-2 rounded-full bg-frenzy text-white font-semibold shadow-md ring-2 ring-frenzy-dark">All</button>
-                <button class="px-4 py-2 rounded-full bg-white text-gray-600 font-semibold shadow-sm hover:bg-frenzy-light transition">Vanilla Bean</button>
-                <button class="px-4 py-2 rounded-full bg-white text-gray-600 font-semibold shadow-sm hover:bg-frenzy-light transition">Rich Chocolate</button>
-                <button class="px-4 py-2 rounded-full bg-white text-gray-600 font-semibold shadow-sm hover:bg-frenzy-light transition">Red Velvet</button>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
                     <div class="h-64 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                        <span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark shadow-sm">Best Seller</span>
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-gray-800">Velvet Dream</h3>
                         <p class="text-gray-500 text-sm mt-1">Available in 3 flavors</p>
                         <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">$45.00</span>
+                            <span class="text-xl font-bold text-frenzy-dark">P 550.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
@@ -120,13 +140,13 @@
                         <h3 class="text-2xl font-bold text-gray-800">Pastel Party</h3>
                         <p class="text-gray-500 text-sm mt-1">Perfect for birthdays</p>
                         <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">$55.00</span>
+                            <span class="text-xl font-bold text-frenzy-dark">P 650.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition group">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
@@ -134,7 +154,7 @@
                         <h3 class="text-2xl font-bold text-gray-800">Frenzy Cupcake Box</h3>
                         <p class="text-gray-500 text-sm mt-1">Mix & Match 12 pack</p>
                         <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xl font-bold text-frenzy-dark">$30.00</span>
+                            <span class="text-xl font-bold text-frenzy-dark">P 350.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
                         </div>
                     </div>
@@ -143,49 +163,71 @@
         </div>
     </section>
 
-    <section id="custom" class="py-20">
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="glass-panel rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-frenzy rounded-full opacity-20"></div>
+    <section id="builder" class="py-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                
+                <div class="w-full md:w-1/2 p-8 md:p-12 bg-white/40">
+                    <h2 class="text-3xl font-bold text-frenzy-text mb-2">Build Your Cake</h2>
+                    <p class="text-gray-600 mb-8">Design your dream cake and see it update in real-time.</p>
 
-                <h2 class="text-3xl font-bold text-frenzy-text mb-6">Design Your Dream Cake</h2>
-                <p class="text-gray-600 mb-8">Have a specific vision? Upload your inspiration, pick your flavors, and chat with our decorator.</p>
-
-                <form onsubmit="event.preventDefault(); alert('Request sent! Our decorator will message you shortly.');" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-6">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Cake Flavor Base</label>
-                            <select class="w-full p-3 rounded-xl border-gray-200 bg-white/50 focus:ring-2 focus:ring-frenzy outline-none">
-                                <option>Vanilla Sponge</option>
-                                <option>Chocolate Mud</option>
-                                <option>Lemon Drizzle</option>
-                                <option>Carrot Cake</option>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Cake Style</label>
+                            <select id="cakeStyle" onchange="updateBuilder()" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
+                                <option value="naked">Naked Cake</option>
+                                <option value="buttercream">Buttercream Cake</option>
+                                <option value="fondant">Cake with Fondant</option>
+                                <option value="twolayer">2-Layer Cake</option>
                             </select>
                         </div>
+
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Event Date</label>
-                            <input type="date" class="w-full p-3 rounded-xl border-gray-200 bg-white/50 focus:ring-2 focus:ring-frenzy outline-none">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Size / Tiers</label>
+                            <select id="cakeSize" onchange="updateBuilder()" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
+                                </select>
+                        </div>
+
+                        <div id="colorPickerContainer" class="hidden">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Icing Color</label>
+                            <div class="flex gap-3">
+                                <button onclick="setCakeColor('#ffcce0')" class="w-10 h-10 rounded-full bg-[#ffcce0] ring-2 ring-transparent focus:ring-gray-400"></button>
+                                <button onclick="setCakeColor('#a7c957')" class="w-10 h-10 rounded-full bg-[#a7c957] ring-2 ring-transparent focus:ring-gray-400"></button>
+                                <button onclick="setCakeColor('#a2d2ff')" class="w-10 h-10 rounded-full bg-[#a2d2ff] ring-2 ring-transparent focus:ring-gray-400"></button>
+                                <button onclick="setCakeColor('#ffffff')" class="w-10 h-10 rounded-full bg-[#ffffff] border border-gray-200 ring-2 ring-transparent focus:ring-gray-400"></button>
+                                <button onclick="setCakeColor('#2b2d42')" class="w-10 h-10 rounded-full bg-[#2b2d42] ring-2 ring-transparent focus:ring-gray-400"></button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Flavor</label>
+                            <select class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none">
+                                <option>Vanilla Bean</option>
+                                <option>Chocolate</option>
+                                <option>Red Velvet</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-500 font-bold uppercase tracking-wide">Total Estimated Price</span>
+                                <span id="priceDisplay" class="text-3xl font-bold text-frenzy-dark">P 300</span>
+                            </div>
+                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">
+                                Send to Decorator
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Upload Inspiration (Photo/Sketch)</label>
-                        <div class="border-2 border-dashed border-frenzy-dark rounded-xl p-8 text-center bg-white/30 cursor-pointer hover:bg-white/50 transition">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-frenzy-dark mb-2"></i>
-                            <p class="text-sm text-gray-500">Click to upload or drag and drop</p>
-                            <input type="file" class="hidden">
+                <div class="w-full md:w-1/2 bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] p-8 flex flex-col items-center justify-center relative">
+                    <h3 class="absolute top-8 left-8 text-frenzy-dark font-bold tracking-widest uppercase text-sm">Live 3D Preview</h3>
+                    
+                    <div id="cakeScene" class="cake-scene w-full">
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Additional Notes</label>
-                        <textarea rows="3" class="w-full p-3 rounded-xl border-gray-200 bg-white/50 focus:ring-2 focus:ring-frenzy outline-none" placeholder="Describe fillings, colors, or dietary requirements..."></textarea>
-                    </div>
-
-                    <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">
-                        Start Chat with Decorator
-                    </button>
-                </form>
+                    
+                    <div class="w-64 h-16 bg-white rounded-[50%] shadow-2xl border border-gray-100 absolute bottom-12 z-0"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -193,8 +235,6 @@
     <section id="events" class="py-20 bg-white/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center text-frenzy-text mb-4">Upcoming Events</h2>
-            <p class="text-center text-gray-500 mb-12">Learn, create, and eat.</p>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition">
                     <div class="md:w-1/3 bg-gray-200">
@@ -204,15 +244,9 @@
                         <div>
                             <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">April 15th • 2:00 PM</div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-2">Cake Decorating Masterclass</h3>
-                            <p class="text-gray-500 text-sm">Learn how to pipe buttercream flowers like a pro. Includes all tools and a 6-inch cake to take home.</p>
-                        </div>
-                        <div class="mt-6 flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gray-800">$85</span>
-                            <button onclick="openTicketModal('Masterclass')" class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition">
                     <div class="md:w-1/3 bg-gray-200">
                         <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
@@ -221,11 +255,6 @@
                         <div>
                             <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">May 2nd • 11:00 AM</div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-2">BYOC (Bring Your Own Cake) Picnic</h3>
-                            <p class="text-gray-500 text-sm">A community picnic. Bring a cake to share, we provide the drinks, music, and vibes.</p>
-                        </div>
-                        <div class="mt-6 flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gray-800">$15</span>
-                            <button onclick="openTicketModal('Picnic')" class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
                         </div>
                     </div>
                 </div>
@@ -237,164 +266,127 @@
         <div class="max-w-7xl mx-auto px-4 text-center">
             <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 grayscale hover:grayscale-0 transition">
             <h3 class="text-2xl font-bold text-frenzy-text">FRENZY</h3>
-            <div class="flex justify-center gap-6 mt-6 mb-8 text-gray-400">
-                <i class="fab fa-instagram text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-                <i class="fab fa-tiktok text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-                <i class="fab fa-whatsapp text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-            </div>
-            <p class="text-gray-400 text-sm">© 2024 Frenzy Cakes. Designed with sugar.</p>
+            <p class="text-gray-400 text-sm mt-6">© 2024 Frenzy Cakes. Designed with sugar.</p>
         </div>
     </section>
 
-    <div class="fixed bottom-6 right-6 z-50">
-        <div id="chatBox" class="hidden mb-4 bg-white w-80 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 transform transition-all">
-            <div class="bg-frenzy-dark p-4 text-white font-bold flex justify-between">
-                <span>Chat with Decorator</span>
-                <button onclick="toggleChat()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="h-64 p-4 bg-gray-50 overflow-y-auto">
-                <div class="bg-white p-2 rounded-lg shadow-sm w-3/4 mb-2 text-sm text-gray-600">
-                    Hi! How can I help you design your cake today?
-                </div>
-            </div>
-            <div class="p-3 border-t flex gap-2">
-                <input type="text" placeholder="Type..." class="w-full p-2 text-sm rounded-lg border focus:outline-none focus:border-frenzy">
-                <button class="text-frenzy-dark"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        <button onclick="toggleChat()" class="w-14 h-14 bg-frenzy-dark rounded-full text-white shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition">
-            <i class="fas fa-comment-dots"></i>
-        </button>
-    </div>
-
-    <div id="ticketModal" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-fade-in-up">
-            <div class="bg-gradient-to-r from-frenzy-light to-frenzy p-6 text-center relative">
-                <button onclick="closeTicketModal()" class="absolute top-4 right-4 text-white opacity-70 hover:opacity-100"><i class="fas fa-times text-xl"></i></button>
-                <h3 class="text-2xl font-bold text-white drop-shadow-md" id="modalEventTitle">Event Ticket</h3>
-                <p class="text-white/90 text-sm mt-1">Secure your spot now</p>
-            </div>
-            
-            <div class="p-8">
-                <form id="ticketForm" onsubmit="processTicket(event)">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
-                            <input type="text" id="tName" required class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email (for ticket delivery)</label>
-                            <input type="email" id="tEmail" required class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Select Your Flavor Kit</label>
-                            <select class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
-                                <option>Classic Vanilla</option>
-                                <option>Double Chocolate</option>
-                                <option>Strawberry Swirl</option>
-                            </select>
-                        </div>
-
-                        <div class="pt-4">
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Payment Details</label>
-                            <div class="flex gap-2 mb-2">
-                                <div class="bg-gray-100 p-2 rounded text-gray-400"><i class="fab fa-cc-visa"></i></div>
-                                <div class="bg-gray-100 p-2 rounded text-gray-400"><i class="fab fa-cc-mastercard"></i></div>
-                            </div>
-                            <input type="text" placeholder="Card Number (Simulated)" class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 mb-2">
-                            <div class="flex gap-2">
-                                <input type="text" placeholder="MM/YY" class="w-1/2 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200">
-                                <input type="text" placeholder="CVC" class="w-1/2 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200">
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full mt-8 bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition">Pay & Generate Ticket</button>
-                </form>
-
-                <div id="ticketSuccess" class="hidden text-center py-6">
-                    <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">You're going!</h4>
-                    <p class="text-gray-500 text-sm mb-6">Ticket sent to <span id="sentEmail" class="font-bold text-gray-800"></span></p>
-                    
-                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 bg-gray-50 relative">
-                        <div class="flex items-center gap-3 mb-4 border-b pb-4">
-                            <img src="photo.png" class="h-10">
-                            <span class="font-bold text-frenzy-dark">FRENZY TICKET</span>
-                        </div>
-                        <div class="flex justify-between text-left">
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase">Attendee</p>
-                                <p class="font-bold" id="ticketNameDisplay">Name</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 uppercase">Seat</p>
-                                <p class="font-bold text-xl text-frenzy-dark" id="seatNumber">A-12</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Chat Toggle
-        function toggleChat() {
-            const chat = document.getElementById('chatBox');
-            chat.classList.toggle('hidden');
+        // Pricing Data matching your exact specifications
+        const cakeData = {
+            naked: {
+                sizes: [
+                    { label: "5 Inches", val: "5", price: 300, w: 120, h: 80 },
+                    { label: "6 Inches", val: "6", price: 400, w: 140, h: 90 },
+                    { label: "8 Inches", val: "8", price: 500, w: 170, h: 100 },
+                    { label: "10 Inches", val: "10", price: 600, w: 200, h: 110 },
+                    { label: "12 Inches", val: "12", price: 700, w: 230, h: 120 }
+                ]
+            },
+            buttercream: {
+                sizes: [
+                    { label: "5 Inches", val: "5", price: 450, w: 120, h: 80 },
+                    { label: "6 Inches", val: "6", price: 650, w: 140, h: 90 },
+                    { label: "8 Inches", val: "8", price: 750, w: 170, h: 100 },
+                    { label: "10 Inches", val: "10", price: 850, w: 200, h: 110 }
+                ]
+            },
+            fondant: {
+                sizes: [
+                    { label: "5 Inches", val: "5", price: 550, w: 120, h: 80 },
+                    { label: "6 Inches", val: "6", price: 700, w: 140, h: 90 },
+                    { label: "8 Inches", val: "8", price: 800, w: 170, h: 100 },
+                    { label: "10 Inches", val: "10", price: 900, w: 200, h: 110 },
+                    { label: "12 Inches", val: "12", price: 1000, w: 230, h: 120 }
+                ]
+            },
+            twolayer: {
+                sizes: [
+                    { label: "4 inch & 6 inch", val: "4-6", price: 900, tiers: [{w:100, h:70}, {w:140, h:90}] },
+                    { label: "6 inch & 8 inch", val: "6-8", price: 1300, tiers: [{w:140, h:90}, {w:170, h:100}] },
+                    { label: "8 inch & 10 inch", val: "8-10", price: 1600, tiers: [{w:170, h:100}, {w:200, h:110}] },
+                    { label: "10 inch & 12 inch", val: "10-12", price: 2000, tiers: [{w:200, h:110}, {w:230, h:120}] }
+                ]
+            }
+        };
+
+        let currentColor = '#ffcce0'; // Default frosting color
+
+        function setCakeColor(color) {
+            currentColor = color;
+            updateBuilder();
         }
 
-        // Ticket Modal Logic
-        function openTicketModal(eventName) {
-            document.getElementById('modalEventTitle').innerText = eventName;
-            document.getElementById('ticketModal').classList.remove('hidden');
-            document.getElementById('ticketForm').classList.remove('hidden');
-            document.getElementById('ticketSuccess').classList.add('hidden');
-        }
-
-        function closeTicketModal() {
-            document.getElementById('ticketModal').classList.add('hidden');
-        }
-
-        function processTicket(e) {
-            e.preventDefault();
+        function updateBuilder() {
+            const style = document.getElementById('cakeStyle').value;
+            const sizeSelect = document.getElementById('cakeSize');
             
-            // Get values
-            const name = document.getElementById('tName').value;
-            const email = document.getElementById('tEmail').value;
+            // 1. Check if we need to repopulate the size dropdown (if style changed)
+            if (sizeSelect.dataset.currentStyle !== style) {
+                sizeSelect.innerHTML = '';
+                cakeData[style].sizes.forEach((s, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = index; // Store array index as value
+                    opt.textContent = s.label;
+                    sizeSelect.appendChild(opt);
+                });
+                sizeSelect.dataset.currentStyle = style;
+            }
+
+            // 2. Get current selections
+            const selectedIndex = sizeSelect.value || 0;
+            const config = cakeData[style].sizes[selectedIndex];
             
-            // Simulate processing
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "Processing...";
-            btn.disabled = true;
+            // 3. Update Price
+            document.getElementById('priceDisplay').innerText = `P ${config.price}`;
 
-            setTimeout(() => {
-                // Generate Random Seat
-                const seatRow = ['A', 'B', 'C'][Math.floor(Math.random() * 3)];
-                const seatNum = Math.floor(Math.random() * 20) + 1;
-                
-                // Update UI
-                document.getElementById('sentEmail').innerText = email;
-                document.getElementById('ticketNameDisplay').innerText = name;
-                document.getElementById('seatNumber').innerText = `${seatRow}-${seatNum}`;
+            // 4. Toggle Color Picker visibility (Naked cakes don't have colored icing)
+            const colorPicker = document.getElementById('colorPickerContainer');
+            if(style === 'naked') {
+                colorPicker.classList.add('hidden');
+            } else {
+                colorPicker.classList.remove('hidden');
+            }
 
-                // Switch views
-                document.getElementById('ticketForm').classList.add('hidden');
-                document.getElementById('ticketSuccess').classList.remove('hidden');
-                
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }, 1500);
+            // 5. Render 3D Cake Visualizer
+            const scene = document.getElementById('cakeScene');
+            scene.innerHTML = ''; // Clear old cake
+            
+            const isFondant = (style === 'fondant' || style === 'twolayer'); // Default 2layer to smooth
+
+            if(style === 'twolayer') {
+                // Render Bottom Tier (Index 1) then Top Tier (Index 0)
+                renderTier(scene, config.tiers[1], isFondant ? 'smooth' : 'naked', style, true);
+                renderTier(scene, config.tiers[0], isFondant ? 'smooth' : 'naked', style, false);
+            } else {
+                // Single Tier
+                renderTier(scene, {w: config.w, h: config.h}, style === 'naked' ? 'naked' : 'smooth', style, false);
+            }
         }
 
-        // Close modal on click outside
-        document.getElementById('ticketModal').addEventListener('click', function(e) {
-            if (e.target === this) closeTicketModal();
-        });
+        function renderTier(scene, dims, textureType, styleType, isBottomTier) {
+            const tier = document.createElement('div');
+            tier.className = `cake-tier z-10 ${isBottomTier ? '-mt-8' : ''}`;
+            tier.style.width = `${dims.w}px`;
+            tier.style.height = `${dims.h}px`;
+            
+            if (textureType === 'naked') {
+                tier.classList.add('texture-naked');
+            } else {
+                tier.classList.add('texture-smooth');
+                tier.style.backgroundColor = currentColor;
+                // Add slight gradient for fondant to make it look matte
+                if(styleType === 'fondant' || styleType === 'twolayer') {
+                    tier.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0.1), transparent 20%, transparent 80%, rgba(0,0,0,0.2))`;
+                }
+            }
+            scene.appendChild(tier);
+        }
+
+        // Initialize Builder on load
+        window.onload = () => {
+            document.getElementById('cakeSize').dataset.currentStyle = "";
+            updateBuilder();
+        };
     </script>
 </body>
 </html>
