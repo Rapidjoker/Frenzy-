@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,9 +24,11 @@
           },
           animation: {
             'float': 'float 6s ease-in-out infinite',
+            'scan': 'scan 2s linear infinite',
           },
           keyframes: {
-            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } }
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
+            scan: { '0%': { top: '0%' }, '100%': { top: '100%' } }
           }
         }
       }
@@ -36,116 +38,47 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { 
-      font-family: 'Quicksand', sans-serif; 
-      background: #fff0f6; 
-      color: #590d22; 
-      overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
+    body { font-family: 'Quicksand', sans-serif; background: #fff0f6; color: #590d22; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
 
-    /* ── DYNAMIC BACKGROUND ORBS (Vibrant for Glass Effect) ── */
-    .bg-orb { 
-        position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.6; pointer-events: none; z-index: 0; 
-        transition: transform 0.1s linear; mix-blend-mode: multiply;
-    }
-    .bg-orb-1 { width:60vw; height:60vw; background:#ffcce0; top:-10%; left:-20%; animation: float 10s infinite; }
-    .bg-orb-2 { width:50vw; height:50vw; background:#fde047; bottom:0%; right:-10%; animation: float 12s infinite reverse; }
-    .bg-orb-3 { width:40vw; height:40vw; background:#fb6f92; top:40%; left:40%; opacity: 0.4; }
+    /* ── ANIMATIONS & UI ── */
+    .bg-orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.4; pointer-events: none; z-index: 0; transition: transform 0.2s linear; mix-blend-mode: multiply; }
+    .bg-orb-1 { width:60vw; height:60vw; background:#ffcce0; top:-10%; left:-10%; }
+    .bg-orb-2 { width:50vw; height:50vw; background:#f4c542; bottom:10%; right:-10%; }
+    .bg-orb-3 { width:30vw; height:30vw; background:#fb6f92; top:40%; left:40%; }
 
-    /* ── GLASS UI (THE CORE STYLE) ── */
-    .glass { 
-        background: rgba(255, 255, 255, 0.25); /* Low opacity for see-through */
-        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); /* The Blur */
-        border: 1px solid rgba(255, 255, 255, 0.6); /* The Shiny Edge */
-        border-radius: 24px; 
-        box-shadow: 0 8px 32px 0 rgba(89, 13, 34, 0.1); /* The Depth */
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    .glass:hover {
-        background: rgba(255, 255, 255, 0.35);
-        box-shadow: 0 15px 40px 0 rgba(89, 13, 34, 0.15);
-        transform: translateY(-5px);
-        border-color: rgba(255, 255, 255, 0.9);
-    }
-    .glass-solid {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 24px;
-        box-shadow: 0 8px 32px 0 rgba(89, 13, 34, 0.05);
-    }
-
-    /* ── NAVBAR GLASS ── */
-    #navbar { 
-        position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 24px; 
-        transition: all 0.4s ease;
-    }
-    #navbar.scrolled { 
-        padding: 12px 24px; 
-        background: rgba(255, 255, 255, 0.6); /* Frosted Glass Header */
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03); 
-    }
-    
-    .nav-link { position: relative; font-weight: 700; color: #590d22; text-decoration: none; }
-    .nav-link::after { content:''; position:absolute; bottom:-4px; left:50%; width:0; height:3px; background: #fb6f92; transition: all 0.3s ease; border-radius: 2px; transform: translateX(-50%); }
-    .nav-link:hover::after { width: 100%; }
-
-    /* ── ANIMATIONS ── */
-    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
     .delay-100 { transition-delay: 100ms; }
     .delay-200 { transition-delay: 200ms; }
-    .delay-300 { transition-delay: 300ms; }
 
-    /* ── BUTTONS ── */
-    .btn-primary { 
-        background: linear-gradient(135deg, #fb6f92, #ff8fab); 
-        color: #fff; font-weight:800; border: none; border-radius: 50px; 
-        transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(251,111,146,0.3); 
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(251,111,146,0.5); }
-    .btn-primary:active { transform: scale(0.96); }
-
+    .glass { background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.8); border-radius: 30px; box-shadow: 0 10px 40px rgba(89,13,34,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .glass:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(89,13,34,0.1); }
+    
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: all 0.4s ease; padding: 20px 24px; }
+    #navbar.scrolled { padding: 12px 24px; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
+    
+    .btn-primary { background: linear-gradient(135deg, #fb6f92, #ff8fab); color: #fff; font-weight:800; border-radius: 50px; transition: 0.3s; box-shadow: 0 10px 20px rgba(251,111,146,0.3); }
+    .btn-primary:active { transform: scale(0.95); }
+    
     .logo-blend { mix-blend-mode: multiply; filter: contrast(1.2) brightness(1.05); }
+    .form-input { width: 100%; background: #fff; border: 2px solid #ffcce0; padding: 12px; border-radius: 12px; font-weight: 600; color: #590d22; outline: none; transition: 0.3s; }
+    .form-input:focus { border-color: #fb6f92; box-shadow: 0 0 0 4px rgba(251,111,146,0.1); }
 
-    /* ── INPUTS GLASS ── */
-    .form-input { 
-        width: 100%; 
-        background: rgba(255, 255, 255, 0.5); 
-        border: 2px solid rgba(255, 255, 255, 0.8);
-        padding: 12px; border-radius: 12px; font-weight: 600; color: #590d22; outline: none; transition: 0.3s; 
-    }
-    .form-input:focus { background: #fff; border-color: #fb6f92; box-shadow: 0 0 0 4px rgba(251,111,146,0.15); }
-
-    /* ── 2D CAKE ENGINE ── */
+    /* ── AI SCANNER ANIMATION ── */
+    .scan-line { position: absolute; left: 0; right: 0; height: 4px; background: #fb6f92; box-shadow: 0 0 10px #fb6f92; animation: scan 1.5s infinite linear; display: none; }
+    
+    /* ── 2D ENGINE ── */
     #studio-page { transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); transform: translateY(100%); opacity: 0; }
     #studio-page.open { transform: translateY(0); opacity: 1; }
-    
-    #cake-canvas-wrap { width: 100%; height: 420px; border-radius: 30px; background: radial-gradient(circle at 50% 60%, #fff 20%, transparent 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; border: 1px solid rgba(255,255,255,0.5); }
-    
-    /* (Cake Styles are same as previous for stability) */
-    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 30px 30px rgba(89,13,34,0.2)); margin-top: 30px; }
-    .cake-tier { position: relative; border-radius: 50% / 20px; box-shadow: inset -20px 0 40px rgba(0,0,0,0.1), inset 10px 0 20px rgba(255,255,255,0.6); margin-bottom: -22px; transition: all 0.5s; display: flex; justify-content: center; }
+    #cake-canvas-wrap { width: 100%; height: 400px; border-radius: 30px; background: radial-gradient(circle at 50% 60%, #fff 20%, #ffedf4 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; }
+    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 20px 20px rgba(89,13,34,0.15)); margin-top: 30px; }
+    .cake-tier { position: relative; border-radius: 50% / 20px; box-shadow: inset -15px 0 30px rgba(0,0,0,0.1), inset 10px 0 20px rgba(255,255,255,0.6); margin-bottom: -22px; transition: all 0.5s; display: flex; justify-content: center; }
     .cake-top-face { position: absolute; top: 0; left: 0; right: 0; height: 40px; border-radius: 50%; background: inherit; filter: brightness(1.15); z-index: 2; overflow: hidden; box-shadow: inset 0 -5px 15px rgba(0,0,0,0.05), inset 0 5px 15px rgba(255,255,255,0.5); }
-    .cake-piping { position: absolute; bottom: -7px; left: -2%; right: -2%; height: 20px; background-size: 22px 20px; background-repeat: repeat-x; z-index: 3; filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1)); }
+    .photo-print-layer { position: absolute; inset: 15%; border-radius: 50%; background-size: cover; background-position: center; z-index: 4; opacity: 0.85; mix-blend-mode: multiply; }
     .cake-stand-plate { width: 130%; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; z-index: 1; left: -15%; }
     .cake-stand-base { width: 40%; height: 40px; margin: 0 auto; background: linear-gradient(to right, #d4af37, #fceeb5, #d4af37); border-radius: 0 0 10px 10px; position: relative; z-index: 0; margin-top: -15px; }
-    .cake-text-wrapper { position: absolute; width: 100%; top: 30%; z-index: 5; transform: rotateX(50deg); text-align: center; }
-    .cake-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
-    .photo-print-layer { position: absolute; inset: 18%; border-radius: 50%; background-size: cover; background-position: center; z-index: 4; opacity: 0.85; mix-blend-mode: multiply; }
-    .texture-naked { background: repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,245,230,0.7) 20px, rgba(255,245,230,0.7) 28px); }
-    .foil-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-image: radial-gradient(circle, #f4c542 2px, transparent 3px); background-size: 30px 30px; opacity: 0.8; }
-    .sprinkle-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-size: 20px 20px; opacity: 0.9; }
-    .flower-icon { position: absolute; font-size: 2rem; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); z-index: 10; }
-
     .option-btn { border: 2px solid rgba(255,143,171,0.3); background: rgba(255,255,255,0.5); color: #590d22; font-weight:700; padding: 10px 14px; border-radius: 12px; transition: all 0.2s; font-size: 0.85rem; }
-    .option-btn.active { background: #fb6f92; color: #fff; border-color: #fb6f92; box-shadow: 0 5px 15px rgba(251,111,146,0.4); transform: scale(1.05); }
-    input[type="color"] { -webkit-appearance: none; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; padding: 0; background: none; }
-    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-    input[type="color"]::-webkit-color-swatch { border: 3px solid #ffcce0; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+    .option-btn.active { background: #fb6f92; color: #fff; border-color: #fb6f92; box-shadow: 0 5px 15px rgba(251,111,146,0.4); }
   </style>
 </head>
 <body>
@@ -168,18 +101,15 @@
         <img src="photo.png" alt="Logo" class="w-10 h-10 object-contain logo-blend group-active:scale-90 transition">
         <span class="font-playfair font-black text-2xl text-maroon-800 tracking-tight">FRENZY</span>
       </a>
-      
       <div class="hidden md:flex items-center gap-8">
         <a href="#shop" class="nav-link">Collections</a>
-        <a href="#menu" class="nav-link">Menu</a>
+        <a href="#menu" class="nav-link">Menu & Prices</a>
         <a href="#order" class="nav-link">Order</a>
         <a href="#events" class="nav-link">Events</a>
       </div>
-      
       <button onclick="openStudio()" class="bg-maroon-800 text-gold-400 font-bold px-6 py-2.5 rounded-full text-sm hover:bg-maroon-900 active:scale-95 transition shadow-lg hidden md:flex items-center gap-2">
         <i class="fas fa-magic"></i> 2D Studio
       </button>
-      
       <button class="md:hidden text-2xl text-maroon-800 active:scale-75 transition"><i class="fas fa-bars"></i></button>
     </div>
   </nav>
@@ -191,10 +121,9 @@
             Welcome to <span class="text-transparent bg-clip-text bg-gradient-to-r from-maroon-800 to-blush-500">FRENZY.</span>
         </h1>
         <p class="text-xl text-gray-600 font-bold tracking-widest uppercase mb-10 reveal active delay-100">Gaborone's Premier Cake Studio</p>
-        
         <div class="flex flex-col sm:flex-row justify-center gap-4 reveal active delay-200">
             <a href="#shop" class="btn-primary px-8 py-4 text-lg shadow-xl hover:shadow-2xl"><i class="fas fa-cake mr-2"></i> Browse Collections</a>
-            <button onclick="openStudio()" class="glass-solid px-8 py-4 text-lg font-bold text-maroon-800 hover:bg-white active:scale-95 transition"><i class="fas fa-flask mr-2"></i> Open Beta Studio</button>
+            <button onclick="openStudio()" class="glass px-8 py-4 text-lg font-bold text-maroon-800 hover:bg-white active:scale-95 transition"><i class="fas fa-flask mr-2"></i> Open Beta Studio</button>
         </div>
     </div>
   </header>
@@ -204,60 +133,22 @@
       <div class="text-center mb-16 reveal">
         <h2 class="font-playfair text-5xl font-black text-maroon-800 mb-2">Signature Collections</h2>
       </div>
-      
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div class="glass overflow-hidden group reveal delay-100 flex flex-col">
-          <div class="h-64 relative overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            <span class="absolute top-3 right-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-maroon-800">Bestseller</span>
-          </div>
-          <div class="p-6 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-xl text-maroon-800">Pink Ombré Dream</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <span class="font-bold text-xl">P 650</span>
-              <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
-            </div>
-          </div>
+          <div class="h-64 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+          <div class="p-6 flex flex-col flex-grow"><h4 class="font-playfair font-bold text-xl text-maroon-800">Pink Ombré Dream</h4><div class="flex justify-between items-center mt-auto pt-4"><span class="font-bold text-xl">P 650</span><a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800"><i class="fas fa-plus"></i></a></div></div>
         </div>
-
         <div class="glass overflow-hidden group reveal delay-200 flex flex-col">
-          <div class="h-64 relative overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-          </div>
-          <div class="p-6 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-xl text-maroon-800">Pastel Party</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <span class="font-bold text-xl">P 550</span>
-              <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
-            </div>
-          </div>
+          <div class="h-64 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+          <div class="p-6 flex flex-col flex-grow"><h4 class="font-playfair font-bold text-xl text-maroon-800">Pastel Party</h4><div class="flex justify-between items-center mt-auto pt-4"><span class="font-bold text-xl">P 550</span><a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800"><i class="fas fa-plus"></i></a></div></div>
         </div>
-
         <div class="glass overflow-hidden group reveal delay-300 flex flex-col">
-          <div class="h-64 relative overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            <span class="absolute top-3 right-3 bg-maroon-800 text-gold-400 px-3 py-1 rounded-full text-xs font-bold">Premium</span>
-          </div>
-          <div class="p-6 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-xl text-maroon-800">Floral Wedding</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <span class="font-bold text-xl">P 2500</span>
-              <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
-            </div>
-          </div>
+          <div class="h-64 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+          <div class="p-6 flex flex-col flex-grow"><h4 class="font-playfair font-bold text-xl text-maroon-800">Floral Wedding</h4><div class="flex justify-between items-center mt-auto pt-4"><span class="font-bold text-xl">P 2500</span><a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800"><i class="fas fa-plus"></i></a></div></div>
         </div>
-
         <div class="glass overflow-hidden group reveal delay-100 flex flex-col">
-          <div class="h-64 relative overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-          </div>
-          <div class="p-6 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-xl text-maroon-800">Frenzy Cupcakes</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <span class="font-bold text-xl">P 350</span>
-              <a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800 hover:bg-blush-500 hover:text-white transition"><i class="fas fa-plus"></i></a>
-            </div>
-          </div>
+          <div class="h-64 relative overflow-hidden"><img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
+          <div class="p-6 flex flex-col flex-grow"><h4 class="font-playfair font-bold text-xl text-maroon-800">Cupcake Box</h4><div class="flex justify-between items-center mt-auto pt-4"><span class="font-bold text-xl">P 350</span><a href="#order" class="w-10 h-10 rounded-full bg-blush-200 flex items-center justify-center text-maroon-800"><i class="fas fa-plus"></i></a></div></div>
         </div>
       </div>
     </div>
@@ -269,45 +160,96 @@
         <h2 class="font-playfair text-5xl font-black text-maroon-800">Menu & Pricing</h2>
       </div>
       <div class="grid lg:grid-cols-2 gap-8">
+        
         <div class="glass p-8 reveal delay-100">
-          <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6">Base Styles</h3>
-          <div class="space-y-4 text-gray-700">
-            <div class="flex justify-between font-bold"><span>Naked Sponge (5" - 12")</span> <span>P300 - P700</span></div>
-            <div class="flex justify-between font-bold"><span>Buttercream (5" - 10")</span> <span>P450 - P850</span></div>
-            <div class="flex justify-between font-bold"><span>Smooth Fondant</span> <span>P550 - P1000</span></div>
-            <div class="flex justify-between font-bold"><span>2-Layer Tier</span> <span>P900 - P2800</span></div>
-            <div class="flex justify-between font-bold"><span>Bento Mini</span> <span>P150</span></div>
+          <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6 text-maroon-800">Standard Cakes</h3>
+          <div class="space-y-4 text-sm md:text-base text-gray-700">
+            <div class="flex justify-between"><span><strong>Naked Cake</strong> (5", 6", 8", 10", 12")</span> <span class="font-bold">P300 - P700</span></div>
+            <div class="flex justify-between"><span><strong>Buttercream</strong> (5", 6", 8", 10")</span> <span class="font-bold">P450 - P850</span></div>
+            <div class="flex justify-between"><span><strong>Fondant</strong> (5", 6", 8", 10", 12")</span> <span class="font-bold">P550 - P1000</span></div>
+            <div class="mt-4 pt-4 border-t border-gray-100 font-bold text-maroon-800">Tiered Celebrations:</div>
+            <div class="flex justify-between"><span>2-Tier (4+6 to 14+16)</span> <span class="font-bold">P900 - P2800</span></div>
+            <div class="flex justify-between"><span>3-Tier (6+8+10 to 8+12+14)</span> <span class="font-bold">P2500 - P3200</span></div>
+            <div class="flex justify-between"><span>4-Tier (4+6+8+10)</span> <span class="font-bold">P2500</span></div>
+            <div class="flex justify-between"><span>4-Tier (8+10+12+14)</span> <span class="font-bold">P4500</span></div>
           </div>
         </div>
+
         <div class="glass p-8 reveal delay-200">
-          <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6">Flavors & Add-ons</h3>
-          <p class="mb-4 font-medium">Vanilla, Chocolate, Red Velvet, Carrot, Caramel, Black Forest</p>
-          <div class="space-y-3 text-sm font-bold text-maroon-800">
-            <p>+ Gold Foil (P40 - P80)</p>
-            <p>+ Metallic Wrap (P150)</p>
-            <p>+ Edible Photo Print (P60)</p>
-            <p class="text-blush-500">✨ Sprinkles & Flowers included FREE</p>
+          <h3 class="font-playfair text-2xl font-bold border-b border-blush-200 pb-4 mb-6 text-maroon-800">Treats & Extras</h3>
+          <div class="space-y-4 text-sm md:text-base text-gray-700">
+            <div class="flex justify-between font-bold text-maroon-800"><span>Cinnamon Rolls (Mini 12/24)</span> <span>P200 / P400</span></div>
+            <div class="flex justify-between font-bold text-maroon-800"><span>Cinnamon Rolls (Large 6/12)</span> <span>P200 / P400</span></div>
+            <div class="flex justify-between"><span>Bento Cake (Standard)</span> <span class="font-bold">P150</span></div>
+            <div class="flex justify-between"><span>Bento + 5 Cupcakes</span> <span class="font-bold">P320</span></div>
+            <div class="flex justify-between"><span>Cupcakes (6 / 12 / 24)</span> <span class="font-bold">P150 / P275 / P550</span></div>
+            <div class="flex justify-between"><span>Brownies (Each)</span> <span class="font-bold">P30</span></div>
+            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between text-xs font-bold uppercase text-blush-500">
+                <span>Edible Photo Print (A4) +P50</span>
+                <span>Fillings +P50</span>
+            </div>
           </div>
         </div>
+
       </div>
+    </div>
+  </section>
+
+  <section id="order" class="py-24 px-4 bg-white/40">
+    <div class="max-w-4xl mx-auto glass p-8 md:p-12 reveal">
+      <div class="text-center mb-8">
+        <h2 class="font-playfair text-4xl font-bold text-maroon-800">Custom Order</h2>
+        <p class="text-gray-600">Upload an inspiration photo to get an instant AI price estimate.</p>
+      </div>
+      <form class="space-y-6" onsubmit="event.preventDefault(); alert('Request Sent!');">
+        <div class="grid md:grid-cols-2 gap-6">
+          <input type="text" placeholder="Your Name" class="form-input" required>
+          <input type="tel" placeholder="Phone Number" class="form-input" required>
+        </div>
+        
+        <div class="relative overflow-hidden p-6 border-2 border-dashed border-frenzy-dark rounded-2xl text-center cursor-pointer hover:bg-white active:scale-95 transition-all group" onclick="document.getElementById('ai-upload').click()">
+            <div id="scan-overlay" class="absolute inset-0 bg-black/5 backdrop-blur-sm z-10 hidden flex-col items-center justify-center">
+                <div class="scan-line top-0 w-full absolute"></div>
+                <p class="text-maroon-800 font-bold animate-pulse bg-white px-4 py-1 rounded-full shadow-lg">Scanning Design Complexity...</p>
+            </div>
+            
+            <i class="fas fa-magic text-3xl text-maroon-800 mb-2 group-hover:scale-110 transition"></i>
+            <p class="text-sm font-bold text-maroon-800">Upload Inspiration Photo</p>
+            <p class="text-xs text-gray-500">AI will detect size & estimate price</p>
+            <input type="file" id="ai-upload" class="hidden" accept="image/*">
+        </div>
+
+        <div id="ai-result" class="hidden p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-4">
+            <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center text-green-700 text-xl"><i class="fas fa-check"></i></div>
+            <div>
+                <p class="font-bold text-green-800">Smart Estimate Generated</p>
+                <p class="text-sm text-green-700">Based on design complexity: <span class="font-black text-lg">P 600 - P 900</span></p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div><label class="block text-sm font-bold mb-1">Style</label><select class="form-input"><option>Naked</option><option>Buttercream</option><option>Fondant</option><option>2-Tier</option><option>3-Tier</option><option>4-Tier</option></select></div>
+            <div><label class="block text-sm font-bold mb-1">Flavor</label><select class="form-input"><option>Vanilla</option><option>Chocolate</option><option>Red Velvet</option><option>Carrot</option><option>Caramel</option></select></div>
+        </div>
+
+        <textarea rows="4" class="form-input" placeholder="Additional details..."></textarea>
+        <button class="btn-primary w-full py-4 text-lg shadow-xl">Send Request</button>
+      </form>
     </div>
   </section>
 
   <section id="events" class="py-24 px-6 relative z-10">
     <div class="max-w-7xl mx-auto reveal">
       <div class="text-center mb-16">
-        <h2 class="font-playfair text-5xl font-black text-maroon-800">Community Events</h2>
+        <h2 class="font-playfair text-5xl font-black text-maroon-800">Upcoming Events</h2>
       </div>
       <div class="grid md:grid-cols-2 gap-8">
         <div class="glass flex flex-col md:flex-row overflow-hidden group hover:scale-[1.02] transition duration-500">
           <div class="md:w-1/3 bg-gradient-to-br from-blush-200 to-white flex items-center justify-center text-6xl py-8">🎨</div>
           <div class="p-8 md:w-2/3">
             <h3 class="font-playfair text-2xl font-bold mb-2">Masterclass</h3>
-            <p class="text-sm text-gray-600 mb-4">Learn piping & gold leaf techniques. Tools included.</p>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-xl">P 850</span>
-              <button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button>
-            </div>
+            <p class="text-sm text-gray-600 mb-4">Learn piping & gold leaf techniques.</p>
+            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 850</span><button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button></div>
           </div>
         </div>
         <div class="glass flex flex-col md:flex-row overflow-hidden group hover:scale-[1.02] transition duration-500 border-2 border-transparent hover:border-gold-400">
@@ -315,42 +257,11 @@
           <div class="p-8 md:w-2/3">
             <span class="bg-gold-400 text-maroon-800 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Popular</span>
             <h3 class="font-playfair text-2xl font-bold mb-2 mt-1">BYOC Picnic</h3>
-            <p class="text-sm text-gray-600 mb-4">Bring Your Own Cake! Community vibes, music & drinks.</p>
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-xl">P 150</span>
-              <button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button>
-            </div>
+            <p class="text-sm text-gray-600 mb-4">Bring Your Own Cake! Music & drinks.</p>
+            <div class="flex justify-between items-center"><span class="font-bold text-xl">P 150</span><button class="bg-maroon-800 text-white px-6 py-2 rounded-full text-sm font-bold">Get Ticket</button></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="order" class="py-24 px-4">
-    <div class="max-w-4xl mx-auto glass p-8 md:p-12 reveal">
-      <div class="text-center mb-8">
-        <h2 class="font-playfair text-4xl font-bold text-maroon-800">Custom Order</h2>
-      </div>
-      <form class="space-y-6" onsubmit="event.preventDefault(); alert('Request Sent!');">
-        <div class="grid md:grid-cols-2 gap-6">
-          <input type="text" placeholder="Your Name" class="form-input" required>
-          <input type="tel" placeholder="Phone Number" class="form-input" required>
-        </div>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('inspo').click()">
-                <i class="fas fa-camera text-2xl text-maroon-800 mb-2"></i>
-                <p class="text-xs font-bold">Upload Inspo</p>
-                <input type="file" id="inspo" hidden>
-            </div>
-            <div class="p-4 border-2 border-dashed border-maroon-800/30 rounded-xl text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('edible').click()">
-                <i class="fas fa-user text-2xl text-maroon-800 mb-2"></i>
-                <p class="text-xs font-bold">Upload Edible Photo</p>
-                <input type="file" id="edible" hidden>
-            </div>
-        </div>
-        <textarea rows="4" class="form-input" placeholder="Describe your dream cake..."></textarea>
-        <button class="btn-primary w-full py-4 text-lg shadow-xl">Send Request</button>
-      </form>
     </div>
   </section>
 
@@ -362,93 +273,53 @@
 
 <div id="studio-page" class="fixed inset-0 z-[200] bg-[#fff0f6] overflow-y-auto hidden">
   <nav class="sticky top-0 bg-white/90 backdrop-blur-md p-4 flex justify-between items-center shadow-sm z-50">
-    <div class="flex items-center gap-3">
-        <span class="bg-maroon-800 text-gold-400 text-xs font-bold px-2 py-1 rounded">BETA</span>
-        <span class="font-playfair font-bold text-xl text-maroon-800">2D Studio</span>
-    </div>
+    <div class="flex items-center gap-3"><span class="bg-maroon-800 text-gold-400 text-xs font-bold px-2 py-1 rounded">BETA</span><span class="font-playfair font-bold text-xl text-maroon-800">2D Studio</span></div>
     <button onclick="closeStudio()" class="bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center font-bold hover:bg-gray-200 transition"><i class="fas fa-times"></i></button>
   </nav>
-
   <div class="max-w-6xl mx-auto px-4 py-8 grid lg:grid-cols-2 gap-8">
     <div class="sticky top-24">
-        <div id="cake-canvas-wrap">
-            <div id="cake-2d-container" class="cake-container"></div>
-        </div>
-        <div class="text-center mt-6">
-            <p class="text-xs font-bold text-gray-400 uppercase">Estimate</p>
-            <p class="font-playfair text-4xl font-black text-maroon-800" id="price-display">P 300</p>
-        </div>
+        <div id="cake-canvas-wrap"><div id="cake-2d-container" class="cake-container"></div></div>
+        <div class="text-center mt-6"><p class="text-xs font-bold text-gray-400 uppercase">Estimate</p><p class="font-playfair text-4xl font-black text-maroon-800" id="price-display">P 300</p></div>
     </div>
     <div class="space-y-6 pb-20">
-        <div class="glass p-6">
-            <h4 class="font-bold text-maroon-800 mb-3">Shape</h4>
-            <div class="grid grid-cols-3 gap-2" id="style-btns">
-                <button class="option-btn active" data-style="naked">Naked</button>
-                <button class="option-btn" data-style="buttercream">Butter</button>
-                <button class="option-btn" data-style="fondant">Fondant</button>
-                <button class="option-btn" data-style="twolayer">2-Tier</button>
-                <button class="option-btn" data-style="wedding">Wedding</button>
-                <button class="option-btn" data-style="bento">Bento</button>
-            </div>
-        </div>
-        <div class="glass p-6">
-            <h4 class="font-bold text-maroon-800 mb-3">Size</h4>
-            <div class="flex flex-wrap gap-2" id="size-btns"></div>
-        </div>
-        <div class="glass p-6">
-            <h4 class="font-bold text-maroon-800 mb-3">Color & Text</h4>
-            <div class="flex gap-4 items-center">
-                <input type="color" id="color-picker" value="#ffcce0">
-                <input type="text" id="cake-text" placeholder="Inscription..." class="form-input">
-            </div>
-        </div>
-        <div class="glass p-6 bg-yellow-50/50 border-yellow-200">
-            <h4 class="font-bold text-yellow-800 mb-3">Gold Foil</h4>
-            <select id="foil-select" class="form-input bg-white"><option value="none" data-price="0">None</option><option value="top" data-price="40">Top Flakes (+P40)</option><option value="sides" data-price="50">Side Flakes (+P50)</option></select>
-        </div>
-        <div class="glass p-6">
-            <h4 class="font-bold text-maroon-800 mb-3">Free Add-ons</h4>
-            <select id="sprinkles-select" class="form-input mb-2"><option value="none">No Sprinkles</option><option value="rainbow">Rainbow</option><option value="pink">Pink</option></select>
-            <select id="flower-select" class="form-input"><option value="none">No Flowers</option><option value="real">Real Roses</option><option value="fake">Sugar Flowers</option></select>
-        </div>
-        <div class="glass p-6">
-            <button class="w-full py-3 bg-blush-200 text-maroon-800 font-bold rounded-xl" onclick="document.getElementById('studio-edible').click()">Upload Edible Photo</button>
-            <input type="file" id="studio-edible" hidden>
-        </div>
+        <div class="glass p-6"><h4 class="font-bold text-maroon-800 mb-3">Shape</h4><div class="grid grid-cols-3 gap-2" id="style-btns"><button class="option-btn active" data-style="naked">Naked</button><button class="option-btn" data-style="buttercream">Butter</button><button class="option-btn" data-style="fondant">Fondant</button><button class="option-btn" data-style="twolayer">2-Tier</button><button class="option-btn" data-style="wedding">3-Tier</button><button class="option-btn" data-style="bento">Bento</button></div></div>
+        <div class="glass p-6"><h4 class="font-bold text-maroon-800 mb-3">Size</h4><div class="flex flex-wrap gap-2" id="size-btns"></div></div>
+        <div class="glass p-6"><h4 class="font-bold text-maroon-800 mb-3">Color & Text</h4><div class="flex gap-4 items-center"><input type="color" id="color-picker" value="#ffcce0"><input type="text" id="cake-text" placeholder="Inscription..." class="form-input"></div></div>
+        <div class="glass p-6 bg-yellow-50/50 border-yellow-200"><h4 class="font-bold text-yellow-800 mb-3">Gold Foil</h4><select id="foil-select" class="form-input bg-white"><option value="none" data-price="0">None</option><option value="top" data-price="40">Top (+P40)</option><option value="sides" data-price="50">Sides (+P50)</option></select></div>
+        <div class="glass p-6"><h4 class="font-bold text-maroon-800 mb-3">Free Add-ons</h4><select id="sprinkles-select" class="form-input mb-2"><option value="none">No Sprinkles</option><option value="rainbow">Rainbow</option></select><select id="flower-select" class="form-input"><option value="none">No Flowers</option><option value="real">Real Roses</option></select></div>
+        <div class="glass p-6"><button class="w-full py-3 bg-blush-200 text-maroon-800 font-bold rounded-xl" onclick="document.getElementById('studio-edible').click()">Upload Edible Photo</button><input type="file" id="studio-edible" hidden></div>
     </div>
   </div>
 </div>
 
 <script>
-  window.onload = () => {
-      document.querySelector('.loader-logo').style.transform = 'scale(1)';
-      document.querySelector('.loader-logo').style.opacity = '1';
-      setTimeout(() => { document.body.classList.add('loaded'); document.getElementById('loader').style.opacity = '0'; }, 1500);
-      setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 2300);
-  };
-
-  window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const orb1 = document.getElementById('orb1');
-      const orb2 = document.getElementById('orb2');
-      const navbar = document.getElementById('navbar');
-
-      orb1.style.transform = `translateY(${scrollY * 0.2}px)`;
-      orb2.style.transform = `translateY(-${scrollY * 0.1}px)`;
-
-      if (scrollY > 50) navbar.classList.add('scrolled');
-      else navbar.classList.remove('scrolled');
-
-      document.querySelectorAll('.reveal').forEach(el => {
-          if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
-      });
+  window.onload = () => { document.querySelector('.loader-logo').style.transform = 'scale(1)'; document.querySelector('.loader-logo').style.opacity = '1'; setTimeout(() => { document.body.classList.add('loaded'); document.getElementById('loader').style.opacity = '0'; }, 1500); setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 2300); };
+  window.addEventListener('scroll', () => { const s = window.scrollY; document.getElementById('orb1').style.transform = `translateY(${s * 0.2}px)`; document.getElementById('orb2').style.transform = `translateY(-${s * 0.1}px)`; if (s > 50) document.getElementById('navbar').classList.add('scrolled'); else document.getElementById('navbar').classList.remove('scrolled'); document.querySelectorAll('.reveal').forEach(el => { if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); }); });
+  
+  // AI SCANNER LOGIC
+  document.getElementById('ai-upload').addEventListener('change', (e) => {
+      if(e.target.files.length > 0) {
+          const overlay = document.getElementById('scan-overlay');
+          const line = document.querySelector('.scan-line');
+          const result = document.getElementById('ai-result');
+          
+          overlay.classList.remove('hidden');
+          overlay.classList.add('flex');
+          line.style.display = 'block';
+          
+          setTimeout(() => {
+              overlay.classList.add('hidden');
+              line.style.display = 'none';
+              result.classList.remove('hidden');
+          }, 3000); // 3 second scan simulation
+      }
   });
 
   const studio = document.getElementById('studio-page');
   function openStudio() { studio.classList.remove('hidden'); setTimeout(() => studio.classList.add('open'), 10); document.body.style.overflow='hidden'; }
   function closeStudio() { studio.classList.remove('open'); setTimeout(() => { studio.classList.add('hidden'); document.body.style.overflow=''; }, 500); }
 
-  const PRICING = { naked: {'5"':300,'8"':500}, buttercream: {'5"':450,'8"':750}, fondant: {'5"':550,'8"':800}, twolayer: {'4"+6"':900}, wedding: {'3-Tier':2500}, bento: {'4"':150} };
+  const PRICING = { naked: {'5"':300,'6"':400,'8"':500,'10"':600,'12"':700}, buttercream: {'5"':450,'6"':650,'8"':750,'10"':850}, fondant: {'5"':550,'6"':700,'8"':800,'10"':900,'12"':1000}, twolayer: {'4+6':900,'6+8':1500,'8+10':1600,'10+12':2000}, wedding: {'3-Tier (Standard)':2500}, bento: {'4"':150} };
   const state = { style: 'naked', size: '5"', color: '#ffcce0', foilPrice: 0, text: '', ediblePhoto: null };
 
   function render() {
@@ -464,38 +335,16 @@
           div.style.width = t.w*3 + 'px'; div.style.height = t.h + 'px'; div.style.zIndex = t.z;
           div.style.background = state.style==='naked' ? '#e8c48a' : state.color;
           if(state.style==='naked') div.classList.add('texture-naked');
-          
           const top = document.createElement('div'); top.className='cake-top-face';
           if(isTop && state.text) top.innerHTML = `<div class="cake-text-wrapper"><span class="cake-text" style="color:${state.style==='naked'?'#590d22':'#fff'}">${state.text}</span></div>`;
           if(isTop && state.ediblePhoto) { const p = document.createElement('div'); p.className='photo-print-layer'; p.style.backgroundImage=`url(${state.ediblePhoto})`; top.appendChild(p); }
-          
-          if(state.style!=='naked') {
-              const pipe = document.createElement('div'); pipe.className='cake-piping';
-              pipe.style.backgroundImage=`radial-gradient(circle at 10px 9px, ${state.color} 9px, transparent 10px)`;
-              div.appendChild(pipe);
-          }
-          
-          if(state.foil !== 'none') {
-              const f = document.createElement('div'); f.className='foil-layer';
-              if(state.foil === 'top' || state.foil === 'both') top.appendChild(f.cloneNode());
-              if(state.foil === 'sides' || state.foil === 'both') div.appendChild(f);
-          }
-
-          if(isTop && state.flowers && state.flowers !== 'none') {
-             const icon = state.flowers === 'real' ? '🌹' : '🌸';
-             const flower = document.createElement('div'); flower.className='flower-icon'; flower.innerText = icon;
-             flower.style.top = '-10px'; top.appendChild(flower);
-          }
-
+          if(state.style!=='naked') { const pipe = document.createElement('div'); pipe.className='cake-piping'; pipe.style.backgroundImage=`radial-gradient(circle at 10px 9px, ${state.color} 9px, transparent 10px)`; div.appendChild(pipe); }
+          if(state.foil !== 'none') { const f = document.createElement('div'); f.className='foil-layer'; if(state.foil === 'top' || state.foil === 'both') top.appendChild(f.cloneNode()); if(state.foil === 'sides' || state.foil === 'both') div.appendChild(f); }
+          if(isTop && state.flowers && state.flowers !== 'none') { const icon = state.flowers === 'real' ? '🌹' : '🌸'; const flower = document.createElement('div'); flower.className='flower-icon'; flower.innerText = icon; flower.style.top = '-10px'; top.appendChild(flower); }
           div.appendChild(top); cont.appendChild(div);
       });
-      
-      const stand = document.createElement('div'); stand.innerHTML = `<div class="cake-stand-plate"></div><div class="cake-stand-base"></div>`;
-      stand.style.width = tiers[tiers.length-1].w*3 + 'px'; stand.style.position='relative'; stand.style.zIndex='1';
-      cont.appendChild(stand);
-      
-      const p = PRICING[state.style][state.size] || 300;
-      document.getElementById('price-display').innerText = `P ${p + parseInt(state.foilPrice)}`;
+      const stand = document.createElement('div'); stand.innerHTML = `<div class="cake-stand-plate"></div><div class="cake-stand-base"></div>`; stand.style.width = tiers[tiers.length-1].w*3 + 'px'; stand.style.position='relative'; stand.style.zIndex='1'; cont.appendChild(stand);
+      const p = PRICING[state.style][state.size] || 300; document.getElementById('price-display').innerText = `P ${p + parseInt(state.foilPrice)}`;
   }
 
   function initBtns() {
@@ -503,22 +352,16 @@
       Object.keys(PRICING[state.style]).forEach(s => {
           const b = document.createElement('button'); b.className = 'option-btn'; b.innerText = s;
           b.onclick = () => { state.size = s; render(); }; wrap.appendChild(b);
-      });
-      render();
+      }); render();
   }
 
-  document.getElementById('style-btns').onclick = (e) => { if(e.target.tagName==='BUTTON'){ 
-      document.querySelectorAll('#style-btns button').forEach(b=>b.classList.remove('active')); 
-      e.target.classList.add('active'); state.style = e.target.dataset.style; initBtns(); 
-  }};
-  
+  document.getElementById('style-btns').onclick = (e) => { if(e.target.tagName==='BUTTON'){ document.querySelectorAll('#style-btns button').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); state.style = e.target.dataset.style; initBtns(); }};
   document.getElementById('color-picker').oninput = (e) => { state.color = e.target.value; render(); };
   document.getElementById('cake-text').oninput = (e) => { state.text = e.target.value; render(); };
   document.getElementById('foil-select').onchange = (e) => { state.foil = e.target.value; state.foilPrice = e.target.options[e.target.selectedIndex].dataset.price; render(); };
   document.getElementById('flower-select').onchange = (e) => { state.flowers = e.target.value; render(); };
   document.getElementById('sprinkles-select').onchange = (e) => { state.sprinkles = e.target.value; render(); };
   document.getElementById('studio-edible').onchange = (e) => { const r = new FileReader(); r.onload=ev=>{state.ediblePhoto=ev.target.result; render();}; r.readAsDataURL(e.target.files[0]); };
-
   initBtns();
 </script>
 </body>
