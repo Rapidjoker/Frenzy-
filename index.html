@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRENZY | Cakes & Events</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -25,8 +25,30 @@
             }
         }
     </script>
+
     <style>
+        /* GLOBAL STYLES */
         html { scroll-behavior: smooth; }
+        body {
+            background-color: #fff0f5;
+            background-image: radial-gradient(#ffb7b2 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        
+        /* Ensure the 3D canvas doesn't break out of its box */
+        #three-container {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            cursor: grab;
+        }
+        #three-container:active { cursor: grabbing; }
     </style>
 </head>
 <body class="font-sans text-gray-700 overflow-x-hidden">
@@ -40,17 +62,16 @@
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Cakes</a>
-                    <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Builder</a>
+                    <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Menu</a>
+                    <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Studio</a>
                     <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Events</a>
-                    <a href="#contact" class="px-5 py-2 rounded-full bg-frenzy-dark text-white font-bold hover:bg-frenzy-text transition shadow-lg transform hover:-translate-y-1">Contact Us</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden text-center">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
             <h1 class="text-5xl md:text-7xl font-bold text-frenzy-text mb-6 leading-tight">
                 Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span>
             </h1>
@@ -69,14 +90,13 @@
             <h2 class="text-4xl font-bold text-center text-frenzy-text mb-12">Signature Creations</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover">
                         <span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark shadow-sm">Best Seller</span>
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-gray-800">Velvet Dream</h3>
-                        <p class="text-gray-500 text-sm mt-1">Available in 3 flavors</p>
                         <div class="mt-4 flex justify-between items-center">
                             <span class="text-xl font-bold text-frenzy-dark">P 550.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
@@ -84,13 +104,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cake" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-gray-800">Pastel Party</h3>
-                        <p class="text-gray-500 text-sm mt-1">Perfect for birthdays</p>
                         <div class="mt-4 flex justify-between items-center">
                             <span class="text-xl font-bold text-frenzy-dark">P 650.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
@@ -98,13 +117,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300 group">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
                     <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-bold text-gray-800">Frenzy Cupcake Box</h3>
-                        <p class="text-gray-500 text-sm mt-1">Mix & Match 12 pack</p>
                         <div class="mt-4 flex justify-between items-center">
                             <span class="text-xl font-bold text-frenzy-dark">P 350.00</span>
                             <button class="w-10 h-10 rounded-full bg-frenzy-light text-frenzy-dark flex items-center justify-center hover:bg-frenzy hover:text-white transition"><i class="fas fa-shopping-bag"></i></button>
@@ -121,7 +139,7 @@
                 
                 <div class="w-full lg:w-1/2 p-8 bg-white/60 backdrop-blur-md z-10 overflow-y-auto max-h-[800px]">
                     <h2 class="text-3xl font-bold text-frenzy-text mb-2">3D Cake Studio</h2>
-                    <p class="text-gray-600 mb-6">Drag the 3D cake to spin it, scroll to zoom.</p>
+                    <p class="text-gray-600 mb-6">Drag the 3D cake to spin it and view your custom design.</p>
 
                     <div class="space-y-6">
                         <div>
@@ -143,7 +161,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Edible Photo Overlay (Optional)</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Edible Photo Overlay</label>
                             <input type="file" id="imageUpload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-frenzy-light file:text-frenzy-dark hover:file:bg-frenzy hover:file:text-white transition cursor-pointer">
                             <button id="removeImageBtn" class="hidden mt-2 text-xs text-red-500 font-bold hover:underline">Remove Photo</button>
                         </div>
@@ -181,8 +199,11 @@
                     </div>
                 </div>
 
-                <div class="w-full lg:w-1/2 h-[600px] lg:h-auto bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] relative cursor-move">
-                    <div id="three-container" class="w-full h-full absolute inset-0"></div>
+                <div class="w-full lg:w-1/2 h-[500px] lg:h-auto bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] relative">
+                    <div class="absolute top-4 right-4 bg-white/50 px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark animate-pulse z-20">
+                        <i class="fas fa-hand-pointer mr-1"></i> Drag to spin
+                    </div>
+                    <div id="three-container" class="absolute inset-0"></div>
                 </div>
             </div>
         </div>
@@ -191,10 +212,8 @@
     <section id="events" class="py-20 bg-white/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center text-frenzy-text mb-4">Upcoming Events</h2>
-            <p class="text-center text-gray-500 mb-12">Learn, create, and eat.</p>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition">
+                <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden">
                     <div class="md:w-1/3 bg-gray-200">
                         <img src="https://images.unsplash.com/photo-1626202158925-52d3a0429a30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
                     </div>
@@ -202,28 +221,10 @@
                         <div>
                             <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">April 15th • 2:00 PM</div>
                             <h3 class="text-2xl font-bold text-gray-800 mb-2">Cake Decorating Masterclass</h3>
-                            <p class="text-gray-500 text-sm">Learn how to pipe buttercream flowers like a pro. Includes all tools and a 6-inch cake.</p>
                         </div>
                         <div class="mt-6 flex items-center justify-between">
                             <span class="text-2xl font-bold text-gray-800">P 850</span>
-                            <button class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition">
-                    <div class="md:w-1/3 bg-gray-200">
-                        <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-8 md:w-2/3 flex flex-col justify-between">
-                        <div>
-                            <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">May 2nd • 11:00 AM</div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-2">BYOC (Bring Your Own Cake) Picnic</h3>
-                            <p class="text-gray-500 text-sm">A community picnic. Bring a cake to share, we provide the drinks, music, and vibes.</p>
-                        </div>
-                        <div class="mt-6 flex items-center justify-between">
-                            <span class="text-2xl font-bold text-gray-800">P 150</span>
-                            <button class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
+                            <button class="bg-black text-white px-6 py-2 rounded-lg font-bold">Get Ticket</button>
                         </div>
                     </div>
                 </div>
@@ -231,19 +232,184 @@
         </div>
     </section>
 
-    <section id="contact" class="bg-white pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 grayscale hover:grayscale-0 transition">
-            <h3 class="text-2xl font-bold text-frenzy-text">FRENZY</h3>
-            <div class="flex justify-center gap-6 mt-6 mb-8 text-gray-400">
-                <i class="fab fa-instagram text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-                <i class="fab fa-tiktok text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-                <i class="fab fa-whatsapp text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
-            </div>
-            <p class="text-gray-400 text-sm">© 2026 Frenzy Cakes. Designed with sugar.</p>
-        </div>
+    <section id="contact" class="bg-white pt-16 pb-8 text-center">
+        <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 grayscale">
+        <h3 class="text-2xl font-bold text-frenzy-text">FRENZY</h3>
+        <p class="text-gray-400 text-sm mt-6">© 2026 Frenzy Cakes. Designed with sugar.</p>
     </section>
 
-    <script src="script.js"></script>
+    <script>
+        // --- 1. UI LOGIC ---
+        const priceData = { "5": 450, "6": 650, "8": 750, "10": 850 };
+        const sizeSelect = document.getElementById('cakeSize');
+        const priceDisplay = document.getElementById('priceDisplay');
+
+        sizeSelect.addEventListener('change', () => {
+            priceDisplay.innerText = `P ${priceData[sizeSelect.value]}`;
+            updateCakeSize();
+        });
+
+        // Topping Limits
+        const checkboxes = document.querySelectorAll('.topping-check');
+        const warning = document.getElementById('toppingWarning');
+
+        checkboxes.forEach(box => {
+            box.addEventListener('change', () => {
+                let checkedCount = document.querySelectorAll('.topping-check:checked').length;
+                if (checkedCount >= 3) {
+                    warning.classList.remove('hidden');
+                    checkboxes.forEach(cb => { if (!cb.checked) cb.disabled = true; });
+                } else {
+                    warning.classList.add('hidden');
+                    checkboxes.forEach(cb => cb.disabled = false);
+                }
+            });
+        });
+
+        // --- 2. THREE.JS 3D ENGINE ---
+        const container = document.getElementById('three-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 15, 25);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enableZoom = false; // Disabled zoom so you don't get stuck scrolling down the page
+        controls.minDistance = 10;
+        controls.maxDistance = 50;
+        controls.maxPolarAngle = Math.PI / 2 + 0.1; 
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // Cake Materials
+        let baseColor = '#ffcce0';
+        const sideMaterial = new THREE.MeshStandardMaterial({ color: baseColor, roughness: 0.7 });
+        let topMaterial = new THREE.MeshStandardMaterial({ color: baseColor, roughness: 0.7 });
+
+        let cakeGeometry = new THREE.CylinderGeometry(5, 5, 6, 64);
+        let cakeMesh = new THREE.Mesh(cakeGeometry, [sideMaterial, topMaterial, sideMaterial]);
+        cakeMesh.castShadow = true;
+        cakeMesh.position.y = 3;
+        scene.add(cakeMesh);
+
+        // Board
+        const boardGeo = new THREE.CylinderGeometry(7, 7, 0.3, 64);
+        const boardMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+        const boardMesh = new THREE.Mesh(boardGeo, boardMat);
+        boardMesh.receiveShadow = true;
+        boardMesh.position.y = -0.15;
+        scene.add(boardMesh);
+
+        // --- 3. DYNAMIC UPDATES ---
+        document.getElementById('cakeColorPicker').addEventListener('input', (e) => {
+            baseColor = e.target.value;
+            sideMaterial.color.set(baseColor);
+            if (!uploadedImageTexture) topMaterial.color.set(baseColor);
+            updateCakeTop();
+        });
+
+        function updateCakeSize() {
+            const size = parseInt(sizeSelect.value);
+            const radius = size * 0.7; 
+            const newGeo = new THREE.CylinderGeometry(radius, radius, 6, 64);
+            cakeMesh.geometry.dispose(); 
+            cakeMesh.geometry = newGeo;
+            boardMesh.scale.set((radius+2)/7, 1, (radius+2)/7);
+        }
+
+        let uploadedImageTexture = null;
+        const imageUpload = document.getElementById('imageUpload');
+        const removeImgBtn = document.getElementById('removeImageBtn');
+        const cakeTextInput = document.getElementById('cakeText');
+
+        imageUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const texture = new THREE.Texture(img);
+                        texture.needsUpdate = true;
+                        uploadedImageTexture = texture;
+                        updateCakeTop();
+                        removeImgBtn.classList.remove('hidden');
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeImgBtn.addEventListener('click', () => {
+            uploadedImageTexture = null;
+            imageUpload.value = '';
+            removeImgBtn.classList.add('hidden');
+            updateCakeTop();
+        });
+
+        cakeTextInput.addEventListener('input', updateCakeTop);
+
+        function updateCakeTop() {
+            const text = cakeTextInput.value;
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = baseColor;
+            ctx.fillRect(0, 0, 512, 512);
+
+            if (uploadedImageTexture) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(256, 256, 240, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.clip();
+                ctx.drawImage(uploadedImageTexture.image, 0, 0, 512, 512);
+                ctx.restore();
+            }
+
+            if (text) {
+                ctx.fillStyle = '#ffffff'; 
+                ctx.font = 'bold 50px Quicksand, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 10;
+                ctx.fillText(text, 256, 256);
+            }
+
+            const finalTexture = new THREE.CanvasTexture(canvas);
+            topMaterial.map = finalTexture;
+            topMaterial.color.set(0xffffff); 
+            topMaterial.needsUpdate = true;
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); 
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
 </body>
 </html>
