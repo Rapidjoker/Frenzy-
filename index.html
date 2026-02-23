@@ -1,478 +1,552 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRENZY | Cakes & Events</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FRENZY — Ultra Premium Cakes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { quicksand: ['Quicksand','sans-serif'], playfair: ['Playfair Display','serif'] },
+          colors: {
+            blush:   { 100:'#fff0f6', 200:'#ffcce0', 300:'#ffb3cc', 400:'#ff8fab', 500:'#fb6f92', 600:'#e05577' },
+            maroon:  { 800:'#590d22', 900:'#3d0913' },
+            gold:    { 400:'#f4c542', 500:'#e8b923' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Quicksand', sans-serif; background: #faf5f7; color: #590d22; overflow-x: hidden; }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        frenzy: { light: '#ffcce0', DEFAULT: '#ff8fab', dark: '#fb6f92', text: '#590d22' }
-                    },
-                    fontFamily: { sans: ['Quicksand', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #fff0f5;
-            background-image: radial-gradient(#ffb7b2 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        }
-        #canvas-container {
-            width: 100%;
-            height: 450px;
-            cursor: grab;
-        }
-        #canvas-container:active {
-            cursor: grabbing;
-        }
-    </style>
+    /* ── PREMIUM UI ELEMENTS ── */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 30px;
+      box-shadow: 0 20px 40px rgba(89,13,34,0.05);
+    }
+    
+    .nav-glass {
+      background: rgba(250, 245, 247, 0.85);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(251,111,146,0.1);
+      transition: all 0.4s ease;
+    }
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    /* ── TYPOGRAPHY & BUTTONS ── */
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #3d0913 0%, #fb6f92 50%, #e8b923 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .btn-luxe {
+      background: linear-gradient(135deg, #590d22, #891428);
+      color: #fff; font-weight: 700; letter-spacing: 1px;
+      border-radius: 50px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 10px 20px rgba(89,13,34,0.2);
+    }
+    .btn-luxe:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(89,13,34,0.3); }
+
+    .btn-option {
+      background: #fff; border: 2px solid #ffcce0; color: #590d22;
+      font-weight: 600; border-radius: 20px; transition: all 0.2s;
+    }
+    .btn-option.active, .btn-option:hover {
+      background: #fb6f92; color: #fff; border-color: #fb6f92;
+      box-shadow: 0 8px 20px rgba(251,111,146,0.3);
+    }
+
+    /* ── 3D CANVAS WRAPPER ── */
+    #builder-canvas-wrap {
+      width: 100%; height: 550px; border-radius: 30px; overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, #ffffff 0%, #fff0f6 100%);
+      cursor: grab; position: relative;
+    }
+    #builder-canvas-wrap:active { cursor: grabbing; }
+    #three-canvas { width: 100% !important; height: 100% !important; outline: none; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf5f7; }
+    ::-webkit-scrollbar-thumb { background: #ffcce0; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #fb6f92; }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
-<body class="font-sans text-gray-700 overflow-x-hidden">
+<body>
 
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass-panel">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img class="h-14 w-auto object-contain drop-shadow-md hover:scale-105 transition" src="photo.png" alt="FRENZY Logo">
-                    <span class="font-bold text-2xl text-frenzy-dark tracking-wide hidden sm:block">FRENZY</span>
-                </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a href="#shop" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Cakes</a>
-                    <a href="#builder" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Builder</a>
-                    <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Events</a>
-                </div>
+<nav id="navbar" class="fixed w-full z-50 nav-glass py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <span class="font-playfair font-black text-3xl text-maroon-800 tracking-tighter">FRENZY</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
+      <a href="#builder" class="hover:text-blush-500 transition">The Configurator</a>
+      <a href="#shop" class="hover:text-blush-500 transition">Collections</a>
+      <a href="#events" class="hover:text-blush-500 transition">Masterclasses</a>
+    </div>
+    <button class="btn-luxe px-6 py-2.5 text-sm hidden md:block" onclick="document.getElementById('builder').scrollIntoView()">
+      Build Yours
+    </button>
+  </div>
+</nav>
+
+<section class="pt-32 pb-20 px-6 min-h-[90vh] flex items-center relative overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-40">
+    <div style="position:absolute; top:-10%; left:-10%; width:50vw; height:50vw; background:radial-gradient(circle, #ffcce0 0%, transparent 70%); border-radius:50%; filter:blur(60px);"></div>
+    <div style="position:absolute; bottom:-10%; right:-10%; width:40vw; height:40vw; background:radial-gradient(circle, #f4c542 0%, transparent 70%); border-radius:50%; filter:blur(60px);"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <span class="inline-block py-1 px-4 rounded-full bg-blush-200 text-maroon-800 text-xs font-bold tracking-widest uppercase mb-6">The Future of Baking</span>
+      <h1 class="hero-title text-6xl md:text-8xl mb-6">Artistry in<br/>Every Slice.</h1>
+      <p class="text-lg md:text-xl text-maroon-800/80 mb-10 max-w-lg leading-relaxed font-medium">
+        Experience the world's most advanced cake configurator. Design, rotate, and perfect your masterpiece in real-time.
+      </p>
+      <div class="flex gap-4">
+        <button onclick="document.getElementById('builder').scrollIntoView()" class="btn-luxe px-8 py-4 text-lg">Enter Configurator</button>
+      </div>
+    </div>
+    <div class="relative h-[500px] w-full hidden lg:block rounded-full bg-gradient-to-tr from-blush-200 to-white shadow-2xl flex items-center justify-center">
+      <span class="text-[12rem]">🎂</span>
+    </div>
+  </div>
+</section>
+
+<section id="builder" class="py-20 px-6 bg-white relative">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="font-playfair font-black text-5xl text-maroon-800">The Configurator</h2>
+      <p class="text-maroon-800/60 mt-4 font-medium">Watch your design come to life in true 3D.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-10">
+      
+      <div class="lg:col-span-7 relative">
+        <div class="glass-panel p-2 sticky top-24">
+          <div id="builder-canvas-wrap">
+            <div class="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-maroon-800 shadow-sm pointer-events-none">
+              <i class="fa fa-arrows-rotate mr-2"></i>Drag to rotate 360°
+            </div>
+          </div>
+          <div class="p-6 flex justify-between items-center bg-white/50 rounded-b-3xl mt-2">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-widest text-maroon-800/50 mb-1">Live Estimate</p>
+              <p class="font-playfair text-4xl font-black text-maroon-800" id="price-display">P 0</p>
+            </div>
+            <button class="btn-luxe px-8 py-4">Add to Order <i class="fa fa-arrow-right ml-2"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 space-y-6">
+        
+        <div class="glass-panel p-8">
+          <h3 class="font-bold text-lg mb-4 text-maroon-800 border-b border-blush-200 pb-2">1. Base Architecture</h3>
+          <div class="grid grid-cols-2 gap-3" id="style-btns">
+            <button class="btn-option active py-3" data-style="naked">Naked Sponge</button>
+            <button class="btn-option py-3" data-style="buttercream">Buttercream</button>
+            <button class="btn-option py-3" data-style="fondant">Smooth Fondant</button>
+            <button class="btn-option py-3" data-style="twolayer">2-Tier Display</button>
+            <button class="btn-option py-3" data-style="wedding">3-Tier Wedding</button>
+            <button class="btn-option py-3" data-style="bento">Bento Mini</button>
+          </div>
+        </div>
+
+        <div class="glass-panel p-8">
+          <h3 class="font-bold text-lg mb-4 text-maroon-800 border-b border-blush-200 pb-2">2. Dimensions</h3>
+          <div class="flex flex-wrap gap-2" id="size-btns">
             </div>
         </div>
-    </nav>
 
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-frenzy-text mb-6 leading-tight">
-                Life is sweet.<br><span class="text-frenzy-dark">Eat the cake.</span>
-            </h1>
-            <p class="mt-4 text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-                From interactive 3D designs to immersive cake decorating events. Welcome to Frenzy.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="#builder" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition transform hover:scale-105">Build Custom Cake</a>
-            </div>
+        <div class="glass-panel p-8" id="color-section">
+          <h3 class="font-bold text-lg mb-4 text-maroon-800 border-b border-blush-200 pb-2">3. Primary Color</h3>
+          <div class="flex flex-wrap gap-3" id="color-swatches">
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#ffcce0" data-color="#ffcce0"></button>
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#ffffff; border-color:#eee;" data-color="#ffffff"></button>
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#2b2d42" data-color="#2b2d42"></button>
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#a7c957" data-color="#a7c957"></button>
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#a2d2ff" data-color="#a2d2ff"></button>
+            <button class="w-10 h-10 rounded-full border-2 border-transparent focus:border-maroon-800 transition" style="background:#d4a373" data-color="#d4a373"></button>
+          </div>
         </div>
-    </header>
 
-    <section id="builder" class="py-20">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
-                
-                <div class="w-full md:w-1/2 p-8 md:p-12 bg-white/50 z-10">
-                    <h2 class="text-3xl font-bold text-frenzy-text mb-2">Build Your Cake</h2>
-                    <p class="text-gray-600 mb-6">Design your dream cake. Drag the 3D model to view all sides!</p>
+        <div class="glass-panel p-8">
+          <h3 class="font-bold text-lg mb-4 text-maroon-800 border-b border-blush-200 pb-2">4. Premium Embellishments</h3>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-bold text-maroon-800 mb-2"><i class="fa fa-sparkles text-gold-500"></i> Gold Foil (+P)</label>
+            <select id="foil-select" class="w-full p-3 rounded-xl border-2 border-blush-200 bg-white focus:border-fb6f92 outline-none font-semibold text-maroon-800">
+              <option value="none" data-price="0">None</option>
+              <option value="top" data-price="40">Top Flakes (+P40)</option>
+              <option value="sides" data-price="50">Side Flakes (+P50)</option>
+              <option value="both" data-price="80">Top & Sides Scattered (+P80)</option>
+              <option value="cover" data-price="150">Fully Wrapped (+P150)</option>
+            </select>
+          </div>
 
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Cake Style</label>
-                            <select id="cakeStyle" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
-                                <option value="naked">Naked Cake</option>
-                                <option value="buttercream">Buttercream Cake</option>
-                                <option value="fondant">Cake with Fondant</option>
-                                <option value="twolayer">2-Layer Cake</option>
-                                <option value="bento">Bento Cake</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Size / Tiers</label>
-                            <select id="cakeSize" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none font-semibold">
-                                </select>
-                        </div>
-
-                        <div id="colorPickerContainer">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Icing Color</label>
-                            <div class="flex gap-3 flex-wrap">
-                                <button data-color="#ffcce0" class="color-btn w-10 h-10 rounded-full bg-[#ffcce0] ring-2 ring-gray-400"></button>
-                                <button data-color="#a7c957" class="color-btn w-10 h-10 rounded-full bg-[#a7c957] ring-2 ring-transparent"></button>
-                                <button data-color="#a2d2ff" class="color-btn w-10 h-10 rounded-full bg-[#a2d2ff] ring-2 ring-transparent"></button>
-                                <button data-color="#ffffff" class="color-btn w-10 h-10 rounded-full bg-[#ffffff] border border-gray-200 ring-2 ring-transparent"></button>
-                                <button data-color="#2b2d42" class="color-btn w-10 h-10 rounded-full bg-[#2b2d42] ring-2 ring-transparent"></button>
-                                <button data-color="#3e2723" class="color-btn w-10 h-10 rounded-full bg-[#3e2723] ring-2 ring-transparent"></button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Gold Foil Decoration</label>
-                            <select id="goldFoil" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none">
-                                <option value="none">None</option>
-                                <option value="top">Top Flakes Only (+ P 40)</option>
-                                <option value="sides">Sides Flakes Only (+ P 50)</option>
-                                <option value="both">Scattered Everywhere (+ P 80)</option>
-                                <option value="cover">Fully Covered (+ P 150)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-1">Inside Flavor</label>
-                            <select class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none">
-                                <option>Vanilla</option>
-                                <option>Chocolate</option>
-                                <option>Red Velvet</option>
-                                <option>Carrot</option>
-                                <option>Caramel</option>
-                                <option>Rainbow Velvet</option>
-                                <option>Lemon Cake</option>
-                                <option>Black Forest</option>
-                            </select>
-                        </div>
-
-                        <div class="mt-6 pt-6 border-t border-gray-200">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-gray-500 font-bold uppercase tracking-wide">Estimated Price</span>
-                                <span id="priceDisplay" class="text-3xl font-bold text-frenzy-dark">P 300</span>
-                            </div>
-                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">
-                                Send to Decorator
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w-full md:w-1/2 bg-gradient-to-br from-[#ffecf2] to-[#ffb7b2] relative flex items-center">
-                    <div class="absolute top-4 left-4 bg-white/70 px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark z-20 shadow-sm pointer-events-none">
-                        <i class="fas fa-hand-pointer mr-1"></i> Drag to rotate
-                    </div>
-                    
-                    <div id="canvas-container"></div>
-                </div>
-            </div>
+          <div>
+            <label class="flex items-center gap-2 text-sm font-bold text-maroon-800 cursor-pointer">
+              <input type="checkbox" id="sprinkles-toggle" class="w-5 h-5 accent-fb6f92">
+              Add Rainbow Sprinkles (+P25)
+            </label>
+          </div>
         </div>
-    </section>
 
-    <section id="contact" class="bg-white pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 grayscale hover:grayscale-0 transition">
-            <h3 class="text-2xl font-bold text-frenzy-text">FRENZY</h3>
-            <p class="text-gray-400 text-sm mt-6">© 2024 Frenzy Cakes. Designed with sugar & code.</p>
+        <div class="glass-panel p-8">
+          <h3 class="font-bold text-lg mb-4 text-maroon-800 border-b border-blush-200 pb-2">5. Custom Inscription</h3>
+          <input type="text" id="cake-text" maxlength="20" placeholder="e.g. Happy Birthday Jess!" class="w-full p-4 rounded-xl border-2 border-blush-200 bg-white focus:border-fb6f92 outline-none font-bold text-maroon-800">
+          <p class="text-xs text-maroon-800/50 mt-2">Text will be elegantly piped onto the top tier.</p>
         </div>
-    </section>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+      </div>
+    </div>
+  </div>
+</section>
 
-        // --- PRICING & SIZE DATA ---
-        const cakeData = {
-            naked: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 300, radius: 2.5, height: 4 },
-                    { label: "6 Inches", val: "6", price: 400, radius: 3, height: 4.5 },
-                    { label: "8 Inches", val: "8", price: 500, radius: 4, height: 5 },
-                    { label: "10 Inches", val: "10", price: 600, radius: 5, height: 5.5 },
-                    { label: "12 Inches", val: "12", price: 700, radius: 6, height: 6 }
-                ]
-            },
-            buttercream: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 450, radius: 2.5, height: 4 },
-                    { label: "6 Inches", val: "6", price: 650, radius: 3, height: 4.5 },
-                    { label: "8 Inches", val: "8", price: 750, radius: 4, height: 5 },
-                    { label: "10 Inches", val: "10", price: 850, radius: 5, height: 5.5 }
-                ]
-            },
-            fondant: {
-                sizes: [
-                    { label: "5 Inches", val: "5", price: 550, radius: 2.5, height: 4 },
-                    { label: "6 Inches", val: "6", price: 700, radius: 3, height: 4.5 },
-                    { label: "8 Inches", val: "8", price: 800, radius: 4, height: 5 },
-                    { label: "10 Inches", val: "10", price: 900, radius: 5, height: 5.5 },
-                    { label: "12 Inches", val: "12", price: 1000, radius: 6, height: 6 }
-                ]
-            },
-            twolayer: {
-                sizes: [
-                    { label: "4 & 6 Inch", val: "4-6", price: 900, tiers: [{r:3, h:4}, {r:2, h:3.5}] },
-                    { label: "4 & 8 Inch", val: "4-8", price: 1100, tiers: [{r:4, h:4.5}, {r:2, h:3.5}] }, 
-                    { label: "6 & 8 Inch", val: "6-8", price: 1300, tiers: [{r:4, h:4.5}, {r:3, h:4}] },
-                    { label: "6 & 10 Inch", val: "6-10", price: 1450, tiers: [{r:5, h:5}, {r:3, h:4}] }, 
-                    { label: "8 & 10 Inch", val: "8-10", price: 1600, tiers: [{r:5, h:5}, {r:4, h:4.5}] },
-                    { label: "8 & 12 Inch", val: "8-12", price: 1800, tiers: [{r:6, h:5.5}, {r:4, h:4.5}] }, 
-                    { label: "10 & 12 Inch", val: "10-12", price: 2000, tiers: [{r:6, h:5.5}, {r:5, h:5}] },
-                    { label: "12 & 14 Inch", val: "12-14", price: 2400, tiers: [{r:7, h:6}, {r:6, h:5.5}] }, 
-                    { label: "14 & 16 Inch", val: "14-16", price: 2800, tiers: [{r:8, h:6.5}, {r:7, h:6}] }  
-                ]
-            },
-            bento: {
-                sizes: [
-                    { label: "Standard Bento (4 Inch)", val: "4", price: 150, radius: 2, height: 2.5 } 
-                ]
-            }
-        };
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // --- GLOBAL STATE ---
-        let currentColor = '#ffcce0';
-        let currentCakeGroup = null;
+  // --- BUSINESS LOGIC & PRICING ---
+  const PRICING = {
+    naked:       { '5"':300, '6"':400, '8"':500, '10"':600, '12"':700 },
+    buttercream: { '5"':450, '6"':650, '8"':750, '10"':850 },
+    fondant:     { '5"':550, '6"':700, '8"':800, '10"':900, '12"':1000 },
+    twolayer:    { '4"+6"':900, '6"+8"':1300, '8"+10"':1600, '10"+12"':2000 },
+    wedding:     { '6"+8"+10"':2500, '8"+10"+12"':3200 }, // NEW 3-Tier Option
+    bento:       { '4" Standard':150 }
+  };
 
-        // --- THREE.JS SCENE SETUP ---
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
+  const state = {
+    style: 'naked', size: '5"', color: '#ffcce0',
+    foil: 'none', foilPrice: 0,
+    sprinkles: false, text: ''
+  };
+
+  // --- THREE.JS ENGINE SETUP ---
+  const wrap = document.getElementById('builder-canvas-wrap');
+  const scene = new THREE.Scene();
+  
+  const camera = new THREE.PerspectiveCamera(45, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
+  camera.position.set(0, 15, 25);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  wrap.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.maxPolarAngle = Math.PI / 2 + 0.1; // Don't go below the plate
+  controls.minDistance = 10;
+  controls.maxDistance = 40;
+
+  // Lighting (Studio Setup)
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+  mainLight.position.set(10, 20, 10);
+  mainLight.castShadow = true;
+  mainLight.shadow.mapSize.width = 2048;
+  mainLight.shadow.mapSize.height = 2048;
+  scene.add(mainLight);
+  const backLight = new THREE.DirectionalLight(0xffcce0, 0.5);
+  backLight.position.set(-10, 10, -10);
+  scene.add(backLight);
+
+  // Presentation Plate
+  const plateGeo = new THREE.CylinderGeometry(10, 10.5, 0.5, 64);
+  const plateMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, metalness: 0.3 });
+  const plate = new THREE.Mesh(plateGeo, plateMat);
+  plate.position.y = -0.25;
+  plate.receiveShadow = true;
+  scene.add(plate);
+
+  let currentCakeGroup = new THREE.Group();
+  scene.add(currentCakeGroup);
+
+  // --- TEXTURE GENERATORS (The Magic) ---
+
+  // 1. Naked Sponge Texture
+  function createNakedTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#d2a679'; ctx.fillRect(0, 0, 512, 512); // Sponge
+    ctx.fillStyle = '#eee0cb'; // Cream filling
+    for(let i=1; i<4; i++) ctx.fillRect(0, (512/4)*i - 10, 512, 20);
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(2, 1);
+    return tex;
+  }
+
+  // 2. Gold Foil Flake Generator
+  function createGoldFlakes(density = 500) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024; canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFDF00';
+    for(let i=0; i<density; i++) {
+      ctx.beginPath();
+      let x = Math.random() * 1024, y = Math.random() * 1024;
+      ctx.moveTo(x, y);
+      for(let j=0; j<5; j++) ctx.lineTo(x + (Math.random()-0.5)*40, y + (Math.random()-0.5)*40);
+      ctx.fill();
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(1.5, 1.5);
+    return tex;
+  }
+
+  // 3. Sprinkles Texture Generator
+  function createSprinkles() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024; canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+    const colors = ['#fb6f92', '#a2d2ff', '#f4c542', '#ffffff', '#a7c957'];
+    for(let i=0; i<800; i++) {
+      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+      ctx.beginPath();
+      let x = Math.random() * 1024, y = Math.random() * 1024;
+      ctx.arc(x, y, 4 + Math.random()*3, 0, Math.PI*2);
+      ctx.fill();
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(2, 2);
+    return tex;
+  }
+
+  // 4. Dynamic Text Texture Generator
+  function createTextTexture(text, bgColor) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024; canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+    
+    // Fill background color
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    if (text) {
+      ctx.translate(512, 512);
+      ctx.font = "bold 80px 'Playfair Display', serif";
+      ctx.fillStyle = state.style === 'naked' ? '#590d22' : '#ffffff'; // Contrast text
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      
+      // Draw text in a slight curve
+      const radius = 250;
+      const angleStep = Math.PI / text.length;
+      let startAngle = -Math.PI/2 - ((text.length-1) * angleStep)/2;
+      
+      for(let i=0; i<text.length; i++) {
+        ctx.save();
+        ctx.rotate(startAngle + (i * angleStep));
+        ctx.translate(0, -radius);
+        ctx.fillText(text[i], 0, 0);
+        ctx.restore();
+      }
+    }
+    
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  // Materials Cache
+  const nakedTex = createNakedTexture();
+  const sprinkleTex = createSprinkles();
+  const goldFoilMat = new THREE.MeshStandardMaterial({
+    map: createGoldFlakes(), transparent: true, metalness: 1.0, roughness: 0.3, color: 0xffea00
+  });
+
+  // --- MESH BUILDER ---
+  function buildCake() {
+    // Clear existing
+    while(currentCakeGroup.children.length > 0){ 
+      const child = currentCakeGroup.children[0];
+      currentCakeGroup.remove(child); 
+    }
+
+    // Logic for Tiers
+    let tiers = [];
+    if (state.style === 'bento') {
+      tiers = [{ r: 2.5, h: 3 }];
+    } else if (state.style === 'twolayer') {
+      const sizes = state.size.split('+').map(s => parseInt(s));
+      tiers = [{ r: sizes[1]*0.5, h: 5 }, { r: sizes[0]*0.5, h: 4 }];
+    } else if (state.style === 'wedding') {
+      const sizes = state.size.split('+').map(s => parseInt(s));
+      tiers = [{ r: sizes[2]*0.5, h: 5 }, { r: sizes[1]*0.5, h: 5 }, { r: sizes[0]*0.5, h: 4.5 }];
+    } else {
+      tiers = [{ r: parseInt(state.size)*0.5, h: 5 }];
+    }
+
+    // Materials
+    let baseMat;
+    if (state.style === 'naked') {
+      baseMat = new THREE.MeshStandardMaterial({ map: nakedTex, roughness: 0.9 });
+    } else {
+      let roughness = state.style === 'buttercream' ? 1.0 : 0.4;
+      baseMat = new THREE.MeshStandardMaterial({ color: state.color, roughness: roughness });
+    }
+
+    // Build Geometries
+    let currentY = 0;
+    tiers.forEach((tier, index) => {
+      const isTopTier = (index === tiers.length - 1);
+      
+      // Top Text Texture Logic (Only apply to top tier)
+      let materials = [baseMat, baseMat, baseMat]; // [Sides, Top, Bottom]
+      if (isTopTier && state.text !== '') {
+        const textMat = new THREE.MeshStandardMaterial({ 
+          map: createTextTexture(state.text, state.style === 'naked' ? '#eee0cb' : state.color),
+          roughness: baseMat.roughness
+        });
+        materials[1] = textMat; // Apply to top face
+      }
+
+      const geo = new THREE.CylinderGeometry(tier.r, tier.r, tier.h, 64);
+      
+      // Full foil override
+      if (state.foil === 'cover') materials = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 1.0, roughness: 0.2 });
+
+      const mesh = new THREE.Mesh(geo, materials);
+      mesh.position.y = currentY + (tier.h / 2);
+      mesh.castShadow = true; mesh.receiveShadow = true;
+      currentCakeGroup.add(mesh);
+
+      // Add Embellishment Wrappers (Foil & Sprinkles)
+      if (state.foil !== 'none' && state.foil !== 'cover' || state.sprinkles) {
+        const wrapGeo = new THREE.CylinderGeometry(tier.r + 0.05, tier.r + 0.05, tier.h + 0.05, 64);
         
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(0, 18, 28);
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        container.appendChild(renderer.domElement);
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.minDistance = 10;
-        controls.maxDistance = 40;
-        controls.maxPolarAngle = Math.PI / 2 + 0.1; 
-
-        // Lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-        dirLight.position.set(15, 25, 15);
-        dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        scene.add(dirLight);
-
-        const fillLight = new THREE.DirectionalLight(0xffe4e1, 0.4);
-        fillLight.position.set(-10, 10, -10);
-        scene.add(fillLight);
-
-        // Add Cake Plate
-        const plateGeo = new THREE.CylinderGeometry(11, 11.5, 0.5, 64);
-        const plateMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, metalness: 0.2 });
-        const plate = new THREE.Mesh(plateGeo, plateMat);
-        plate.position.y = -0.25;
-        plate.receiveShadow = true;
-        scene.add(plate);
-
-        // --- TEXTURES AND MATERIALS ---
+        let foilSides = (state.foil === 'sides' || state.foil === 'both') ? goldFoilMat : new THREE.MeshBasicMaterial({transparent:true, opacity:0});
+        let foilTop = (state.foil === 'top' || state.foil === 'both') ? goldFoilMat : new THREE.MeshBasicMaterial({transparent:true, opacity:0});
         
-        // 1. Naked Cake Texture
-        function createNakedTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 512;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            
-            ctx.fillStyle = '#d2a679'; // Sponge
-            ctx.fillRect(0, 0, 512, 512);
-            
-            ctx.fillStyle = '#eee0cb'; // Cream filling
-            for(let i=1; i<4; i++) {
-                ctx.fillRect(0, (512/4)*i - 10, 512, 20);
-            }
-            
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(2, 1);
-            return texture;
-        }
-        const nakedTexture = createNakedTexture();
+        // Add sprinkles to sides if toggled
+        if(state.sprinkles) foilSides = new THREE.MeshStandardMaterial({ map: sprinkleTex, transparent: true });
 
-        // 2. Gold Foil Flake Generator (NEW)
-        function createGoldFlakes() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 1024;
-            canvas.height = 1024;
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0,0,1024,1024); // Transparent background
-            
-            ctx.fillStyle = '#FFDF00'; // Bright Gold
-            
-            // Draw random jagged flake blobs
-            for(let i=0; i<600; i++) {
-                ctx.beginPath();
-                let x = Math.random() * 1024;
-                let y = Math.random() * 1024;
-                ctx.moveTo(x, y);
-                // Create a jagged shape simulating foil
-                for(let j=0; j<6; j++) {
-                    ctx.lineTo(x + (Math.random()-0.5)*30, y + (Math.random()-0.5)*30);
-                }
-                ctx.fill();
-            }
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(1.5, 1.5);
-            return texture;
-        }
-        
-        // Gold Materials
-        const goldFlakeTex = createGoldFlakes();
-        const goldFoilMaterial = new THREE.MeshStandardMaterial({
-            map: goldFlakeTex,
-            transparent: true,
-            opacity: 1,
-            metalness: 1.0,   // Makes it shiny like metal
-            roughness: 0.3,   // Highly reflective
-            color: 0xffea00   // Tint
-        });
+        const wrapMesh = new THREE.Mesh(wrapGeo, [foilSides, foilTop, new THREE.MeshBasicMaterial({transparent:true, opacity:0})]);
+        wrapMesh.position.y = currentY + (tier.h / 2);
+        currentCakeGroup.add(wrapMesh);
+      }
 
-        const solidGoldMaterial = new THREE.MeshStandardMaterial({
-            color: 0xd4af37, // Metallic gold hex
-            metalness: 1.0,
-            roughness: 0.25
-        });
+      currentY += tier.h;
+    });
 
-        const invisibleMaterial = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 });
+    updatePrice();
+  }
 
-        // --- CAKE BUILDING LOGIC ---
-        function buildCake() {
-            const style = document.getElementById('cakeStyle').value;
-            const sizeSelect = document.getElementById('cakeSize');
-            const foilStyle = document.getElementById('goldFoil').value;
-            
-            // 1. Update Dropdown Options
-            if (sizeSelect.dataset.currentStyle !== style) {
-                sizeSelect.innerHTML = '';
-                cakeData[style].sizes.forEach((s, index) => {
-                    const opt = document.createElement('option');
-                    opt.value = index;
-                    opt.textContent = s.label;
-                    sizeSelect.appendChild(opt);
-                });
-                sizeSelect.dataset.currentStyle = style;
-            }
+  // --- UI EVENT LISTENERS ---
+  
+  function updatePrice() {
+    let base = PRICING[state.style][state.size] || 0;
+    let total = base + parseInt(state.foilPrice) + (state.sprinkles ? 25 : 0);
+    document.getElementById('price-display').innerText = `P ${total}`;
+  }
 
-            // 2. Get Selection & Pricing
-            const selectedIndex = sizeSelect.value || 0;
-            const config = cakeData[style].sizes[selectedIndex];
-            
-            // Calculate Foil Surcharge
-            let foilPrice = 0;
-            if (foilStyle === 'top') foilPrice = 40;
-            if (foilStyle === 'sides') foilPrice = 50;
-            if (foilStyle === 'both') foilPrice = 80;
-            if (foilStyle === 'cover') foilPrice = 150;
-
-            const finalPrice = config.price + foilPrice;
-            document.getElementById('priceDisplay').innerText = `P ${finalPrice}`;
-
-            // 3. UI Toggles
-            const colorPicker = document.getElementById('colorPickerContainer');
-            if(style === 'naked') colorPicker.classList.add('hidden');
-            else colorPicker.classList.remove('hidden');
-
-            // 4. Remove old cake
-            if(currentCakeGroup) {
-                scene.remove(currentCakeGroup);
-                currentCakeGroup = null;
-            }
-
-            currentCakeGroup = new THREE.Group();
-            
-            // Base Material
-            let cakeMaterial;
-            if (style === 'naked') {
-                cakeMaterial = new THREE.MeshStandardMaterial({ map: nakedTexture, roughness: 0.9 });
-            } else if (style === 'fondant') {
-                cakeMaterial = new THREE.MeshStandardMaterial({ color: currentColor, roughness: 0.6 });
-            } else { // Buttercream & Bento
-                cakeMaterial = new THREE.MeshStandardMaterial({ color: currentColor, roughness: 1.0 });
-            }
-
-            if(style === 'twolayer') {
-                createTier(config.tiers[0].r, config.tiers[0].h, 0, cakeMaterial, foilStyle);
-                createTier(config.tiers[1].r, config.tiers[1].h, config.tiers[0].h, cakeMaterial, foilStyle);
-            } else {
-                createTier(config.radius, config.height, 0, cakeMaterial, foilStyle);
-            }
-
-            scene.add(currentCakeGroup);
-        }
-
-        function createTier(radius, height, yOffset, baseMaterial, foilStyle) {
-            const geo = new THREE.CylinderGeometry(radius, radius, height, 64);
-            
-            // If "Fully Covered", override the base material to solid gold
-            let appliedMaterial = baseMaterial;
-            if (foilStyle === 'cover') appliedMaterial = solidGoldMaterial;
-
-            const mesh = new THREE.Mesh(geo, appliedMaterial);
-            mesh.position.y = yOffset + (height / 2);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            currentCakeGroup.add(mesh);
-
-            // Add Gold Flakes Wrapper if needed
-            if (foilStyle === 'top' || foilStyle === 'sides' || foilStyle === 'both') {
-                // Wrapper is slightly larger to prevent glitching/Z-fighting
-                const foilGeo = new THREE.CylinderGeometry(radius + 0.05, radius + 0.05, height + 0.05, 64);
-                
-                // CylinderGeometry Materials array is: [Sides, Top, Bottom]
-                let matSides = (foilStyle === 'sides' || foilStyle === 'both') ? goldFoilMaterial : invisibleMaterial;
-                let matTop = (foilStyle === 'top' || foilStyle === 'both') ? goldFoilMaterial : invisibleMaterial;
-                let matBottom = invisibleMaterial;
-
-                const foilMesh = new THREE.Mesh(foilGeo, [matSides, matTop, matBottom]);
-                foilMesh.position.y = yOffset + (height / 2);
-                currentCakeGroup.add(foilMesh);
-            }
-        }
-
-        // --- EVENT LISTENERS ---
-        document.getElementById('cakeStyle').addEventListener('change', buildCake);
-        document.getElementById('cakeSize').addEventListener('change', buildCake);
-        document.getElementById('goldFoil').addEventListener('change', buildCake); // Trigger update on foil change
-
-        document.querySelectorAll('.color-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.color-btn').forEach(b => b.classList.replace('ring-gray-400', 'ring-transparent'));
-                e.target.classList.replace('ring-transparent', 'ring-gray-400');
-                currentColor = e.target.dataset.color;
-                buildCake();
-            });
-        });
-
-        window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        });
-
-        document.getElementById('cakeSize').dataset.currentStyle = "";
+  function populateSizes() {
+    const wrap = document.getElementById('size-btns');
+    wrap.innerHTML = '';
+    const sizes = Object.keys(PRICING[state.style]);
+    state.size = sizes[0]; // Default to first
+    sizes.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = `btn-option px-4 py-2 text-sm ${i===0 ? 'active' : ''}`;
+      btn.innerText = s;
+      btn.onclick = () => {
+        document.querySelectorAll('#size-btns button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.size = s;
         buildCake();
+      };
+      wrap.appendChild(btn);
+    });
+  }
 
-        // --- ANIMATION LOOP ---
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update(); 
-            renderer.render(scene, camera);
-        }
-        animate();
-    </script>
+  // Styles
+  document.getElementById('style-btns').addEventListener('click', (e) => {
+    if(e.target.tagName === 'BUTTON') {
+      document.querySelectorAll('#style-btns button').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      state.style = e.target.dataset.style;
+      document.getElementById('color-section').style.opacity = state.style === 'naked' ? '0.3' : '1';
+      document.getElementById('color-section').style.pointerEvents = state.style === 'naked' ? 'none' : 'auto';
+      populateSizes();
+      buildCake();
+    }
+  });
+
+  // Colors
+  document.getElementById('color-swatches').addEventListener('click', (e) => {
+    if(e.target.tagName === 'BUTTON') {
+      state.color = e.target.dataset.color;
+      buildCake();
+    }
+  });
+
+  // Foil
+  document.getElementById('foil-select').addEventListener('change', (e) => {
+    state.foil = e.target.value;
+    state.foilPrice = e.target.options[e.target.selectedIndex].dataset.price;
+    buildCake();
+  });
+
+  // Sprinkles
+  document.getElementById('sprinkles-toggle').addEventListener('change', (e) => {
+    state.sprinkles = e.target.checked;
+    buildCake();
+  });
+
+  // Custom Text
+  document.getElementById('cake-text').addEventListener('input', (e) => {
+    state.text = e.target.value;
+    buildCake();
+  });
+
+  // Handle Resize
+  window.addEventListener('resize', () => {
+    camera.aspect = wrap.clientWidth / wrap.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+  });
+
+  // Initialize
+  populateSizes();
+  buildCake();
+
+  // Animation Loop
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+</script>
 </body>
 </html>
