@@ -1,0 +1,66 @@
+body {
+    background-color: #fff0f5;
+    background-image: radial-gradient(#ffb7b2 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.scroll-hidden::-webkit-scrollbar { 
+    display: none; 
+}
+
+#builder-canvas-wrap { 
+    width: 100%; 
+    height: 550px; 
+    cursor: grab; 
+}
+
+#builder-canvas-wrap:active { 
+    cursor: grabbing; 
+}
+
+.btn-option {
+    background: #fff; 
+    border: 2px solid #ffcce0; 
+    color: #590d22;
+    font-weight: 600; 
+    border-radius: 12px; 
+    transition: all 0.2s;
+}
+
+.btn-option.active, .btn-option:hover {
+    background: #fb6f92; 
+    color: #fff; 
+    border-color: #fb6f92;
+}
+
+/* Custom Color Picker Styling */
+input[type="color"] {
+    -webkit-appearance: none; 
+    border: none; 
+    width: 100%; 
+    height: 48px;
+    border-radius: 12px; 
+    cursor: pointer; 
+    padding: 0; 
+    background: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper { 
+    padding: 0; 
+}
+
+input[type="color"]::-webkit-color-swatch { 
+    border: 2px solid #ffcce0; 
+    border-radius: 12px; 
+}
+
+#welcome-screen {
+    transition: opacity 0.8s ease-in-out, visibility 0.8s;
+}
