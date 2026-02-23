@@ -31,51 +31,77 @@
 </head>
 <body class="font-sans text-gray-700 overflow-x-hidden">
 
-    <div id="welcome-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999; background-color: #fff0f5; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease-in-out, visibility 0.8s;">
-        
-        <div style="position: absolute; top: -10%; left: -10%; width: 400px; height: 400px; background-color: #ffcce0; border-radius: 50%; filter: blur(60px); opacity: 0.7;"></div>
-        <div style="position: absolute; bottom: -10%; right: -10%; width: 400px; height: 400px; background-color: #fef08a; border-radius: 50%; filter: blur(60px); opacity: 0.7;"></div>
-        
-        <div style="position: relative; z-index: 10; text-align: center; padding: 20px;">
-            <img src="photo.png" alt="Frenzy Logo" style="width: 150px; margin: 0 auto 30px auto; filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.15));">
-            <h1 class="font-playfair text-6xl md:text-8xl font-black text-frenzy-text mb-4 tracking-tight">FRENZY</h1>
-            <p class="text-xl md:text-2xl text-gray-600 font-medium tracking-widest uppercase mb-12">Artistry in Every Slice</p>
-            
-            <button onclick="enterSite()" class="px-8 py-4 bg-frenzy-dark text-white font-bold rounded-full shadow-2xl hover:scale-105 transition transform duration-300 flex items-center gap-3 mx-auto">
-                Enter The Bakery <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-
     <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass-panel">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                <img class="h-14 w-auto object-contain drop-shadow-md" src="photo.png" alt="FRENZY Logo">
+                <img class="h-14 w-auto object-contain drop-shadow-md mix-blend-multiply filter contrast-125 brightness-110" src="photo.png" alt="FRENZY Logo">
                 <span class="font-playfair font-black text-3xl text-frenzy-dark tracking-wide hidden sm:block">FRENZY</span>
             </div>
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="#custom" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Configurator</a>
-                <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Events</a>
+                <a href="#welcome" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Home</a>
+                <a href="#custom" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">3D Configurator</a>
+                <a href="#events" class="text-gray-600 hover:text-frenzy-dark font-semibold transition">Event Tickets</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
-            <h1 class="font-playfair text-5xl md:text-7xl font-black text-frenzy-text mb-6">Design Your Masterpiece.</h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10 font-medium">Build, rotate, and perfect your custom cake in real-time.</p>
-            <a href="#custom" class="px-8 py-4 bg-frenzy-dark text-white rounded-full font-bold shadow-xl hover:bg-frenzy-text transition transform hover:scale-105 inline-block">Start Building</a>
+    <header id="welcome" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden min-h-[95vh] flex items-center">
+        <div class="max-w-7xl mx-auto px-4 w-full relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <img src="photo.png" alt="Frenzy Logo" class="w-40 md:w-56 mx-auto mb-4 mix-blend-multiply filter contrast-125 brightness-110 drop-shadow-2xl">
+                
+                <h1 class="font-playfair text-5xl md:text-7xl font-black text-frenzy-text mb-6">Welcome to FRENZY.</h1>
+                
+                <div class="glass-panel inline-block px-8 py-4 rounded-full mb-10 border-frenzy-light border-2">
+                    <p class="text-lg md:text-xl text-gray-700 font-bold">
+                        Gaborone's Premier Cake Studio
+                    </p>
+                    <p class="text-sm md:text-base text-gray-500 font-medium mt-1">
+                        Crafting Naked Cakes • Buttercream • Smooth Fondant • Multi-Tier Weddings • Bento Minis
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left mt-4">
+                    
+                    <a href="#custom" class="glass-panel p-8 rounded-3xl hover:-translate-y-2 hover:shadow-2xl transition duration-300 group border-2 border-transparent hover:border-frenzy-light cursor-pointer">
+                        <div class="w-14 h-14 bg-frenzy-light rounded-full flex items-center justify-center mb-4 text-frenzy-dark text-2xl group-hover:scale-110 transition">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h3 class="font-playfair text-3xl font-bold text-frenzy-text mb-2 flex items-center justify-between">
+                            Design a Cake 
+                            <i class="fas fa-arrow-right text-frenzy-dark opacity-0 group-hover:opacity-100 transition transform group-hover:translate-x-2"></i>
+                        </h3>
+                        <p class="text-gray-600">Enter our interactive 3D studio. Build, rotate, and perfect your custom cake in real-time with gold foil and free add-ons.</p>
+                    </a>
+
+                    <a href="#events" class="glass-panel p-8 rounded-3xl hover:-translate-y-2 hover:shadow-2xl transition duration-300 group border-2 border-transparent hover:border-frenzy-light cursor-pointer bg-gradient-to-br from-white to-yellow-50">
+                        <div class="w-14 h-14 bg-yellow-200 rounded-full flex items-center justify-center mb-4 text-yellow-700 text-2xl group-hover:scale-110 transition">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h3 class="font-playfair text-3xl font-bold text-yellow-800 mb-2 flex items-center justify-between">
+                            Buy Event Tickets
+                            <i class="fas fa-arrow-right text-yellow-700 opacity-0 group-hover:opacity-100 transition transform group-hover:translate-x-2"></i>
+                        </h3>
+                        <p class="text-gray-600">Purchase tickets for our upcoming Cake Decorating Masterclasses and Bring-Your-Own-Cake (BYOC) community picnics.</p>
+                    </a>
+
+                </div>
+            </div>
         </div>
     </header>
 
-    <section id="custom" class="py-20">
+    <section id="custom" class="py-20 border-t border-frenzy-light/30">
         <div class="max-w-7xl mx-auto px-4">
             <div class="glass-panel rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden">
+                <div class="text-center mb-10">
+                    <h2 class="font-playfair text-4xl font-bold text-frenzy-text mb-2">The 3D Studio</h2>
+                    <p class="text-gray-600">Drag to rotate. Watch materials react to the lighting in real-time.</p>
+                </div>
+
                 <div class="flex flex-col lg:flex-row gap-10">
-                    
                     <div class="w-full lg:w-1/2 relative bg-gradient-to-br from-white to-gray-100 rounded-3xl overflow-hidden border border-white shadow-inner">
                         <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-frenzy-dark z-20 shadow-sm pointer-events-none backdrop-blur-md">
-                            <i class="fas fa-hand-pointer mr-1"></i> Drag to rotate
+                            <i class="fas fa-hand-pointer mr-1"></i> Drag to rotate freely
                         </div>
                         <div id="builder-canvas-wrap"></div>
                     </div>
@@ -93,7 +119,7 @@
                                 <button class="btn-option px-2 py-2 text-sm" data-style="bento">Bento Mini</button>
                             </div>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-bold text-frenzy-text mb-2">2. Dimensions</label>
                             <div class="flex flex-wrap gap-2" id="size-btns"></div>
@@ -107,36 +133,36 @@
                             <div>
                                 <label class="block text-sm font-bold text-frenzy-text mb-2">Inside Flavor</label>
                                 <select class="w-full h-12 px-3 rounded-xl border-2 border-frenzy-light bg-white focus:border-frenzy-dark outline-none font-semibold text-gray-700">
-                                    <option>Vanilla</option><option>Chocolate</option><option>Caramel</option><option>Red Velvet</option>
-                                    <option>Carrot</option><option>Rainbow Velvet</option><option>Lemon Cake</option><option>Black Forest</option>
+                                    <option>Vanilla</option><option>Chocolate</option><option>Caramel</option><option>Carrot</option>
+                                    <option>Red Velvet</option><option>Rainbow Velvet</option><option>Lemon Cake</option><option>Black Forest</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="bg-gradient-to-r from-yellow-50 to-white p-4 rounded-2xl border border-yellow-200">
-                            <label class="block text-sm font-bold text-yellow-700 mb-2"><i class="fas fa-sparkles"></i> Real Gold Foil (+P)</label>
-                            <select id="foil-select" class="w-full p-3 rounded-xl border-none ring-1 ring-yellow-300 bg-white font-semibold text-gray-700 outline-none">
+                            <label class="block text-sm font-bold text-yellow-700 mb-2"><i class="fas fa-sparkles"></i> Premium Metallic Foil</label>
+                            <select id="foil-select" class="w-full p-3 rounded-xl border-none ring-1 ring-yellow-300 bg-white focus:ring-2 focus:ring-yellow-400 outline-none font-semibold text-gray-700">
                                 <option value="none" data-price="0">No Foil</option>
-                                <option value="top" data-price="40">Top Flakes (+P40)</option>
-                                <option value="sides" data-price="50">Side Flakes (+P50)</option>
-                                <option value="both" data-price="80">Everywhere (+P80)</option>
-                                <option value="cover" data-price="150">Solid Wrap (+P150)</option>
+                                <option value="top" data-price="40">Flakes (Top Only) +P40</option>
+                                <option value="sides" data-price="50">Flakes (Sides Only) +P50</option>
+                                <option value="both" data-price="80">Flakes (Everywhere) +P80</option>
+                                <option value="cover" data-price="150">Solid Metallic Wrap +P150</option>
                             </select>
                         </div>
 
                         <div class="bg-white/80 p-4 rounded-2xl border border-frenzy-light shadow-sm">
-                            <label class="block text-sm font-bold text-frenzy-text mb-3">5. Free Embellishments</label>
+                            <label class="block text-sm font-bold text-frenzy-text mb-3">5. Free Embellishments (Max 3)</label>
                             <div class="space-y-3">
-                                <div class="flex justify-between items-center gap-2">
+                                <div class="flex items-center justify-between gap-2">
                                     <span class="text-sm font-semibold text-gray-600 w-1/3">Sprinkles</span>
                                     <select id="sprinkles-select" class="w-2/3 p-2 rounded-lg border border-gray-200 bg-white text-sm outline-none"><option value="none">None</option><option value="rainbow">Rainbow</option><option value="choc">Chocolate</option><option value="pink">Pink Magic</option></select>
                                 </div>
-                                <div class="flex justify-between items-center gap-2">
-                                    <span class="text-sm font-semibold text-gray-600 w-1/3">Glitter</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-sm font-semibold text-gray-600 w-1/3">Edible Glitter</span>
                                     <select id="glitter-select" class="w-2/3 p-2 rounded-lg border border-gray-200 bg-white text-sm outline-none"><option value="none">None</option><option value="#FFD700">Gold Dust</option><option value="#E0E0E0">Silver Shimmer</option><option value="#FF69B4">Pink Sparkle</option></select>
                                 </div>
-                                <div class="flex justify-between items-center gap-2">
-                                    <span class="text-sm font-semibold text-gray-600 w-1/3">Flowers</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-sm font-semibold text-gray-600 w-1/3">Floral Toppers</span>
                                     <div class="w-2/3 flex gap-2">
                                         <select id="flower-type" class="w-1/2 p-2 rounded-lg border border-gray-200 bg-white text-sm outline-none"><option value="none">None</option><option value="real">Real Roses</option><option value="fake">Sugar Flowers</option></select>
                                         <select id="flower-placement" class="w-1/2 p-2 rounded-lg border border-gray-200 bg-white text-sm outline-none"><option value="top">Top Ring</option><option value="cascade">Diagonal</option></select>
@@ -160,12 +186,14 @@
                             </div>
                         </div>
 
-                        <div class="pt-6 border-t border-gray-200 mt-6 flex justify-between items-center">
-                            <div>
-                                <span class="text-gray-500 font-bold uppercase tracking-wide text-xs">Estimated Price</span>
-                                <div id="price-display" class="font-playfair text-3xl font-black text-frenzy-dark">P 300</div>
+                        <div class="pt-6 border-t border-gray-200 mt-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-gray-500 font-bold uppercase tracking-wide">Estimated Price</span>
+                                <span id="price-display" class="font-playfair text-3xl font-black text-frenzy-dark">P 300</span>
                             </div>
-                            <button class="bg-frenzy-dark text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">Order Now</button>
+                            <button class="w-full bg-frenzy-dark text-white font-bold py-4 rounded-xl shadow-lg hover:bg-frenzy-text transition transform hover:scale-[1.02]">
+                                Send to Decorator
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -173,14 +201,186 @@
         </div>
     </section>
 
-    <script type="module" src="app.js"></script>
+    <section id="events" class="py-20 bg-white/60 border-t border-frenzy-light/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-playfair text-5xl font-black text-center text-frenzy-text mb-4">Upcoming Events</h2>
+            <p class="text-center text-gray-600 text-lg mb-12">Learn, create, and eat. Secure your tickets below.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition duration-300">
+                    <div class="md:w-1/3 bg-gray-200">
+                        <img src="https://images.unsplash.com/photo-1626202158925-52d3a0429a30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 md:w-2/3 flex flex-col justify-between">
+                        <div>
+                            <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">April 15th • 2:00 PM</div>
+                            <h3 class="font-playfair text-2xl font-bold text-gray-800 mb-2">Cake Decorating Masterclass</h3>
+                            <p class="text-gray-500 text-sm">Learn how to pipe buttercream flowers like a pro. Includes all tools and a 6-inch cake to take home.</p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span class="text-3xl font-black text-frenzy-dark">P 850</span>
+                            <button onclick="openTicketModal('Masterclass')" class="bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-lg flex flex-col md:flex-row overflow-hidden hover:shadow-2xl transition duration-300">
+                    <div class="md:w-1/3 bg-gray-200">
+                        <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 md:w-2/3 flex flex-col justify-between">
+                        <div>
+                            <div class="text-frenzy-dark font-bold text-sm tracking-wide uppercase mb-2">May 2nd • 11:00 AM</div>
+                            <h3 class="font-playfair text-2xl font-bold text-gray-800 mb-2">BYOC (Bring Your Own Cake) Picnic</h3>
+                            <p class="text-gray-500 text-sm">A community picnic. Bring a cake to share, we provide the drinks, music, and vibes.</p>
+                        </div>
+                        <div class="mt-6 flex items-center justify-between">
+                            <span class="text-3xl font-black text-frenzy-dark">P 150</span>
+                            <button onclick="openTicketModal('Picnic')" class="bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-frenzy-dark transition">Get Ticket</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="bg-white pt-16 pb-8 border-t border-frenzy-light">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <img src="photo.png" alt="Logo" class="h-16 mx-auto mb-4 opacity-80 mix-blend-multiply filter contrast-125 brightness-110">
+            <h3 class="font-playfair text-2xl font-bold text-frenzy-text">FRENZY</h3>
+            <div class="flex justify-center gap-6 mt-6 mb-8 text-gray-400">
+                <i class="fab fa-instagram text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
+                <i class="fab fa-tiktok text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
+                <i class="fab fa-whatsapp text-2xl hover:text-frenzy-dark cursor-pointer transition"></i>
+            </div>
+            <p class="text-gray-400 text-sm">© 2024 Frenzy Cakes. Designed with sugar & code.</p>
+        </div>
+    </section>
+
+    <div class="fixed bottom-6 right-6 z-50">
+        <div id="chatBox" class="hidden mb-4 bg-white w-80 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 transform transition-all">
+            <div class="bg-frenzy-dark p-4 text-white font-bold flex justify-between">
+                <span>Chat with Decorator</span>
+                <button onclick="toggleChat()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="h-64 p-4 bg-gray-50 overflow-y-auto">
+                <div class="bg-white p-2 rounded-lg shadow-sm w-3/4 mb-2 text-sm text-gray-600">
+                    Hi! How can I help you design your cake today?
+                </div>
+            </div>
+            <div class="p-3 border-t flex gap-2">
+                <input type="text" placeholder="Type..." class="w-full p-2 text-sm rounded-lg border focus:outline-none focus:border-frenzy">
+                <button class="text-frenzy-dark"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="w-14 h-14 bg-frenzy-dark rounded-full text-white shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <div id="ticketModal" class="fixed inset-0 z-[60] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-frenzy-light to-frenzy p-6 text-center relative">
+                <button onclick="closeTicketModal()" class="absolute top-4 right-4 text-white opacity-70 hover:opacity-100"><i class="fas fa-times text-xl"></i></button>
+                <h3 class="font-playfair text-2xl font-bold text-white drop-shadow-md" id="modalEventTitle">Event Ticket</h3>
+                <p class="text-white/90 text-sm mt-1">Secure your spot now</p>
+            </div>
+            
+            <div class="p-8">
+                <form id="ticketForm" onsubmit="processTicket(event)">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Full Name</label>
+                            <input type="text" id="tName" required class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email (for ticket delivery)</label>
+                            <input type="email" id="tEmail" required class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Select Your Flavor Kit</label>
+                            <select class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-frenzy-dark outline-none">
+                                <option>Classic Vanilla</option>
+                                <option>Double Chocolate</option>
+                                <option>Strawberry Swirl</option>
+                            </select>
+                        </div>
+                        <div class="pt-4">
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Payment Details</label>
+                            <div class="flex gap-2 mb-2">
+                                <div class="bg-gray-100 p-2 rounded text-gray-400"><i class="fab fa-cc-visa"></i></div>
+                                <div class="bg-gray-100 p-2 rounded text-gray-400"><i class="fab fa-cc-mastercard"></i></div>
+                            </div>
+                            <input type="text" placeholder="Card Number (Simulated)" class="w-full p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 mb-2">
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="MM/YY" class="w-1/2 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200">
+                                <input type="text" placeholder="CVC" class="w-1/2 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full mt-8 bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition">Pay & Generate Ticket</button>
+                </form>
+
+                <div id="ticketSuccess" class="hidden text-center py-6">
+                    <div class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">You're going!</h4>
+                    <p class="text-gray-500 text-sm mb-6">Ticket sent to <span id="sentEmail" class="font-bold text-gray-800"></span></p>
+                    
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-4 bg-gray-50 relative">
+                        <div class="flex items-center gap-3 mb-4 border-b pb-4">
+                            <img src="photo.png" class="h-10 mix-blend-multiply filter contrast-125">
+                            <span class="font-bold text-frenzy-dark">FRENZY TICKET</span>
+                        </div>
+                        <div class="flex justify-between text-left">
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase">Attendee</p>
+                                <p class="font-bold" id="ticketNameDisplay">Name</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-400 uppercase">Seat</p>
+                                <p class="font-bold text-xl text-frenzy-dark" id="seatNumber">A-12</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function enterSite() {
-            const screen = document.getElementById('welcome-screen');
-            screen.style.opacity = '0';
-            setTimeout(() => { screen.style.visibility = 'hidden'; }, 800);
+        function toggleChat() { document.getElementById('chatBox').classList.toggle('hidden'); }
+        function openTicketModal(eventName) {
+            document.getElementById('modalEventTitle').innerText = eventName;
+            document.getElementById('ticketModal').classList.remove('hidden');
+            document.getElementById('ticketForm').classList.remove('hidden');
+            document.getElementById('ticketSuccess').classList.add('hidden');
         }
+        function closeTicketModal() { document.getElementById('ticketModal').classList.add('hidden'); }
+        function processTicket(e) {
+            e.preventDefault();
+            const name = document.getElementById('tName').value;
+            const email = document.getElementById('tEmail').value;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Processing..."; btn.disabled = true;
+            setTimeout(() => {
+                const seatRow = ['A', 'B', 'C'][Math.floor(Math.random() * 3)];
+                const seatNum = Math.floor(Math.random() * 20) + 1;
+                document.getElementById('sentEmail').innerText = email;
+                document.getElementById('ticketNameDisplay').innerText = name;
+                document.getElementById('seatNumber').innerText = `${seatRow}-${seatNum}`;
+                document.getElementById('ticketForm').classList.add('hidden');
+                document.getElementById('ticketSuccess').classList.remove('hidden');
+                btn.innerText = originalText; btn.disabled = false;
+            }, 1500);
+        }
+        document.getElementById('ticketModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTicketModal();
+        });
     </script>
+
+    <script type="module" src="app.js"></script>
 </body>
 </html>
