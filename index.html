@@ -168,7 +168,7 @@
 
                 <div class="text-center mb-10">
                     <h2 class="font-playfair text-4xl font-bold text-frenzy-text mb-4">Design Your Dream Cake</h2>
-                    <p class="text-gray-600">Drag the 3D model to view all sides and underneath. Build it your way!</p>
+                    <p class="text-gray-600">Drag the 3D model to view all sides. Build it your way!</p>
                 </div>
 
                 <div class="flex flex-col lg:flex-row gap-10">
@@ -225,7 +225,7 @@
                         </div>
 
                         <div class="bg-white/50 p-4 rounded-2xl border border-white">
-                            <label class="block text-sm font-bold text-frenzy-text mb-2">5. Premium Decorations</label>
+                            <label class="block text-sm font-bold text-frenzy-text mb-2">5. Premium Foil</label>
                             <select id="foil-select" class="w-full p-3 rounded-xl border-none ring-1 ring-gray-200 bg-white focus:ring-2 focus:ring-frenzy outline-none mb-3 font-semibold text-gray-700">
                                 <option value="none" data-price="0">No Gold Foil</option>
                                 <option value="top" data-price="40">Gold Flakes (Top Only) +P40</option>
@@ -233,11 +233,28 @@
                                 <option value="both" data-price="80">Gold Flakes (Everywhere) +P80</option>
                                 <option value="cover" data-price="150">Solid Gold Wrap +P150</option>
                             </select>
-                            
-                            <label class="flex items-center gap-2 text-sm font-bold text-gray-700 cursor-pointer">
-                                <input type="checkbox" id="sprinkles-toggle" class="w-5 h-5 accent-frenzy-dark">
-                                Add Rainbow Sprinkles (+P25)
-                            </label>
+
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <label class="block text-sm font-bold text-frenzy-text mb-2">Free Add-ons <span class="text-xs font-normal text-gray-500">(Max 3)</span></label>
+                                <div class="grid grid-cols-2 gap-2" id="free-addons">
+                                    <label class="flex items-center gap-2 text-sm text-gray-700 font-medium cursor-pointer">
+                                        <input type="checkbox" value="real_flowers" class="addon-cb w-4 h-4 accent-frenzy-dark"> Real Flowers
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-700 font-medium cursor-pointer">
+                                        <input type="checkbox" value="fake_flowers" class="addon-cb w-4 h-4 accent-frenzy-dark"> Fake Flowers
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-700 font-medium cursor-pointer">
+                                        <input type="checkbox" value="sprinkles_rainbow" class="addon-cb w-4 h-4 accent-frenzy-dark"> Rainbow Sprinkles
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-700 font-medium cursor-pointer">
+                                        <input type="checkbox" value="sprinkles_choc" class="addon-cb w-4 h-4 accent-frenzy-dark"> Choc Sprinkles
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-700 font-medium cursor-pointer">
+                                        <input type="checkbox" value="sprinkles_pink" class="addon-cb w-4 h-4 accent-frenzy-dark"> Pink Sprinkles
+                                    </label>
+                                </div>
+                                <p id="addon-warning" class="text-xs text-red-500 mt-2 font-bold hidden">Maximum 3 free add-ons reached.</p>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -454,7 +471,6 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-        // PRICING MATRIX INCLUDES NEW MASSIVE SIZES
         const PRICING = {
             naked:       { '5"':300, '6"':400, '8"':500, '10"':600, '12"':700 },
             buttercream: { '5"':450, '6"':650, '8"':750, '10"':850 },
@@ -466,7 +482,9 @@
 
         const state = {
             style: 'naked', size: '5"', color: '#ffcce0',
-            foil: 'none', foilPrice: 0, sprinkles: false, text: ''
+            foil: 'none', foilPrice: 0, 
+            addons: [], // Max 3 free addons
+            text: ''
         };
 
         const wrap = document.getElementById('builder-canvas-wrap');
@@ -484,21 +502,21 @@
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        // CHANGED: Math.PI allows full 360 rotation so you can see the bottom of the plate
         controls.maxPolarAngle = Math.PI; 
         controls.minDistance = 10;
-        controls.maxDistance = 60; // Increased to fit the massive 16 inch cakes
+        controls.maxDistance = 60;
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
-        mainLight.position.set(10, 20, 10);
+        // BRIGHTER LIGHTING SO GOLD POPS
+        scene.add(new THREE.AmbientLight(0xffffff, 1.2)); 
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        mainLight.position.set(15, 25, 15);
         mainLight.castShadow = true;
         scene.add(mainLight);
-        const backLight = new THREE.DirectionalLight(0xffcce0, 0.5);
-        backLight.position.set(-10, 10, -10);
-        scene.add(backLight);
+        
+        const frontLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        frontLight.position.set(0, 10, 20);
+        scene.add(frontLight);
 
-        // Making the plate slightly thinner so the bottom view looks more realistic
         const plateGeo = new THREE.CylinderGeometry(10, 10.2, 0.2, 64);
         const plateMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, metalness: 0.3 });
         const plate = new THREE.Mesh(plateGeo, plateMat);
@@ -526,7 +544,7 @@
             const canvas = document.createElement('canvas');
             canvas.width = 1024; canvas.height = 1024;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#FFDF00';
+            ctx.fillStyle = '#FFE066'; // Bright yellow base
             for(let i=0; i<density; i++) {
                 ctx.beginPath();
                 let x = Math.random() * 1024, y = Math.random() * 1024;
@@ -539,16 +557,15 @@
             return tex;
         }
 
-        function createSprinkles() {
+        function createSprinkles(colors) {
             const canvas = document.createElement('canvas');
             canvas.width = 1024; canvas.height = 1024;
             const ctx = canvas.getContext('2d');
-            const colors = ['#fb6f92', '#a2d2ff', '#f4c542', '#ffffff', '#a7c957'];
-            for(let i=0; i<800; i++) {
+            for(let i=0; i<1000; i++) {
                 ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
                 ctx.beginPath();
                 let x = Math.random() * 1024, y = Math.random() * 1024;
-                ctx.arc(x, y, 4 + Math.random()*3, 0, Math.PI*2);
+                ctx.arc(x, y, 3 + Math.random()*3, 0, Math.PI*2);
                 ctx.fill();
             }
             const tex = new THREE.CanvasTexture(canvas);
@@ -583,9 +600,8 @@
         }
 
         const nakedTex = createNakedTexture();
-        const sprinkleTex = createSprinkles();
         const goldFoilMat = new THREE.MeshStandardMaterial({
-            map: createGoldFlakes(), transparent: true, metalness: 1.0, roughness: 0.3, color: 0xffea00
+            map: createGoldFlakes(), transparent: true, metalness: 0.6, roughness: 0.2, color: 0xffeb3b
         });
 
         function buildCake() {
@@ -614,6 +630,14 @@
                 baseMat = new THREE.MeshStandardMaterial({ color: state.color, roughness: roughness });
             }
 
+            // Figure out sprinkles from addons
+            let sprinkleColors = [];
+            if(state.addons.includes('sprinkles_rainbow')) sprinkleColors.push('#fb6f92', '#a2d2ff', '#f4c542', '#ffffff', '#a7c957');
+            if(state.addons.includes('sprinkles_choc')) sprinkleColors.push('#3e2723', '#4e342e');
+            if(state.addons.includes('sprinkles_pink')) sprinkleColors.push('#ffcce0', '#fb6f92');
+            
+            let currentSprinkleTex = sprinkleColors.length > 0 ? createSprinkles(sprinkleColors) : null;
+
             let currentY = 0;
             tiers.forEach((tier, index) => {
                 const isTopTier = (index === tiers.length - 1);
@@ -628,22 +652,42 @@
                 }
 
                 const geo = new THREE.CylinderGeometry(tier.r, tier.r, tier.h, 64);
-                if (state.foil === 'cover') materials = new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 1.0, roughness: 0.2 });
+                if (state.foil === 'cover') materials = new THREE.MeshStandardMaterial({ color: 0xffeb3b, metalness: 0.6, roughness: 0.2 });
 
                 const mesh = new THREE.Mesh(geo, materials);
                 mesh.position.y = currentY + (tier.h / 2);
                 mesh.castShadow = true; mesh.receiveShadow = true;
                 currentCakeGroup.add(mesh);
 
-                if (state.foil !== 'none' && state.foil !== 'cover' || state.sprinkles) {
+                // Wrappers for Foil / Sprinkles
+                if (state.foil !== 'none' && state.foil !== 'cover' || sprinkleColors.length > 0) {
                     const wrapGeo = new THREE.CylinderGeometry(tier.r + 0.05, tier.r + 0.05, tier.h + 0.05, 64);
                     let foilSides = (state.foil === 'sides' || state.foil === 'both') ? goldFoilMat : new THREE.MeshBasicMaterial({transparent:true, opacity:0});
                     let foilTop = (state.foil === 'top' || state.foil === 'both') ? goldFoilMat : new THREE.MeshBasicMaterial({transparent:true, opacity:0});
-                    if(state.sprinkles) foilSides = new THREE.MeshStandardMaterial({ map: sprinkleTex, transparent: true });
+                    
+                    if(sprinkleColors.length > 0) foilSides = new THREE.MeshStandardMaterial({ map: currentSprinkleTex, transparent: true });
 
                     const wrapMesh = new THREE.Mesh(wrapGeo, [foilSides, foilTop, new THREE.MeshBasicMaterial({transparent:true, opacity:0})]);
                     wrapMesh.position.y = currentY + (tier.h / 2);
                     currentCakeGroup.add(wrapMesh);
+                }
+
+                // Top Floral Representation
+                if(isTopTier && (state.addons.includes('real_flowers') || state.addons.includes('fake_flowers'))) {
+                    const numFlowers = 6;
+                    const fGroup = new THREE.Group();
+                    for(let i=0; i<numFlowers; i++) {
+                        const angle = (i / numFlowers) * Math.PI * 2;
+                        const fx = Math.cos(angle) * (tier.r * 0.7);
+                        const fz = Math.sin(angle) * (tier.r * 0.7);
+                        const fGeo = new THREE.SphereGeometry(0.4, 16, 16);
+                        const fColor = state.addons.includes('real_flowers') ? 0xff8fab : 0xfb6f92; // Slight color diff
+                        const fMat = new THREE.MeshStandardMaterial({color: fColor, roughness: 0.8});
+                        const fMesh = new THREE.Mesh(fGeo, fMat);
+                        fMesh.position.set(fx, currentY + tier.h + 0.1, fz);
+                        fGroup.add(fMesh);
+                    }
+                    currentCakeGroup.add(fGroup);
                 }
 
                 currentY += tier.h;
@@ -654,7 +698,8 @@
 
         function updatePrice() {
             let base = PRICING[state.style][state.size] || 0;
-            let total = base + parseInt(state.foilPrice) + (state.sprinkles ? 25 : 0);
+            // Add-ons are free, foil has price
+            let total = base + parseInt(state.foilPrice);
             document.getElementById('price-display').innerText = `P ${total}`;
         }
 
@@ -703,9 +748,21 @@
             buildCake();
         });
 
-        document.getElementById('sprinkles-toggle').addEventListener('change', (e) => {
-            state.sprinkles = e.target.checked;
-            buildCake();
+        // Add-ons Selection Limit Logic
+        document.querySelectorAll('.addon-cb').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                const checkedCount = document.querySelectorAll('.addon-cb:checked').length;
+                if(checkedCount > 3) {
+                    e.target.checked = false; // Revert
+                    document.getElementById('addon-warning').classList.remove('hidden');
+                    return;
+                }
+                document.getElementById('addon-warning').classList.add('hidden');
+                
+                // Update state array
+                state.addons = Array.from(document.querySelectorAll('.addon-cb:checked')).map(el => el.value);
+                buildCake();
+            });
         });
 
         document.getElementById('cake-text').addEventListener('input', (e) => {
