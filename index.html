@@ -102,9 +102,9 @@
         <span class="font-playfair font-black text-2xl text-maroon-800 tracking-tight">FRENZY</span>
       </a>
       <div class="hidden md:flex items-center gap-8">
+        <a href="#shop" class="nav-link">Collections</a>
         <a href="#menu" class="nav-link">Menu & Prices</a>
         <a href="#order" class="nav-link">Order Form</a>
-        <a href="#shop" class="nav-link">Collections</a>
         <a href="#events" class="nav-link">Events</a>
       </div>
       <button onclick="openStudio()" class="bg-maroon-800 text-gold-400 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-maroon-900 transition flex items-center gap-2 hidden md:flex">
@@ -120,7 +120,7 @@
         <p class="text-xl md:text-2xl text-gray-600 font-medium tracking-widest uppercase mb-12">Gaborone's Premier Cake Studio</p>
 
         <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
-            <a href="#menu" class="btn-primary px-8 py-4 text-lg w-full sm:w-auto"><i class="fas fa-book-open mr-2"></i> View Menu & Order</a>
+            <a href="#shop" class="btn-primary px-8 py-4 text-lg w-full sm:w-auto"><i class="fas fa-cake mr-2"></i> View Our Collections</a>
             <button onclick="openStudio()" class="bg-white border-2 border-frenzy-dark text-frenzy-dark font-bold px-8 py-4 rounded-full text-lg hover:bg-frenzy-light transition w-full sm:w-auto">
                 <i class="fas fa-flask mr-2"></i> Try 2D Studio (Beta)
             </button>
@@ -128,7 +128,66 @@
     </div>
   </header>
 
-  <section id="menu" class="py-20 px-6 relative z-10">
+  <section id="shop" class="py-20 px-6 relative z-10 border-t border-blush-200 bg-white/40">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Signature Collections</span>
+        <h2 class="font-playfair text-5xl font-black text-maroon-800">Our Most Loved</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
+          <div class="h-48 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" alt="Pink Ombre Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+          </div>
+          <div class="p-5 flex flex-col flex-grow">
+            <h4 class="font-playfair font-bold text-lg text-maroon-800">Pink Ombré Dream</h4>
+            <div class="flex justify-between items-center mt-auto pt-4">
+              <p class="font-playfair font-bold text-xl text-maroon-800">P 650</p>
+              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
+          <div class="h-48 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" alt="Rustic Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+          </div>
+          <div class="p-5 flex flex-col flex-grow">
+            <h4 class="font-playfair font-bold text-lg text-maroon-800">Pastel Party</h4>
+            <div class="flex justify-between items-center mt-auto pt-4">
+              <p class="font-playfair font-bold text-xl text-maroon-800">P 550</p>
+              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
+          <div class="h-48 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" alt="Tiered Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+          </div>
+          <div class="p-5 flex flex-col flex-grow">
+            <h4 class="font-playfair font-bold text-lg text-maroon-800">Floral Wedding Tier</h4>
+            <div class="flex justify-between items-center mt-auto pt-4">
+              <p class="font-playfair font-bold text-xl text-maroon-800">P 2500</p>
+              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
+          <div class="h-48 relative overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+          </div>
+          <div class="p-5 flex flex-col flex-grow">
+            <h4 class="font-playfair font-bold text-lg text-maroon-800">Frenzy Cupcake Box</h4>
+            <div class="flex justify-between items-center mt-auto pt-4">
+              <p class="font-playfair font-bold text-xl text-maroon-800">P 350</p>
+              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu" class="py-20 px-6 relative z-10 border-t border-blush-200">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Our Offerings</span>
@@ -198,7 +257,7 @@
     </div>
   </section>
 
-  <section id="order" class="py-20 px-6 relative z-10">
+  <section id="order" class="py-20 px-6 relative z-10 border-t border-blush-200 bg-white/40">
     <div class="max-w-4xl mx-auto">
       <div class="glass p-8 md:p-12 shadow-2xl relative overflow-hidden">
         <div class="text-center mb-10">
@@ -257,57 +316,40 @@
     </div>
   </section>
 
-  <section id="shop" class="py-20 px-6 relative z-10 border-t border-blush-200 bg-white/40">
+  <section id="events" class="py-24 px-6 border-t border-blush-200">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-12">
-        <h2 class="font-playfair text-5xl font-black text-maroon-800">Signature Collections</h2>
+        <span class="inline-block bg-yellow-200 text-yellow-800 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Community</span>
+        <h2 class="font-playfair text-5xl font-black text-maroon-800">Upcoming Events</h2>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
-          <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" alt="Pink Ombre Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-lg text-maroon-800">Pink Ombré Dream</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <p class="font-playfair font-bold text-xl text-maroon-800">P 650</p>
-              <button class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></button>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col md:flex-row border-2 border-transparent hover:border-yellow-300">
+          <div class="md:w-1/3 bg-gradient-to-br from-yellow-100 to-blush-100 flex items-center justify-center text-7xl py-8">🎨</div>
+          <div class="p-6 md:w-2/3 flex flex-col justify-between">
+            <div>
+              <p class="text-blush-600 font-bold text-sm tracking-wide uppercase mb-1">15 March • 10:00 AM</p>
+              <h3 class="font-playfair text-2xl font-bold text-maroon-800 mb-2">Cake Decorating Masterclass</h3>
+              <p class="text-sm font-medium text-gray-600">Learn to pipe buttercream and apply gold leaf like a pro.</p>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+              <p class="font-playfair font-bold text-2xl text-maroon-800">P 850</p>
+              <button class="bg-maroon-800 text-white font-bold px-6 py-2 rounded-xl hover:bg-maroon-900 transition">Get Ticket</button>
             </div>
           </div>
         </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
-          <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" alt="Rustic Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-lg text-maroon-800">Pastel Party</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <p class="font-playfair font-bold text-xl text-maroon-800">P 550</p>
-              <button class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></button>
+
+        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col md:flex-row border-2 border-transparent hover:border-yellow-300">
+          <div class="md:w-1/3 bg-gradient-to-br from-blush-100 to-yellow-100 flex items-center justify-center text-7xl py-8">🧺</div>
+          <div class="p-6 md:w-2/3 flex flex-col justify-between">
+            <div>
+              <p class="text-blush-600 font-bold text-sm tracking-wide uppercase mb-1">2 May • 11:00 AM</p>
+              <h3 class="font-playfair text-2xl font-bold text-maroon-800 mb-2">BYOC Community Picnic</h3>
+              <p class="text-sm font-medium text-gray-600">Bring your own cake to share. Drinks, music, and sweet vibes.</p>
             </div>
-          </div>
-        </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
-          <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" alt="Tiered Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-lg text-maroon-800">Floral Wedding Tier</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <p class="font-playfair font-bold text-xl text-maroon-800">P 2500</p>
-              <button class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></button>
-            </div>
-          </div>
-        </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
-          <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-          </div>
-          <div class="p-5 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-lg text-maroon-800">Frenzy Cupcake Box</h4>
-            <div class="flex justify-between items-center mt-auto pt-4">
-              <p class="font-playfair font-bold text-xl text-maroon-800">P 350</p>
-              <button class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></button>
+            <div class="mt-4 flex justify-between items-center">
+              <p class="font-playfair font-bold text-2xl text-maroon-800">P 150</p>
+              <button class="bg-maroon-800 text-white font-bold px-6 py-2 rounded-xl hover:bg-maroon-900 transition">Get Ticket</button>
             </div>
           </div>
         </div>
@@ -318,7 +360,7 @@
   <footer class="py-12 bg-gradient-to-br from-maroon-900 to-maroon-800 text-blush-200 text-center relative z-10">
     <img src="photo.png" alt="Logo" class="w-20 mx-auto mb-4 logo-blend brightness-200 grayscale">
     <h3 class="font-playfair text-2xl font-bold text-white mb-4">FRENZY</h3>
-    <p class="text-sm opacity-70">© 2026 FRENZY Cakes. Designed with sugar & CSS.</p>
+    <p class="text-sm opacity-70">© 2026 FRENZY Cakes. Designed with sugar & code.</p>
   </footer>
 
 </div> <div id="studio-page" class="fixed inset-0 z-[200] bg-[#fff0f6] overflow-y-auto hidden opacity-0">
@@ -435,16 +477,14 @@
 </div>
 
 <script>
-  // --- PAGE ROUTING LOGIC ---
   const mainSite = document.getElementById('main-site');
   const studioPage = document.getElementById('studio-page');
 
   window.openStudio = function() {
       studioPage.classList.remove('hidden');
-      // Small timeout to allow display block to render before triggering opacity transition
       setTimeout(() => {
           studioPage.style.opacity = '1';
-          document.body.style.overflow = 'hidden'; // Stop background scrolling
+          document.body.style.overflow = 'hidden'; 
       }, 10);
   }
 
@@ -452,11 +492,10 @@
       studioPage.style.opacity = '0';
       setTimeout(() => {
           studioPage.classList.add('hidden');
-          document.body.style.overflow = ''; // Restore scrolling
-      }, 400); // Matches CSS transition duration
+          document.body.style.overflow = ''; 
+      }, 400); 
   }
 
-  // --- BUILDER LOGIC ---
   const PRICING = {
     naked:       { '5"':300, '6"':400, '8"':500, '10"':600, '12"':700 },
     buttercream: { '5"':450, '6"':650, '8"':750, '10"':850 },
@@ -491,17 +530,10 @@
         tiers = [{ w: parseInt(state.size)*baseWidth, h: 50, z: 2 }];
     } else if (state.style === 'twolayer') {
         const sizes = state.size.split('+').map(s => parseInt(s));
-        tiers = [
-            { w: sizes[0]*baseWidth, h: 80, z: 3 }, 
-            { w: sizes[1]*baseWidth, h: 100, z: 2 } 
-        ];
+        tiers = [{ w: sizes[0]*baseWidth, h: 80, z: 3 }, { w: sizes[1]*baseWidth, h: 100, z: 2 }];
     } else if (state.style === 'wedding') {
         const sizes = state.size.split('+').map(s => parseInt(s));
-        tiers = [
-            { w: sizes[0]*baseWidth, h: 70, z: 4 }, 
-            { w: sizes[1]*baseWidth, h: 90, z: 3 }, 
-            { w: sizes[2]*baseWidth, h: 110, z: 2 } 
-        ];
+        tiers = [{ w: sizes[0]*baseWidth, h: 70, z: 4 }, { w: sizes[1]*baseWidth, h: 90, z: 3 }, { w: sizes[2]*baseWidth, h: 110, z: 2 }];
     } else {
         tiers = [{ w: parseInt(state.size)*baseWidth, h: 110, z: 2 }];
     }
@@ -606,7 +638,6 @@
     });
   }
 
-  // Builder Event Listeners
   document.getElementById('style-btns').addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON') {
       document.querySelectorAll('#style-btns button').forEach(b => b.classList.remove('active'));
