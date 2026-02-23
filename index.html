@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>FRENZY — Premium Cakes & Events</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -30,7 +30,17 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Quicksand', sans-serif; background: #fff0f6; color: #590d22; overflow-x: hidden; }
+    body { 
+      font-family: 'Quicksand', sans-serif; background: #fff0f6; color: #590d22; overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent; /* Removes blue tap box on mobile */
+    }
+
+    /* ── SCROLL & LOAD ANIMATIONS (NEW) ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
 
     /* ── BACKGROUND ORBS ── */
     .bg-orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; z-index: 0; }
@@ -41,28 +51,32 @@
     /* ── GLASS UI CARDS ── */
     .glass { background: rgba(255,255,255,0.65); backdrop-filter: blur(18px); border: 1px solid rgba(255,200,220,0.5); border-radius: 24px; box-shadow: 0 8px 40px rgba(89,13,34,0.08); }
     
-    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,240,246,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,143,171,0.25); transition: all .3s ease; }
-    #navbar.scrolled { box-shadow: 0 4px 24px rgba(89,13,34,0.1); }
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,240,246,0.3); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: all .4s ease; }
+    #navbar.scrolled { background: rgba(255,240,246,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,143,171,0.25); box-shadow: 0 10px 30px rgba(89,13,34,0.05); padding-top: 10px; padding-bottom: 10px; }
     
     .nav-link { position: relative; font-weight: 600; font-size: .9rem; color: #590d22; text-decoration: none; transition: color .2s; }
     .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; right:0; height:2px; background: linear-gradient(90deg,#fb6f92,#ff8fab); transform: scaleX(0); transition: transform .25s ease; border-radius: 2px; }
     .nav-link:hover::after { transform: scaleX(1); }
 
-    .hero-title { font-family: 'Playfair Display', serif; font-weight: 900; line-height: 1; background: linear-gradient(135deg, #590d22 0%, #fb6f92 60%, #f4c542 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-title { font-family: 'Playfair Display', serif; font-weight: 900; line-height: 1.1; background: linear-gradient(135deg, #590d22 0%, #fb6f92 60%, #f4c542 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    /* Tactile Buttons */
     .btn-primary { background: linear-gradient(135deg, #fb6f92, #ff8fab); color: #fff; font-weight:700; border: none; border-radius: 50px; cursor: pointer; transition: all .25s ease; box-shadow: 0 4px 20px rgba(251,111,146,0.4); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(251,111,146,0.55); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(251,111,146,0.55); }
+    .btn-primary:active, .glass.clickable:active { transform: scale(0.96); } /* The "Click" feel */
 
-    /* Logo transparent fix trick */
     .logo-blend { mix-blend-mode: multiply; filter: contrast(1.15) brightness(1.1); }
 
     /* ── FORM CONTROLS ── */
-    .form-input { width:100%; border:2px solid rgba(255,143,171,0.4); background:rgba(255,255,255,0.8); border-radius:14px; padding:12px 16px; font-weight:600; font-size:.9rem; color:#590d22; outline:none; transition:border .2s; }
-    .form-input:focus { border-color:#fb6f92; }
+    .form-input { width:100%; border:2px solid rgba(255,143,171,0.4); background:rgba(255,255,255,0.8); border-radius:14px; padding:12px 16px; font-weight:600; font-size:.9rem; color:#590d22; outline:none; transition:all .2s; }
+    .form-input:focus { border-color:#fb6f92; box-shadow: 0 0 0 4px rgba(251,111,146,0.15); }
 
-    /* ── 2D CAKE ENGINE (Beta Studio) ── */
+    /* ── 2D CAKE ENGINE ── */
     #studio-page { transition: opacity 0.4s ease, visibility 0.4s ease; }
-    #cake-canvas-wrap { width: 100%; height: 450px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at 50% 50%, #ffffff 0%, #ffcce0 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; }
-    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 25px 25px rgba(89,13,34,0.15)); margin-top: 30px; }
+    #cake-canvas-wrap { width: 100%; height: 400px; border-radius: 20px; overflow: hidden; background: radial-gradient(circle at 50% 50%, #ffffff 0%, #ffcce0 100%); display: flex; align-items: center; justify-content: center; padding-top: 20px; }
+    .cake-container { display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 25px 25px rgba(89,13,34,0.15)); margin-top: 30px; transform: scale(0.9); /* Optimized for mobile */ }
+    @media (min-width: 768px) { .cake-container { transform: scale(1); height: 450px; } }
+    
     .cake-tier { position: relative; border-radius: 50% / 20px; box-shadow: inset -15px 0 30px rgba(0,0,0,0.15), inset 10px 0 20px rgba(255,255,255,0.4); margin-bottom: -20px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; justify-content: center; }
     .cake-top-face { position: absolute; top: 0; left: 0; right: 0; height: 40px; border-radius: 50%; background: inherit; filter: brightness(1.15); z-index: 2; overflow: hidden; box-shadow: inset 0 -5px 15px rgba(0,0,0,0.08), inset 0 5px 15px rgba(255,255,255,0.4); }
     .cake-piping { position: absolute; bottom: -6px; left: -2%; right: -2%; height: 18px; background-size: 20px 18px; background-repeat: repeat-x; z-index: 3; filter: drop-shadow(0 4px 3px rgba(0,0,0,0.1)); }
@@ -78,8 +92,10 @@
     .photo-print-layer { position: absolute; inset: 15%; border-radius: 50%; background-size: cover; background-position: center; z-index: 4; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); opacity: 0.9; }
 
     .option-btn { border: 2px solid rgba(255,143,171,0.4); background: rgba(255,255,255,0.6); color: #590d22; font-weight:600; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size:.82rem; transition: all .2s ease; }
-    .option-btn.active, .option-btn:hover { background: linear-gradient(135deg,#fb6f92,#ff8fab); color:#fff; border-color: transparent; box-shadow: 0 4px 14px rgba(251,111,146,0.35); }
-    input[type="color"] { -webkit-appearance: none; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; padding: 0; background: none; }
+    .option-btn.active, .option-btn:hover { background: linear-gradient(135deg,#fb6f92,#ff8fab); color:#fff; border-color: transparent; box-shadow: 0 4px 14px rgba(251,111,146,0.35); transform: translateY(-2px); }
+    .option-btn:active { transform: scale(0.95); }
+    input[type="color"] { -webkit-appearance: none; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; padding: 0; background: none; transition: transform 0.2s; }
+    input[type="color"]:active { transform: scale(0.9); }
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch { border: 3px solid #ffcce0; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
 
@@ -97,17 +113,19 @@
 
   <nav id="navbar" class="px-6 py-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2">
-        <img src="photo.png" alt="Logo" class="w-12 h-12 object-contain logo-blend">
-        <span class="font-playfair font-black text-2xl text-maroon-800 tracking-tight">FRENZY</span>
+      <a href="#" class="flex items-center gap-2 active:scale-95 transition-transform">
+        <img src="photo.png" alt="Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain logo-blend">
+        <span class="font-playfair font-black text-xl md:text-2xl text-maroon-800 tracking-tight">FRENZY</span>
       </a>
+      <div class="md:hidden text-maroon-800 text-2xl active:scale-90 transition-transform"><i class="fas fa-bars"></i></div>
+      
       <div class="hidden md:flex items-center gap-8">
         <a href="#shop" class="nav-link">Collections</a>
         <a href="#menu" class="nav-link">Menu & Prices</a>
-        <a href="#order" class="nav-link">Order Form</a>
+        <a href="#order" class="nav-link">Order</a>
         <a href="#events" class="nav-link">Events</a>
       </div>
-      <button onclick="openStudio()" class="bg-maroon-800 text-gold-400 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-maroon-900 transition flex items-center gap-2 hidden md:flex">
+      <button onclick="openStudio()" class="bg-maroon-800 text-gold-400 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-maroon-900 active:scale-95 transition-all flex items-center gap-2 hidden md:flex">
         <i class="fas fa-flask"></i> Try 2D Studio (Beta)
       </button>
     </div>
@@ -115,27 +133,28 @@
 
   <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-24 min-h-[90vh] flex items-center">
     <div class="max-w-7xl mx-auto px-4 w-full relative z-10 text-center">
-        <img src="photo.png" alt="Frenzy Logo" class="w-40 md:w-56 mx-auto mb-4 logo-blend drop-shadow-2xl">
-        <h1 class="font-playfair text-5xl md:text-7xl font-black text-frenzy-text mb-6">Welcome to FRENZY.</h1>
-        <p class="text-xl md:text-2xl text-gray-600 font-medium tracking-widest uppercase mb-12">Gaborone's Premier Cake Studio</p>
+        <img src="photo.png" alt="Frenzy Logo" class="w-32 md:w-56 mx-auto mb-4 logo-blend drop-shadow-2xl reveal">
+        <h1 class="font-playfair text-5xl md:text-7xl font-black text-frenzy-text mb-4 reveal delay-100">Welcome to FRENZY.</h1>
+        <p class="text-lg md:text-2xl text-gray-600 font-medium tracking-widest uppercase mb-10 reveal delay-200 px-4">Gaborone's Premier Cake Studio</p>
 
-        <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
-            <a href="#shop" class="btn-primary px-8 py-4 text-lg w-full sm:w-auto"><i class="fas fa-cake mr-2"></i> View Our Collections</a>
-            <button onclick="openStudio()" class="bg-white border-2 border-frenzy-dark text-frenzy-dark font-bold px-8 py-4 rounded-full text-lg hover:bg-frenzy-light transition w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto px-4 reveal delay-300">
+            <a href="#shop" class="btn-primary px-8 py-4 text-base md:text-lg w-full sm:w-auto"><i class="fas fa-cake mr-2"></i> View Collections</a>
+            <button onclick="openStudio()" class="bg-white border-2 border-frenzy-dark text-frenzy-dark font-bold px-8 py-4 rounded-full text-base md:text-lg hover:bg-frenzy-light active:scale-95 transition-all w-full sm:w-auto">
                 <i class="fas fa-flask mr-2"></i> Try 2D Studio (Beta)
             </button>
         </div>
     </div>
   </header>
 
-  <section id="shop" class="py-20 px-6 relative z-10 border-t border-blush-200 bg-white/40">
+  <section id="shop" class="py-20 px-4 md:px-6 relative z-10 border-t border-blush-200 bg-white/40">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-12">
-        <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Signature Collections</span>
-        <h2 class="font-playfair text-5xl font-black text-maroon-800">Our Most Loved</h2>
+      <div class="text-center mb-12 reveal">
+        <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Signature</span>
+        <h2 class="font-playfair text-4xl md:text-5xl font-black text-maroon-800">Our Most Loved</h2>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
+        
+        <div class="glass clickable overflow-hidden hover:-translate-y-2 transition-all duration-300 group flex flex-col reveal delay-100">
           <div class="h-48 relative overflow-hidden">
               <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80" alt="Pink Ombre Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
           </div>
@@ -143,23 +162,25 @@
             <h4 class="font-playfair font-bold text-lg text-maroon-800">Pink Ombré Dream</h4>
             <div class="flex justify-between items-center mt-auto pt-4">
               <p class="font-playfair font-bold text-xl text-maroon-800">P 650</p>
-              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+              <a href="#order" class="btn-primary w-10 h-10 flex items-center justify-center rounded-full"><i class="fa fa-shopping-bag"></i></a>
             </div>
           </div>
         </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
+
+        <div class="glass clickable overflow-hidden hover:-translate-y-2 transition-all duration-300 flex flex-col reveal delay-200">
           <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" alt="Rustic Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=80" alt="Rustic Cake" class="w-full h-full object-cover hover:scale-110 transition duration-500">
           </div>
           <div class="p-5 flex flex-col flex-grow">
             <h4 class="font-playfair font-bold text-lg text-maroon-800">Pastel Party</h4>
             <div class="flex justify-between items-center mt-auto pt-4">
               <p class="font-playfair font-bold text-xl text-maroon-800">P 550</p>
-              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+              <a href="#order" class="btn-primary w-10 h-10 flex items-center justify-center rounded-full"><i class="fa fa-shopping-bag"></i></a>
             </div>
           </div>
         </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 group flex flex-col">
+
+        <div class="glass clickable overflow-hidden hover:-translate-y-2 transition-all duration-300 group flex flex-col reveal delay-300">
           <div class="h-48 relative overflow-hidden">
               <img src="https://images.unsplash.com/photo-1519340333755-56e9c1d04579?w=800&q=80" alt="Tiered Cake" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
           </div>
@@ -167,19 +188,20 @@
             <h4 class="font-playfair font-bold text-lg text-maroon-800">Floral Wedding Tier</h4>
             <div class="flex justify-between items-center mt-auto pt-4">
               <p class="font-playfair font-bold text-xl text-maroon-800">P 2500</p>
-              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+              <a href="#order" class="btn-primary w-10 h-10 flex items-center justify-center rounded-full"><i class="fa fa-shopping-bag"></i></a>
             </div>
           </div>
         </div>
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col">
+
+        <div class="glass clickable overflow-hidden hover:-translate-y-2 transition-all duration-300 flex flex-col reveal delay-100">
           <div class="h-48 relative overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80" alt="Cupcakes" class="w-full h-full object-cover hover:scale-110 transition duration-500">
           </div>
           <div class="p-5 flex flex-col flex-grow">
-            <h4 class="font-playfair font-bold text-lg text-maroon-800">Frenzy Cupcake Box</h4>
+            <h4 class="font-playfair font-bold text-lg text-maroon-800">Frenzy Cupcakes</h4>
             <div class="flex justify-between items-center mt-auto pt-4">
               <p class="font-playfair font-bold text-xl text-maroon-800">P 350</p>
-              <a href="#order" class="btn-primary px-4 py-2 text-sm"><i class="fa fa-shopping-bag"></i></a>
+              <a href="#order" class="btn-primary w-10 h-10 flex items-center justify-center rounded-full"><i class="fa fa-shopping-bag"></i></a>
             </div>
           </div>
         </div>
@@ -187,169 +209,120 @@
     </div>
   </section>
 
-  <section id="menu" class="py-20 px-6 relative z-10 border-t border-blush-200">
+  <section id="menu" class="py-20 px-4 md:px-6 relative z-10 border-t border-blush-200">
     <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Our Offerings</span>
-        <h2 class="font-playfair text-5xl font-black text-maroon-800">Menu & Pricing</h2>
+      <div class="text-center mb-12 reveal">
+        <span class="inline-block bg-blush-200 text-blush-600 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Offerings</span>
+        <h2 class="font-playfair text-4xl md:text-5xl font-black text-maroon-800">Menu & Pricing</h2>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-10">
-        <div class="glass p-8 md:p-10">
-          <h3 class="font-playfair text-3xl font-bold text-maroon-800 border-b-2 border-blush-200 pb-4 mb-6">Cake Styles & Base Prices</h3>
-          
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass p-6 md:p-10 reveal delay-100">
+          <h3 class="font-playfair text-2xl md:text-3xl font-bold text-maroon-800 border-b-2 border-blush-200 pb-4 mb-6">Base Styles</h3>
           <div class="space-y-6">
             <div>
               <h4 class="font-bold text-lg text-frenzy-dark">Naked Sponge</h4>
               <p class="text-sm text-gray-600 flex justify-between"><span>5" Mini</span> <span>P 300</span></p>
-              <p class="text-sm text-gray-600 flex justify-between"><span>6" Small</span> <span>P 400</span></p>
               <p class="text-sm text-gray-600 flex justify-between"><span>8" Medium</span> <span>P 500</span></p>
-              <p class="text-sm text-gray-600 flex justify-between"><span>10" Large</span> <span>P 600</span></p>
               <p class="text-sm text-gray-600 flex justify-between"><span>12" X-Large</span> <span>P 700</span></p>
             </div>
             <div>
               <h4 class="font-bold text-lg text-frenzy-dark">Classic Buttercream</h4>
-              <p class="text-sm text-gray-600 flex justify-between"><span>5" / 6" / 8" / 10"</span> <span>P 450 - P 850</span></p>
-            </div>
-            <div>
-              <h4 class="font-bold text-lg text-frenzy-dark">Smooth Fondant</h4>
-              <p class="text-sm text-gray-600 flex justify-between"><span>5" to 12" Range</span> <span>P 550 - P 1000</span></p>
+              <p class="text-sm text-gray-600 flex justify-between"><span>5" to 10" Range</span> <span>P 450 - P 850</span></p>
             </div>
             <div>
               <h4 class="font-bold text-lg text-frenzy-dark">Multi-Tier Displays</h4>
-              <p class="text-sm text-gray-600 flex justify-between"><span>2-Layer (4"+6" up to 14"+16")</span> <span>P 900 - P 2800</span></p>
-              <p class="text-sm text-gray-600 flex justify-between"><span>3-Tier Wedding (Starts at 6+8+10)</span> <span>From P 2500</span></p>
-            </div>
-            <div>
-              <h4 class="font-bold text-lg text-frenzy-dark">Bento Minis</h4>
-              <p class="text-sm text-gray-600 flex justify-between"><span>4" Standard</span> <span>P 150</span></p>
+              <p class="text-sm text-gray-600 flex justify-between"><span>2-Layer (Up to 14"+16")</span> <span>P 900 - P 2800</span></p>
             </div>
           </div>
         </div>
 
-        <div class="space-y-10">
-          <div class="glass p-8 md:p-10">
-            <h3 class="font-playfair text-3xl font-bold text-maroon-800 border-b-2 border-blush-200 pb-4 mb-6">Inside Flavors</h3>
-            <ul class="grid grid-cols-2 gap-y-3 gap-x-6 text-gray-700 font-medium">
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Classic Vanilla</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Rich Chocolate</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Red Velvet Royale</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Spiced Carrot</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Salted Caramel</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Rainbow Velvet</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Lemon Zest</li>
-              <li><i class="fas fa-check text-frenzy-dark mr-2"></i> Black Forest</li>
+        <div class="space-y-8 reveal delay-200">
+          <div class="glass p-6 md:p-10">
+            <h3 class="font-playfair text-2xl md:text-3xl font-bold text-maroon-800 border-b-2 border-blush-200 pb-4 mb-6">Flavors</h3>
+            <ul class="grid grid-cols-2 gap-y-3 gap-x-2 text-sm md:text-base text-gray-700 font-medium">
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Vanilla</li>
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Chocolate</li>
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Red Velvet</li>
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Carrot</li>
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Caramel</li>
+              <li><i class="fas fa-check text-frenzy-dark mr-1 md:mr-2"></i> Black Forest</li>
             </ul>
           </div>
-
-          <div class="glass p-8 md:p-10 bg-gradient-to-br from-yellow-50 to-white">
-            <h3 class="font-playfair text-3xl font-bold text-yellow-800 border-b-2 border-yellow-200 pb-4 mb-6">Premium Embellishments</h3>
+          <div class="glass p-6 md:p-10 bg-gradient-to-br from-yellow-50 to-white">
+            <h3 class="font-playfair text-2xl md:text-3xl font-bold text-yellow-800 border-b-2 border-yellow-200 pb-4 mb-4">Embellishments</h3>
             <div class="space-y-3">
-              <p class="text-sm text-gray-700 flex justify-between border-b border-gray-100 pb-2"><span>Gold Foil (Top/Sides)</span> <span>+ P 40 / P 50</span></p>
-              <p class="text-sm text-gray-700 flex justify-between border-b border-gray-100 pb-2"><span>Gold Foil (Everywhere)</span> <span>+ P 80</span></p>
-              <p class="text-sm text-gray-700 flex justify-between border-b border-gray-100 pb-2"><span>Solid Gold Metallic Wrap</span> <span>+ P 150</span></p>
-              <p class="text-sm text-gray-700 flex justify-between pt-2"><span>Custom Edible Photo Print</span> <span>+ P 60</span></p>
+              <p class="text-sm text-gray-700 flex justify-between border-b border-gray-100 pb-2"><span>Gold Foil (Top/Sides)</span> <span>+ P 40</span></p>
+              <p class="text-sm text-gray-700 flex justify-between border-b border-gray-100 pb-2"><span>Solid Gold Wrap</span> <span>+ P 150</span></p>
+              <p class="text-sm text-gray-700 flex justify-between pt-2"><span>Edible Photo Print</span> <span>+ P 60</span></p>
             </div>
-            <p class="text-xs text-blush-600 font-bold mt-4 mt-6 uppercase">* Sprinkles, Edible Glitter, and Flowers are included FREE (Max 3)</p>
+            <p class="text-xs text-blush-600 font-bold mt-4 uppercase">* Sprinkles & Flowers are FREE</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="order" class="py-20 px-6 relative z-10 border-t border-blush-200 bg-white/40">
-    <div class="max-w-4xl mx-auto">
-      <div class="glass p-8 md:p-12 shadow-2xl relative overflow-hidden">
-        <div class="text-center mb-10">
-          <h2 class="font-playfair text-4xl font-bold text-maroon-800">Submit Custom Order</h2>
-          <p class="text-gray-600 mt-2">Fill out the details below. Our decorator will review your specs and contact you to confirm.</p>
+  <section id="order" class="py-20 px-4 md:px-6 relative z-10 border-t border-blush-200 bg-white/40">
+    <div class="max-w-4xl mx-auto reveal">
+      <div class="glass p-6 md:p-12 shadow-2xl relative overflow-hidden">
+        <div class="text-center mb-8">
+          <h2 class="font-playfair text-3xl md:text-4xl font-bold text-maroon-800">Submit Custom Order</h2>
+          <p class="text-sm md:text-base text-gray-600 mt-2">Fill out the details below. Our decorator will review and confirm.</p>
         </div>
 
-        <form onsubmit="event.preventDefault(); alert('Order successfully sent to FRENZY! We will contact you shortly.'); this.reset();" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onsubmit="event.preventDefault(); const b=document.getElementById('sub-btn'); b.innerText='Sent!'; b.classList.add('bg-green-500'); setTimeout(()=>{this.reset(); b.innerText='Send Order Request'; b.classList.remove('bg-green-500');}, 3000);" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div><label class="block text-sm font-bold text-maroon-800 mb-1">Full Name</label><input type="text" required class="form-input"></div>
             <div><label class="block text-sm font-bold text-maroon-800 mb-1">Phone Number</label><input type="tel" required class="form-input"></div>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-sm font-bold text-maroon-800 mb-1">Event Date</label>
-              <input type="date" required class="form-input">
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-maroon-800 mb-1">Cake Style</label>
-              <select class="form-input"><option>Naked</option><option>Buttercream</option><option>Fondant</option><option>2-Layer</option><option>3-Tier</option><option>Bento</option></select>
-            </div>
-            <div>
-              <label class="block text-sm font-bold text-maroon-800 mb-1">Inside Flavor</label>
-              <select class="form-input"><option>Vanilla</option><option>Chocolate</option><option>Red Velvet</option><option>Carrot</option><option>Caramel</option><option>Rainbow</option><option>Lemon</option><option>Black Forest</option></select>
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div><label class="block text-sm font-bold text-maroon-800 mb-1">Event Date</label><input type="date" required class="form-input"></div>
+            <div><label class="block text-sm font-bold text-maroon-800 mb-1">Style</label><select class="form-input"><option>Naked</option><option>Buttercream</option><option>Fondant</option><option>2-Layer</option></select></div>
+            <div><label class="block text-sm font-bold text-maroon-800 mb-1">Flavor</label><select class="form-input"><option>Vanilla</option><option>Chocolate</option><option>Red Velvet</option></select></div>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white/50 rounded-2xl border border-blush-200">
-            <div>
-              <label class="block text-sm font-bold text-maroon-800 mb-2">1. Inspiration Photo (Design)</label>
-              <div class="border-2 border-dashed border-frenzy-dark rounded-xl p-4 text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('form-inspo-upload').click()">
-                <i class="fas fa-camera text-frenzy-dark mb-1 text-xl"></i>
-                <p class="text-xs text-gray-600 font-medium">Upload Inspo</p>
-                <input type="file" id="form-inspo-upload" class="hidden" accept="image/*" onchange="alert('Inspiration attached!')">
-              </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-6 bg-white/50 rounded-2xl border border-blush-200">
+            <div class="border-2 border-dashed border-frenzy-dark rounded-xl p-4 text-center cursor-pointer hover:bg-white active:scale-95 transition-all" onclick="document.getElementById('form-inspo-upload').click()">
+              <i class="fas fa-camera text-frenzy-dark mb-1 text-xl"></i>
+              <p class="text-xs text-gray-600 font-bold">1. Upload Design Inspo</p>
+              <input type="file" id="form-inspo-upload" class="hidden" accept="image/*">
             </div>
-            <div>
-              <label class="block text-sm font-bold text-maroon-800 mb-2">2. Edible Photo (Loved One)</label>
-              <div class="border-2 border-dashed border-frenzy-dark rounded-xl p-4 text-center cursor-pointer hover:bg-white transition" onclick="document.getElementById('form-edible-upload').click()">
-                <i class="fas fa-user-circle text-frenzy-dark mb-1 text-xl"></i>
-                <p class="text-xs text-gray-600 font-medium">Upload Photo to Print</p>
-                <input type="file" id="form-edible-upload" class="hidden" accept="image/*" onchange="alert('Edible photo attached!')">
-              </div>
+            <div class="border-2 border-dashed border-frenzy-dark rounded-xl p-4 text-center cursor-pointer hover:bg-white active:scale-95 transition-all" onclick="document.getElementById('form-edible-upload').click()">
+              <i class="fas fa-user-circle text-frenzy-dark mb-1 text-xl"></i>
+              <p class="text-xs text-gray-600 font-bold">2. Upload Edible Photo</p>
+              <input type="file" id="form-edible-upload" class="hidden" accept="image/*">
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-maroon-800 mb-1">Detailed Specifications & Instructions</label>
-            <textarea required rows="4" class="form-input" placeholder="Please describe exactly what you want. Mention colors, piping styles, text inscriptions, and specific layout instructions here..."></textarea>
+            <label class="block text-sm font-bold text-maroon-800 mb-1">Detailed Specifications</label>
+            <textarea required rows="4" class="form-input" placeholder="Mention colors, piping styles, text inscriptions, and specific layout instructions here..."></textarea>
           </div>
-
-          <button type="submit" class="w-full btn-primary py-4 text-lg mt-4 shadow-xl">Send Order Request</button>
+          <button type="submit" id="sub-btn" class="w-full btn-primary py-4 text-lg mt-2 shadow-xl">Send Order Request</button>
         </form>
       </div>
     </div>
   </section>
 
-  <section id="events" class="py-24 px-6 border-t border-blush-200">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-12">
+  <section id="events" class="py-20 px-4 md:px-6 border-t border-blush-200">
+    <div class="max-w-7xl mx-auto reveal">
+      <div class="text-center mb-10">
         <span class="inline-block bg-yellow-200 text-yellow-800 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest mb-2">Community</span>
-        <h2 class="font-playfair text-5xl font-black text-maroon-800">Upcoming Events</h2>
+        <h2 class="font-playfair text-4xl md:text-5xl font-black text-maroon-800">Upcoming Events</h2>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col md:flex-row border-2 border-transparent hover:border-yellow-300">
-          <div class="md:w-1/3 bg-gradient-to-br from-yellow-100 to-blush-100 flex items-center justify-center text-7xl py-8">🎨</div>
-          <div class="p-6 md:w-2/3 flex flex-col justify-between">
+      <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+        <div class="glass overflow-hidden hover:-translate-y-2 transition-all duration-300 flex flex-col md:flex-row border-2 border-transparent hover:border-yellow-300">
+          <div class="md:w-1/3 bg-gradient-to-br from-yellow-100 to-blush-100 flex items-center justify-center text-6xl py-6">🎨</div>
+          <div class="p-5 md:p-6 md:w-2/3 flex flex-col justify-between">
             <div>
               <p class="text-blush-600 font-bold text-sm tracking-wide uppercase mb-1">15 March • 10:00 AM</p>
-              <h3 class="font-playfair text-2xl font-bold text-maroon-800 mb-2">Cake Decorating Masterclass</h3>
-              <p class="text-sm font-medium text-gray-600">Learn to pipe buttercream and apply gold leaf like a pro.</p>
+              <h3 class="font-playfair text-xl md:text-2xl font-bold text-maroon-800 mb-2">Cake Decorating Masterclass</h3>
             </div>
             <div class="mt-4 flex justify-between items-center">
               <p class="font-playfair font-bold text-2xl text-maroon-800">P 850</p>
-              <button class="bg-maroon-800 text-white font-bold px-6 py-2 rounded-xl hover:bg-maroon-900 transition">Get Ticket</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="glass overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col md:flex-row border-2 border-transparent hover:border-yellow-300">
-          <div class="md:w-1/3 bg-gradient-to-br from-blush-100 to-yellow-100 flex items-center justify-center text-7xl py-8">🧺</div>
-          <div class="p-6 md:w-2/3 flex flex-col justify-between">
-            <div>
-              <p class="text-blush-600 font-bold text-sm tracking-wide uppercase mb-1">2 May • 11:00 AM</p>
-              <h3 class="font-playfair text-2xl font-bold text-maroon-800 mb-2">BYOC Community Picnic</h3>
-              <p class="text-sm font-medium text-gray-600">Bring your own cake to share. Drinks, music, and sweet vibes.</p>
-            </div>
-            <div class="mt-4 flex justify-between items-center">
-              <p class="font-playfair font-bold text-2xl text-maroon-800">P 150</p>
-              <button class="bg-maroon-800 text-white font-bold px-6 py-2 rounded-xl hover:bg-maroon-900 transition">Get Ticket</button>
+              <button class="bg-maroon-800 text-white font-bold px-5 py-2 rounded-xl active:scale-95 transition-transform">Get Ticket</button>
             </div>
           </div>
         </div>
@@ -357,283 +330,182 @@
     </div>
   </section>
 
-  <footer class="py-12 bg-gradient-to-br from-maroon-900 to-maroon-800 text-blush-200 text-center relative z-10">
-    <img src="photo.png" alt="Logo" class="w-20 mx-auto mb-4 logo-blend brightness-200 grayscale">
-    <h3 class="font-playfair text-2xl font-bold text-white mb-4">FRENZY</h3>
-    <p class="text-sm opacity-70">© 2026 FRENZY Cakes. Designed with sugar & code.</p>
+  <footer class="py-10 bg-gradient-to-br from-maroon-900 to-maroon-800 text-blush-200 text-center relative z-10">
+    <img src="photo.png" alt="Logo" class="w-16 mx-auto mb-3 logo-blend brightness-200 grayscale">
+    <h3 class="font-playfair text-xl font-bold text-white mb-2">FRENZY</h3>
+    <p class="text-xs opacity-70">© 2026 FRENZY Cakes.</p>
   </footer>
 
-</div> <div id="studio-page" class="fixed inset-0 z-[200] bg-[#fff0f6] overflow-y-auto hidden opacity-0">
-  
-  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-blush-200 px-6 py-4 flex justify-between items-center shadow-sm">
-    <div class="flex items-center gap-3">
-        <span class="bg-maroon-800 text-gold-400 text-xs font-bold px-3 py-1 rounded-full tracking-widest uppercase">Beta Test</span>
-        <h2 class="font-playfair font-bold text-xl text-maroon-800 hidden sm:block">2D Cake Configurator</h2>
+</div>
+
+<div id="studio-page" class="fixed inset-0 z-[200] bg-[#fff0f6] overflow-y-auto hidden opacity-0">
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-blush-200 px-4 md:px-6 py-3 md:py-4 flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-2 md:gap-3">
+        <span class="bg-maroon-800 text-gold-400 text-[10px] md:text-xs font-bold px-2 py-1 rounded-full tracking-widest uppercase">Beta</span>
+        <h2 class="font-playfair font-bold text-lg md:text-xl text-maroon-800">2D Configurator</h2>
     </div>
-    <button onclick="closeStudio()" class="bg-gray-100 text-gray-700 hover:bg-gray-200 font-bold px-5 py-2 rounded-full transition flex items-center gap-2">
-        <i class="fas fa-arrow-left"></i> Back to Main Site
+    <button onclick="closeStudio()" class="bg-gray-100 text-gray-700 hover:bg-gray-200 font-bold px-4 py-2 text-sm rounded-full active:scale-95 transition-all flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Back</span>
     </button>
   </nav>
 
-  <div class="max-w-7xl mx-auto px-4 py-12">
+  <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
     <div class="text-center mb-8">
-      <h2 class="font-playfair text-4xl font-black text-maroon-800">Play & Design</h2>
-      <p class="mt-2 text-gray-600 max-w-lg mx-auto">This is an experimental feature we are testing! Build a cake visually, and let us know what you think of the tool at the bottom of the page.</p>
+      <h2 class="font-playfair text-3xl md:text-4xl font-black text-maroon-800">Play & Design</h2>
+      <p class="mt-2 text-sm md:text-base text-gray-600 max-w-lg mx-auto">This is an experimental feature! Build a cake visually.</p>
     </div>
 
-    <div class="grid lg:grid-cols-12 gap-8 items-start mb-16">
+    <div class="grid lg:grid-cols-12 gap-6 md:gap-8 items-start mb-16">
       
-      <div class="lg:col-span-5 glass p-4 sticky top-24">
+      <div class="lg:col-span-5 glass p-3 md:p-4 sticky top-20 z-20">
         <div id="cake-canvas-wrap">
           <div id="cake-2d-container" class="cake-container"></div>
         </div>
-        <div class="mt-4 p-4 bg-white/60 rounded-2xl border border-blush-100 text-center">
-          <p class="text-xs font-bold text-blush-500 uppercase tracking-wider mb-1">Live Estimate</p>
-          <div class="font-playfair text-3xl font-black text-maroon-800" id="price-display">P 300</div>
+        <div class="mt-4 p-3 md:p-4 bg-white/60 rounded-2xl border border-blush-100 text-center">
+          <p class="text-[10px] md:text-xs font-bold text-blush-500 uppercase tracking-wider mb-1">Estimate</p>
+          <div class="font-playfair text-2xl md:text-3xl font-black text-maroon-800" id="price-display">P 300</div>
         </div>
       </div>
 
-      <div class="lg:col-span-7 space-y-6">
-        
-        <div class="glass p-6">
-          <h3 class="font-playfair font-bold text-xl mb-4 text-maroon-800">1. Architecture</h3>
+      <div class="lg:col-span-7 space-y-4 md:space-y-6">
+        <div class="glass p-4 md:p-6">
+          <h3 class="font-playfair font-bold text-lg md:text-xl mb-3 text-maroon-800">1. Architecture</h3>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="style-btns">
-            <button class="option-btn active" data-style="naked">Naked Sponge</button>
+            <button class="option-btn active" data-style="naked">Naked</button>
             <button class="option-btn" data-style="buttercream">Buttercream</button>
-            <button class="option-btn" data-style="fondant">Smooth Fondant</button>
+            <button class="option-btn" data-style="fondant">Fondant</button>
             <button class="option-btn" data-style="twolayer">2-Layer</button>
             <button class="option-btn" data-style="wedding">3-Tier</button>
-            <button class="option-btn" data-style="bento">Bento Mini</button>
+            <button class="option-btn" data-style="bento">Bento</button>
           </div>
         </div>
 
-        <div class="glass p-6">
-          <h3 class="font-playfair font-bold text-xl mb-4 text-maroon-800">2. Dimensions</h3>
+        <div class="glass p-4 md:p-6">
+          <h3 class="font-playfair font-bold text-lg md:text-xl mb-3 text-maroon-800">2. Dimensions</h3>
           <div class="flex flex-wrap gap-2" id="size-btns"></div>
         </div>
 
-        <div class="glass p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <h3 class="font-playfair font-bold text-xl mb-2 text-maroon-800">3. Icing Color</h3>
-            <div class="flex items-center gap-4 bg-white/50 p-3 rounded-2xl border border-blush-200">
+            <h3 class="font-playfair font-bold text-lg mb-2 text-maroon-800">3. Color</h3>
+            <div class="flex items-center gap-3 bg-white/50 p-2 rounded-xl border border-blush-200">
               <input type="color" id="color-picker" value="#ffcce0">
-              <span class="text-sm font-bold text-gray-600">Pick any color!</span>
+              <span class="text-xs font-bold text-gray-600">Pick any!</span>
             </div>
           </div>
-          <div>
-              <h3 class="font-playfair font-bold text-xl mb-2 text-maroon-800">4. Inscription</h3>
-              <input type="text" id="cake-text" maxlength="20" placeholder="e.g. Happy Birthday!" class="form-input mt-1">
-          </div>
+          <div><h3 class="font-playfair font-bold text-lg mb-2 text-maroon-800">4. Inscription</h3><input type="text" id="cake-text" maxlength="20" placeholder="Happy Bday!" class="form-input py-2"></div>
         </div>
 
-        <div class="glass p-6 bg-gradient-to-br from-white to-yellow-50 border-yellow-200">
-          <h3 class="font-playfair font-bold text-xl mb-4 text-yellow-800"><i class="fa fa-sparkles text-yellow-500"></i> Premium Gold Foil</h3>
-          <select id="foil-select" class="form-input border-yellow-300 bg-white">
-            <option value="none" data-price="0">No Gold Foil</option>
-            <option value="top" data-price="40">Gold Flakes (Top) +P40</option>
-            <option value="sides" data-price="50">Gold Flakes (Sides) +P50</option>
-            <option value="both" data-price="80">Gold Flakes (Everywhere) +P80</option>
-          </select>
-        </div>
-
-        <div class="glass p-6">
-          <h3 class="font-playfair font-bold text-xl mb-2 text-maroon-800">Free Embellishments</h3>
-          <div class="space-y-4 bg-white/50 p-4 rounded-2xl border border-blush-100">
-            <div class="flex justify-between items-center">
-              <label class="text-sm font-bold text-gray-700 w-1/3">Sprinkles</label>
-              <select id="sprinkles-select" class="form-input w-2/3 py-2"><option value="none">None</option><option value="rainbow">Rainbow</option><option value="choc">Chocolate</option><option value="pink">Pink</option></select>
-            </div>
-            <div class="flex justify-between items-center">
-              <label class="text-sm font-bold text-gray-700 w-1/3">Edible Glitter</label>
-              <select id="glitter-select" class="form-input w-2/3 py-2"><option value="none">None</option><option value="#f4c542">Gold Dust</option><option value="#e0e0e0">Silver Shimmer</option><option value="#ff8fab">Pink Sparkle</option></select>
-            </div>
-            <div class="flex justify-between items-center">
-              <label class="text-sm font-bold text-gray-700 w-1/3">Floral Toppers</label>
-              <select id="flower-select" class="form-input w-2/3 py-2"><option value="none">None</option><option value="real">Real Roses 🌹</option><option value="fake">Sugar Flowers 🌸</option></select>
-            </div>
-          </div>
-        </div>
-
-        <div class="glass p-6 text-center">
-            <h3 class="font-playfair font-bold text-xl mb-2 text-maroon-800">Print Edible Photo</h3>
-            <p class="text-sm text-gray-600 mb-4">See how a loved one's photo looks on top of the cake!</p>
-            <button class="bg-blush-200 text-maroon-800 font-bold px-6 py-3 rounded-full hover:bg-blush-300 transition" onclick="document.getElementById('edible-upload').click()">
-                <i class="fa fa-user-circle mr-2"></i> Upload Photo
+        <div class="glass p-4 md:p-6 text-center">
+            <h3 class="font-playfair font-bold text-lg mb-2 text-maroon-800">Print Edible Photo</h3>
+            <button class="bg-blush-200 text-maroon-800 font-bold px-5 py-2.5 rounded-full active:scale-95 transition text-sm" onclick="document.getElementById('edible-upload-studio').click()">
+                <i class="fa fa-user-circle mr-2"></i> Upload
             </button>
-            <input type="file" id="edible-upload" class="hidden" accept="image/*">
+            <input type="file" id="edible-upload-studio" class="hidden" accept="image/*">
         </div>
-
       </div>
     </div>
-
-    <div class="max-w-3xl mx-auto glass p-8 text-center bg-white/90 border-2 border-maroon-800 mb-20">
-        <h3 class="font-playfair font-bold text-2xl text-maroon-800 mb-2">Help Us Improve This Tool</h3>
-        <p class="text-gray-600 mb-6">Did you enjoy building a cake visually? What features should we add or fix?</p>
-        <textarea rows="3" class="form-input mb-4" placeholder="Your review or suggestions..."></textarea>
-        <button onclick="alert('Thank you for your feedback! It helps us make FRENZY better.')" class="btn-primary px-8 py-3">Submit Feedback</button>
-    </div>
-
   </div>
 </div>
 
 <script>
-  const mainSite = document.getElementById('main-site');
-  const studioPage = document.getElementById('studio-page');
+  // ── SCROLL ANIMATIONS (Intersection Observer) ──
+  document.addEventListener("DOMContentLoaded", () => {
+    // Initial hero animations trigger immediately
+    setTimeout(() => {
+        document.querySelectorAll('.reveal:not(.delay-100):not(.delay-200):not(.delay-300)').forEach(el => {
+            if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('active');
+        });
+    }, 100);
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+
+  // ── NAVBAR SCROLL EFFECT ──
+  window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+  });
+
+  // ── STUDIO ROUTING ──
+  const studioPage = document.getElementById('studio-page');
   window.openStudio = function() {
       studioPage.classList.remove('hidden');
-      setTimeout(() => {
-          studioPage.style.opacity = '1';
-          document.body.style.overflow = 'hidden'; 
-      }, 10);
+      setTimeout(() => { studioPage.style.opacity = '1'; document.body.style.overflow = 'hidden'; }, 10);
   }
-
   window.closeStudio = function() {
       studioPage.style.opacity = '0';
-      setTimeout(() => {
-          studioPage.classList.add('hidden');
-          document.body.style.overflow = ''; 
-      }, 400); 
+      setTimeout(() => { studioPage.classList.add('hidden'); document.body.style.overflow = ''; }, 400); 
   }
 
+  // ── 2D ENGINE ──
   const PRICING = {
-    naked:       { '5"':300, '6"':400, '8"':500, '10"':600, '12"':700 },
-    buttercream: { '5"':450, '6"':650, '8"':750, '10"':850 },
-    fondant:     { '5"':550, '6"':700, '8"':800, '10"':900, '12"':1000 },
-    twolayer:    { '4"+6"':900, '4"+8"':1100, '6"+8"':1300, '6"+10"':1450, '8"+10"':1600, '8"+12"':1800, '10"+12"':2000, '12"+14"':2400, '14"+16"':2800 },
-    wedding:     { '6"+8"+10"':2500, '8"+10"+12"':3200 },
-    bento:       { '4" Standard':150, '5" Large': 200 }
+    naked: { '5"':300, '8"':500, '12"':700 },
+    buttercream: { '5"':450, '8"':750, '10"':850 },
+    fondant: { '5"':550, '8"':800, '12"':1000 },
+    twolayer: { '4"+6"':900, '6"+8"':1300, '8"+10"':1600 },
+    wedding: { '6"+8"+10"':2500 },
+    bento: { '4" Standard':150 }
   };
 
-  const state = {
-    style: 'naked', size: '5"', color: '#ffcce0',
-    foil: 'none', foilPrice: 0,
-    sprinkles: 'none', glitter: 'none', flowers: 'none', text: '',
-    ediblePhoto: null 
-  };
-
-  function getContrastColor(hex) {
-      hex = hex.replace("#", "");
-      const r = parseInt(hex.substr(0,2),16), g = parseInt(hex.substr(2,2),16), b = parseInt(hex.substr(4,2),16);
-      const yiq = ((r*299)+(g*587)+(b*114))/1000;
-      return (yiq >= 140) ? '#590d22' : '#ffffff';
-  }
+  const state = { style: 'naked', size: '5"', color: '#ffcce0', foilPrice: 0, text: '', ediblePhoto: null };
 
   function render2DCake() {
     const container = document.getElementById('cake-2d-container');
     container.innerHTML = ''; 
-
     let tiers = [];
-    const baseWidth = 42; 
+    // Adjusted width scale for better mobile fit
+    const baseWidth = window.innerWidth < 768 ? 32 : 42; 
     
-    if (state.style === 'bento') {
-        tiers = [{ w: parseInt(state.size)*baseWidth, h: 50, z: 2 }];
-    } else if (state.style === 'twolayer') {
+    if (state.style === 'bento') tiers = [{ w: parseInt(state.size)*baseWidth, h: 50, z: 2 }];
+    else if (state.style === 'twolayer') {
         const sizes = state.size.split('+').map(s => parseInt(s));
         tiers = [{ w: sizes[0]*baseWidth, h: 80, z: 3 }, { w: sizes[1]*baseWidth, h: 100, z: 2 }];
     } else if (state.style === 'wedding') {
         const sizes = state.size.split('+').map(s => parseInt(s));
         tiers = [{ w: sizes[0]*baseWidth, h: 70, z: 4 }, { w: sizes[1]*baseWidth, h: 90, z: 3 }, { w: sizes[2]*baseWidth, h: 110, z: 2 }];
-    } else {
-        tiers = [{ w: parseInt(state.size)*baseWidth, h: 110, z: 2 }];
-    }
+    } else tiers = [{ w: parseInt(state.size)*baseWidth, h: 110, z: 2 }];
 
-    tiers.forEach((tier, index) => {
-      const isTopTier = (index === 0); 
+    tiers.forEach((tier, i) => {
+      const isTop = (i === 0); 
+      const tDiv = document.createElement('div');
+      tDiv.className = 'cake-tier'; tDiv.style.width = tier.w + 'px'; tDiv.style.height = tier.h + 'px'; tDiv.style.zIndex = tier.z;
       
-      const tierDiv = document.createElement('div');
-      tierDiv.className = 'cake-tier';
-      tierDiv.style.width = tier.w + 'px';
-      tierDiv.style.height = tier.h + 'px';
-      tierDiv.style.zIndex = tier.z;
+      if(state.style === 'naked') { tDiv.style.backgroundColor = '#e8c48a'; tDiv.classList.add('texture-naked'); }
+      else { tDiv.style.backgroundColor = state.color; }
+
+      const topFace = document.createElement('div'); topFace.className = 'cake-top-face';
       
-      if(state.style === 'naked') {
-        tierDiv.style.backgroundColor = '#e8c48a';
-        tierDiv.classList.add('texture-naked');
-      } else {
-        tierDiv.style.backgroundColor = state.color;
-        const piping = document.createElement('div');
-        piping.className = 'cake-piping';
-        piping.style.backgroundImage = `radial-gradient(circle at 10px 9px, ${state.color} 9px, transparent 10px)`;
-        tierDiv.appendChild(piping);
+      if(isTop && state.ediblePhoto) {
+          const p = document.createElement('div'); p.className = 'photo-print-layer'; p.style.backgroundImage = `url(${state.ediblePhoto})`; topFace.appendChild(p);
+      }
+      if(isTop && state.text) {
+        topFace.innerHTML += `<div class="cake-text-wrapper"><span class="cake-text" style="color: ${state.style==='naked'?'#590d22':'#fff'}">${state.text}</span></div>`;
       }
 
-      const topFace = document.createElement('div');
-      topFace.className = 'cake-top-face';
-      
-      if(isTopTier && state.ediblePhoto) {
-          const photoLayer = document.createElement('div');
-          photoLayer.className = 'photo-print-layer';
-          photoLayer.style.backgroundImage = `url(${state.ediblePhoto})`;
-          topFace.appendChild(photoLayer);
-      }
-      
-      if(isTopTier && state.text) {
-        const textColor = state.style === 'naked' ? '#590d22' : getContrastColor(state.color);
-        topFace.innerHTML += `<div class="cake-text-wrapper"><span class="cake-text" style="color: ${textColor}">${state.text}</span></div>`;
-      }
-
-      if(state.foil !== 'none') {
-        const foil = document.createElement('div'); foil.className = 'foil-layer';
-        if(state.foil === 'top') topFace.appendChild(foil);
-        if(state.foil === 'sides') tierDiv.appendChild(foil);
-        if(state.foil === 'both') { topFace.appendChild(foil.cloneNode()); tierDiv.appendChild(foil); }
-      }
-
-      if(state.sprinkles !== 'none') {
-        const spr = document.createElement('div'); spr.className = 'sprinkle-layer';
-        if(state.sprinkles === 'rainbow') spr.style.backgroundImage = 'radial-gradient(circle at 10% 20%, #fb6f92 3px, transparent 4px), radial-gradient(circle at 80% 40%, #a2d2ff 3px, transparent 4px), radial-gradient(circle at 40% 70%, #f4c542 3px, transparent 4px)';
-        if(state.sprinkles === 'choc') spr.style.backgroundImage = 'radial-gradient(circle at 30% 50%, #3e2723 3px, transparent 4px), radial-gradient(circle at 70% 80%, #4e342e 3px, transparent 4px)';
-        if(state.sprinkles === 'pink') spr.style.backgroundImage = 'radial-gradient(circle at 50% 50%, #ffcce0 3px, transparent 4px), radial-gradient(circle at 20% 80%, #fb6f92 3px, transparent 4px)';
-        tierDiv.appendChild(spr);
-      }
-
-      if(state.glitter !== 'none') {
-        const glit = document.createElement('div'); glit.className = 'glitter-layer'; glit.style.color = state.glitter;
-        tierDiv.appendChild(glit); topFace.appendChild(glit.cloneNode());
-      }
-
-      if(state.flowers !== 'none' && isTopTier) {
-        const emoji = state.flowers === 'real' ? '🌹' : '🌸';
-        const numFlowers = 6;
-        for(let i=0; i<numFlowers; i++) {
-          const f = document.createElement('div'); f.className = 'flower-icon'; f.innerText = emoji;
-          const angle = (i / numFlowers) * Math.PI * 2;
-          const rx = (tier.w / 2.2) * Math.cos(angle);
-          const ry = 12 * Math.sin(angle);
-          f.style.transform = `translate(${rx}px, ${ry - 15}px)`;
-          topFace.appendChild(f);
-        }
-      }
-
-      tierDiv.appendChild(topFace);
-      container.appendChild(tierDiv);
+      tDiv.appendChild(topFace); container.appendChild(tDiv);
     });
 
-    const stand = document.createElement('div');
-    stand.style.width = tiers[tiers.length-1].w + 'px';
-    stand.style.position = 'relative';
-    stand.style.zIndex = '1';
-    stand.innerHTML = `<div class="cake-stand-plate"></div><div class="cake-stand-base"></div>`;
-    container.appendChild(stand);
-
-    const basePrice = PRICING[state.style][state.size] || 0;
-    document.getElementById('price-display').innerText = `P ${basePrice + parseInt(state.foilPrice)}`;
+    const stand = document.createElement('div'); stand.style.width = tiers[tiers.length-1].w + 'px'; stand.style.position = 'relative'; stand.style.zIndex = '1';
+    stand.innerHTML = `<div class="cake-stand-plate"></div><div class="cake-stand-base"></div>`; container.appendChild(stand);
+    document.getElementById('price-display').innerText = `P ${PRICING[state.style][state.size] || 0}`;
   }
 
   function populateSizes() {
-    const wrap = document.getElementById('size-btns');
-    wrap.innerHTML = '';
-    const sizes = Object.keys(PRICING[state.style]);
-    state.size = sizes[0]; 
+    const wrap = document.getElementById('size-btns'); wrap.innerHTML = '';
+    const sizes = Object.keys(PRICING[state.style]); state.size = sizes[0]; 
     sizes.forEach((s, i) => {
-      const btn = document.createElement('button');
-      btn.className = `option-btn ${i===0 ? 'active' : ''}`;
-      btn.innerText = s;
-      btn.onclick = () => {
-        document.querySelectorAll('#size-btns button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active'); state.size = s; render2DCake();
-      };
+      const btn = document.createElement('button'); btn.className = `option-btn ${i===0 ? 'active' : ''}`; btn.innerText = s;
+      btn.onclick = () => { document.querySelectorAll('#size-btns button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); state.size = s; render2DCake(); };
       wrap.appendChild(btn);
     });
   }
@@ -641,32 +513,19 @@
   document.getElementById('style-btns').addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON') {
       document.querySelectorAll('#style-btns button').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active'); state.style = e.target.dataset.style;
-      populateSizes(); render2DCake();
+      e.target.classList.add('active'); state.style = e.target.dataset.style; populateSizes(); render2DCake();
     }
   });
 
   document.getElementById('color-picker').addEventListener('input', e => { state.color = e.target.value; render2DCake(); });
-  document.getElementById('foil-select').addEventListener('change', e => { state.foil = e.target.value; state.foilPrice = e.target.options[e.target.selectedIndex].dataset.price; render2DCake(); });
-  document.getElementById('sprinkles-select').addEventListener('change', e => { state.sprinkles = e.target.value; render2DCake(); });
-  document.getElementById('glitter-select').addEventListener('change', e => { state.glitter = e.target.value; render2DCake(); });
-  document.getElementById('flower-select').addEventListener('change', e => { state.flowers = e.target.value; render2DCake(); });
   document.getElementById('cake-text').addEventListener('input', e => { state.text = e.target.value; render2DCake(); });
-  
-  document.getElementById('edible-upload').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if(file) {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-              state.ediblePhoto = event.target.result;
-              render2DCake(); 
-          }
-          reader.readAsDataURL(file);
+  document.getElementById('edible-upload-studio').addEventListener('change', function(e) {
+      if(e.target.files[0]) {
+          const r = new FileReader(); r.onload = ev => { state.ediblePhoto = ev.target.result; render2DCake(); }; r.readAsDataURL(e.target.files[0]);
       }
   });
 
-  populateSizes();
-  render2DCake();
+  populateSizes(); render2DCake();
 </script>
 </body>
 </html>
